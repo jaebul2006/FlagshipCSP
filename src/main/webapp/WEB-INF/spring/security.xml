@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+		 xmlns:b="http://www.springframework.org/schema/beans"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<http auto-config="true" authentication-manager-ref="userAuth">
+		<intercept-url pattern="/KVRF/**" access="permitAll" />
+		<intercept-url pattern="/RegistAccount" access="permitAll" />
+		<intercept-url pattern="/RegistUser" access="permitAll" />
+		<intercept-url pattern="/restful/**" access="permitAll" />
+		<intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/assets/**" access="permitAll" />
+		<intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
+		
+		<!--  아래주석은 커스터마이징 로그인 페이지가 필요하면 구현하장, 로그인이 성공하면 이동해야할 url 등동 -->
+	  	<form-login login-page="/login" 
+							username-parameter="id"
+							password-parameter="pw"
+							login-processing-url="/login_process"
+							authentication-failure-url="/login_fail"
+							always-use-default-target="true" 
+							authentication-success-handler-ref="feedSuccessHandler"
+							/> 
+							
+		<!-- 업로드 관련해서 csrf 옵션이 활성화되어있으면 업로드가 안된다 해결방법 찾아야함 -->
+		<csrf disabled="true" />
+
+		<session-management>
+			<concurrency-control max-sessions="1" expired-url="/login" />
+		</session-management>
+	</http>
+		
+	<jdbc-user-service data-source-ref="dataSource" id="userService"
+	users-by-username-query="SELECT ID as username, PASSWORD as password, ENABLED as enabled FROM user WHERE ID=?"
+	authorities-by-username-query="SELECT ID as username, AUTHORITY as authority FROM user WHERE ID=?"/>
+
+	<authentication-manager id="userAuth">
+		<authentication-provider user-service-ref="userService">
+			<!--  <password-encoder ref="PASSWORDEncoder" /> -->
+		</authentication-provider>
+	</authentication-manager>
+
+
+</b:beans>
+
+<!--  default-target-url="/login_success" -->

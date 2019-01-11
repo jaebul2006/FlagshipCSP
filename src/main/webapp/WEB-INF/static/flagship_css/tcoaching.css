@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+.tc_color_editor{
+	text-align: left;
+}
+
+.form-range-control {
+  margin: 0 auto;
+  background-color: #afe0fc;
+  padding: 1.5em;
+  border-radius: 5px;
+ }
+ .form-range-control input[type="range"] {
+  -webkit-appearance: none;
+  background-color: white;
+  height: 3px;
+  border-radius: 1px;width:100%; 
+ }
+ .form-range-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #078dd8;
+  border-radius: 50%;
+  cursor: -moz-grab;
+  cursor: -webkit-grab; 
+ }

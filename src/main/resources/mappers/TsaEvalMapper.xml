@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.crc.CSP.TsaEvalMapper">
+
+	<insert id="insertEntTotal">
+		INSERT INTO ent_total (user_id, date, ID, oper_name)
+		VALUES (#{user_id}, #{date}, #{ID}, #{oper_name})
+	</insert>
+	
+	<insert id="insertEntCommon">
+		INSERT INTO ent_common (ID, UID, pid, name, classNo, date, ActionCount, totalScore)
+		VALUES (#{ID}, #{UID}, #{pid}, #{name}, #{classNo}, #{date}, #{ActionCount}, #{totalScore})
+	</insert>
+	
+	<insert id="insertTools">
+		INSERT INTO tools (ID, pid, touchCount, toolUseCount, toolInnerCount, toolTouchScore, toolViewScore, maxScore)
+		VALUES (#{ID}, #{pid}, #{touchCount}, #{toolUseCount}, #{toolInnerCount}, #{toolTouchScore}, #{toolViewScore}, #{maxScore})
+	</insert>
+	
+	<insert id="insertOuterBreak">
+		INSERT INTO outer_break (ID, pid, stepScore, maxScore, score, note, position, rotation, scale)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{scale})
+	</insert>
+	
+	<insert id="insertSeptalFlap">
+		INSERT INTO septal_flap (ID, pid, stepScore, maxScore, score, note, position, rotation, scale)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{scale})
+	</insert>
+	
+	<insert id="insertPoints">
+		INSERT INTO points (id, pid, positionA, rotationA)
+		VALUES (#{id}, #{pid}, #{positionA}, #{rotationA})
+	</insert>
+		
+	<insert id="insertPathPoints">
+		INSERT INTO path_points (id, pid, positionA, rotationA)
+		VALUES (#{id}, #{pid}, #{positionA}, #{rotationA})
+	</insert>
+		
+	<insert id="insertTargetPoints">
+		INSERT INTO target_points (id, pid, positionA, rotationA)
+		VALUES (#{id}, #{pid}, #{positionA}, #{rotationA})
+	</insert>
+		
+	<insert id="insertSuperiorTurbinate">
+		INSERT INTO superior_turbinate (ID, pid, stepScore, maxScore, score, note, innerTriggerCount, outerTriggerCount, innerTriggerTouchCount, outerTriggerTouchCount)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{innerTriggerCount}, #{outerTriggerCount}, #{innerTriggerTouchCount}, #{outerTriggerTouchCount})
+	</insert>
+	
+	<insert id="insertSphenoidCellsRemoval">
+		INSERT INTO sphenoid_cells_removal (ID, pid, stepScore, maxScore, score, note, position, rotation, localcale, pinCount, pins, targetPins)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{localcale}, #{pinCount}, #{pins}, #{targetPins})
+	</insert>
+	
+	<insert id="insertSellaDuramater">
+		INSERT INTO sella_duramater (ID, pid, stepScore, maxScore, score, note, position, rotation, localcale, pinCount, pins, targetPins)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{localcale}, #{pinCount}, #{pins}, #{targetPins})
+	</insert>
+	
+	<insert id="insertTransclivalDrilling">
+		INSERT INTO transclival_drilling (ID, pid, stepScore, maxScore, score, note, position, rotation, localcale, pinCount, pins, targetPins)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{localcale}, #{pinCount}, #{pins}, #{targetPins})
+	</insert>
+	
+	<insert id="insertTumorRemoval">
+		INSERT INTO tumor_removal (ID, pid, stepScore, maxScore, score, note, position, rotation, localcale, pinCount, pins, targetPins)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{localcale}, #{pinCount}, #{pins}, #{targetPins})
+	</insert>
+	
+	<insert id="insertUncinectomy">
+		INSERT INTO uncinectomy (ID, pid, stepScore, maxScore, score, note, position, rotation, localcale, pinCount, pins, targetPins)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{localcale}, #{pinCount}, #{pins}, #{targetPins})
+	</insert>
+	
+	<insert id="insertAnteriorEthmoidectomy">
+		INSERT INTO anterior_ethmoidectomy (ID, pid, stepScore, maxScore, score, note, position, rotation, localcale, pinCount, pins, targetPins)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{localcale}, #{pinCount}, #{pins}, #{targetPins})
+	</insert>
+	
+	<insert id="insertAnteriorSinus">
+		INSERT INTO anterior_sinus (ID, pid, stepScore, maxScore, score, note, position, rotation, localcale, pinCount, pins, targetPins)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{localcale}, #{pinCount}, #{pins}, #{targetPins})
+	</insert>
+	
+	<insert id="insertAnteriorEthmoidalAirCellRemoval">
+		INSERT INTO anterior_ethmoidal_aircell_removal (ID, pid, stepScore, maxScore, score, note, position, rotation, localcale, pinCount, pins, targetPins)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{localcale}, #{pinCount}, #{pins}, #{targetPins})
+	</insert>
+	
+	<insert id="insertPosteriorAirCellRemoval">
+		INSERT INTO posterior_aircell_removal (ID, pid, stepScore, maxScore, score, note, position, rotation, localcale, pinCount, pins, targetPins)
+		VALUES (#{ID}, #{pid}, #{stepScore}, #{maxScore}, #{score}, #{note}, #{position}, #{rotation}, #{localcale}, #{pinCount}, #{pins}, #{targetPins})
+	</insert>
+	
+	<insert id="insertPointTrigger">
+		INSERT INTO point_trigger (ID, pid, deduction, failure, name)
+		VALUES (#{ID}, #{pid}, #{deduction}, #{failure}, #{name})
+	</insert>
+	
+	<insert id="insertEntTsa">
+		INSERT INTO ent_tsa (ID, pid, totalScore)
+		VALUES (#{ID}, #{pid}, #{totalScore})
+	</insert>
+	
+	<insert id="insertEntTransclivalApproach">
+		INSERT INTO ent_transclival_approach (ID, pid, totalScore)
+		VALUES (#{ID}, #{pid}, #{totalScore})
+	</insert>
+	
+	<insert id="insertEntAcidosisMaxillarySinus">
+		INSERT INTO ent_acidosis_maxillary_sinus (ID, pid, totalScore)
+		VALUES (#{ID}, #{pid}, #{totalScore})
+	</insert>
+	
+	<insert id="insertEntAcidosisFrontalSinus">
+		INSERT INTO ent_acidosis_frontal_sinus (ID, pid, totalScore)
+		VALUES (#{ID}, #{pid}, #{totalScore})
+	</insert>
+	
+	<insert id="insertEntAcidosisEthmoidalSinus">
+		INSERT INTO ent_acidosis_ethmoidal_sinus (ID, pid, totalScore)
+		VALUES (#{ID}, #{pid}, #{totalScore})
+	</insert>
+	
+	<select id="getEntTotal" resultType="com.crc.CSP.bean.EntTotalVO">
+		SELECT * 
+		FROM
+			ent_total
+		WHERE
+			no = #{no}
+	</select>
+	
+	<select id="getEntTsa" resultType="String">
+		SELECT ID 
+		FROM
+			ent_tsa
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getEntCommon" resultType="com.crc.CSP.bean.EntCommonVO">
+		SELECT *
+		FROM
+			ent_common
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getTools" resultType="com.crc.CSP.bean.ToolsVO">
+		SELECT *
+		FROM
+			tools
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getOuterBreak" resultType="com.crc.CSP.bean.PathTriggerVOStr">
+		SELECT *
+		FROM
+			outer_break
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getSeptalFlap" resultType="com.crc.CSP.bean.PathTriggerVOStr">
+		SELECT *
+		FROM
+			septal_flap
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getSuperiorTurbinate" resultType="com.crc.CSP.bean.BoxTriggerVO">
+		SELECT *
+		FROM
+			superior_turbinate
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getSphenoidCellsRemoval" resultType="com.crc.CSP.bean.VolumeTriggerVOStr">
+		SELECT *
+		FROM
+			sphenoid_cells_removal
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getTransclivalDrilling" resultType="com.crc.CSP.bean.VolumeTriggerVOStr">
+		SELECT *
+		FROM
+			transclival_drilling
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getSellaDuramater" resultType="com.crc.CSP.bean.VolumeTriggerVOStr">
+		SELECT *
+		FROM
+			sella_duramater
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getTumorRemoval" resultType="com.crc.CSP.bean.VolumeTriggerVOStr">
+		SELECT *
+		FROM
+			tumor_removal
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="list" resultType="com.crc.CSP.bean.EntTotalVO">
+		SELECT * FROM 
+			ent_total
+		WHERE
+			user_id = #{user_id}
+		AND
+			oper_name = #{oper_name}
+	</select>
+	
+	<select id="getPoints" resultType="com.crc.CSP.bean.PointDataVOStr">
+		SELECT * FROM 
+			points
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getTargetPoints" resultType="com.crc.CSP.bean.PointDataVOStr">
+		SELECT * FROM 
+			target_points
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getPointTriggers" resultType="com.crc.CSP.bean.PointTriggerVO">
+		SELECT * FROM 
+			point_trigger
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getEntTansclivalApproach" resultType="String">
+		SELECT ID 
+		FROM
+			ent_transclival_approach
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getEntAcidosisMaxillarySinus" resultType="String">
+		SELECT ID 
+		FROM
+			ent_acidosis_maxillary_sinus
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getUncinectomy" resultType="com.crc.CSP.bean.VolumeTriggerVOStr">
+		SELECT *
+		FROM
+			uncinectomy
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getEntAcidosisFrontalSinus" resultType="String">
+		SELECT ID 
+		FROM
+			ent_acidosis_frontal_sinus
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getAnteriorEthmoidectomy" resultType="com.crc.CSP.bean.VolumeTriggerVOStr">
+		SELECT * 
+		FROM
+			anterior_ethmoidectomy
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getAnteriorSinus" resultType="com.crc.CSP.bean.VolumeTriggerVOStr">
+		SELECT * 
+		FROM
+			anterior_sinus
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getEntAcidosisEthmoidalSinus" resultType="String">
+		SELECT ID 
+		FROM
+			ent_acidosis_ethmoidal_sinus
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getAnteriorEthmoidalAirCellRemoval" resultType="com.crc.CSP.bean.VolumeTriggerVOStr">
+		SELECT * 
+		FROM
+			anterior_ethmoidal_aircell_removal
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getPosteriorAirCellRemoval" resultType="com.crc.CSP.bean.VolumeTriggerVOStr">
+		SELECT * 
+		FROM
+			posterior_aircell_removal
+		WHERE
+			pid = #{id}
+	</select>
+	
+	<select id="getEntTsaScoreRange" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_tsa
+		WHERE
+			totalScore >= #{min}
+		AND
+			totalScore <= #{max}	
+		]]>
+	</select>
+	
+	<select id="getEntTransclivalApproachScoreRange" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_transclival_approach
+		WHERE
+			totalScore >= #{min}
+		AND
+			totalScore <= #{max}	
+		]]>
+	</select>
+	
+	<select id="getEntAcidosisMaxillarySinusScoreRange" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_maxillary_sinus
+		WHERE
+			totalScore >= #{min}
+		AND
+			totalScore <= #{max}	
+		]]>
+	</select>
+	
+	<select id="getEntAcidosisFrontalSinusScoreRange" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_frontal_sinus
+		WHERE
+			totalScore >= #{min}
+		AND
+			totalScore <= #{max}	
+		]]>
+	</select>
+	
+	<select id="getEntAcidosisEthmoidalSinusScoreRange" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_ethmoidal_sinus
+		WHERE
+			totalScore >= #{min}
+		AND
+			totalScore <= #{max}	
+		]]>
+	</select>
+	
+  
+	<select id="getExpertTools" resultType="com.crc.CSP.bean.ExpertToolsVO">
+		SELECT 
+			*
+		FROM
+			expert_tools
+		WHERE
+			oper_name = #{oper_name}
+	</select>
+	
+	<update id="updateExpertTools">
+		UPDATE
+			expert_tools
+		SET
+			touchCount = #{touchCount}, toolUseCount = #{toolUseCount}, toolInnerCount = #{toolInnerCount}, 
+			toolTouchScore = #{toolTouchScore}, toolViewScore = #{toolViewScore}, maxScore = #{maxScore}
+		WHERE
+			oper_name = #{oper_name}	
+	</update>
+	
+	<select id="getAverTouchCount" resultType="String">
+		<![CDATA[
+		SELECT AVG(touchCount)
+		FROM
+			tools
+		WHERE
+			pid = #{pid}
+		]]>
+	</select>
+	
+	<select id="getAverToolUseCount" resultType="String">
+		<![CDATA[
+		SELECT AVG(toolUseCount)
+		FROM
+			tools
+		WHERE
+			pid = #{pid}
+		]]>
+	</select>
+	
+	<select id="getAverToolInnerCount" resultType="String">
+		<![CDATA[
+		SELECT AVG(toolInnerCount)
+		FROM
+			tools
+		WHERE
+			pid = #{pid}
+		]]>
+	</select>
+	
+	<select id="getAverToolTouchScore" resultType="String">
+		<![CDATA[
+		SELECT AVG(toolTouchScore)
+		FROM
+			tools
+		WHERE
+			pid = #{pid}
+		]]>
+	</select>
+	
+	<select id="getAverToolViewScore" resultType="String">
+		<![CDATA[
+		SELECT AVG(toolViewScore)
+		FROM
+			tools
+		WHERE
+			pid = #{pid}
+		]]>
+	</select>
+	
+	<select id="getAverMaxScore" resultType="String">
+		<![CDATA[
+		SELECT AVG(maxScore)
+		FROM
+			tools
+		WHERE
+			pid = #{pid}
+		]]>
+	</select>
+	
+	<select id="TSARng0to50" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_tsa
+		WHERE
+			totalScore >= 0
+		AND
+			totalScore <= 50	
+		]]>
+	</select>
+	
+	<select id="TSARng51to60" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_tsa
+		WHERE
+			totalScore >= 51
+		AND
+			totalScore <= 60	
+		]]>
+	</select>
+	
+	<select id="TSARng61to70" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_tsa
+		WHERE
+			totalScore >= 61
+		AND
+			totalScore <= 70	
+		]]>
+	</select>
+	
+	<select id="TSARng71to80" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_tsa
+		WHERE
+			totalScore >= 71
+		AND
+			totalScore <= 80	
+		]]>
+	</select>
+	
+	<select id="TSARng81to90" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_tsa
+		WHERE
+			totalScore >= 81
+		AND
+			totalScore <= 90	
+		]]>
+	</select>
+	
+	<select id="TSARng91to100" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_tsa
+		WHERE
+			totalScore >= 91
+		AND
+			totalScore <= 100	
+		]]>
+	</select>
+	
+	<select id="TransclivalApproachRng0to50" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_transclival_approach
+		WHERE
+			totalScore >= 0
+		AND
+			totalScore <= 50	
+		]]>
+	</select>
+	
+	<select id="TransclivalApproachRng51to60" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_transclival_approach
+		WHERE
+			totalScore >= 51
+		AND
+			totalScore <= 60	
+		]]>
+	</select>
+	
+	<select id="TransclivalApproachRng61to70" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_transclival_approach
+		WHERE
+			totalScore >= 61
+		AND
+			totalScore <= 70	
+		]]>
+	</select>
+	
+	<select id="TransclivalApproachRng71to80" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_transclival_approach
+		WHERE
+			totalScore >= 71
+		AND
+			totalScore <= 80	
+		]]>
+	</select>
+	
+	<select id="TransclivalApproachRng81to90" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_transclival_approach
+		WHERE
+			totalScore >= 81
+		AND
+			totalScore <= 90	
+		]]>
+	</select>
+	
+	<select id="TransclivalApproachRng91to100" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_transclival_approach
+		WHERE
+			totalScore >= 91
+		AND
+			totalScore <= 100	
+		]]>
+	</select>
+	
+	<select id="AcidosisMaxillarySinusRng0to50" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_maxillary_sinus
+		WHERE
+			totalScore >= 0
+		AND
+			totalScore <= 50	
+		]]>
+	</select>
+	
+	<select id="AcidosisMaxillarySinusRng51to60" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_maxillary_sinus
+		WHERE
+			totalScore >= 51
+		AND
+			totalScore <= 60	
+		]]>
+	</select>
+	
+	<select id="AcidosisMaxillarySinusRng61to70" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_maxillary_sinus
+		WHERE
+			totalScore >= 61
+		AND
+			totalScore <= 70	
+		]]>
+	</select>
+	
+	<select id="AcidosisMaxillarySinusRng71to80" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_maxillary_sinus
+		WHERE
+			totalScore >= 71
+		AND
+			totalScore <= 80	
+		]]>
+	</select>
+	
+	<select id="AcidosisMaxillarySinusRng81to90" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_maxillary_sinus
+		WHERE
+			totalScore >= 81
+		AND
+			totalScore <= 90	
+		]]>
+	</select>
+	
+	<select id="AcidosisMaxillarySinusRng91to100" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_maxillary_sinus
+		WHERE
+			totalScore >= 91
+		AND
+			totalScore <= 100	
+		]]>
+	</select>
+	
+	<select id="AcidosisFrontalSinusRng0to50" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_frontal_sinus
+		WHERE
+			totalScore >= 0
+		AND
+			totalScore <= 50	
+		]]>
+	</select>
+	
+	<select id="AcidosisFrontalSinusRng51to60" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_frontal_sinus
+		WHERE
+			totalScore >= 51
+		AND
+			totalScore <= 60	
+		]]>
+	</select>
+	
+	<select id="AcidosisFrontalSinusRng61to70" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_frontal_sinus
+		WHERE
+			totalScore >= 61
+		AND
+			totalScore <= 70	
+		]]>
+	</select>
+	
+	<select id="AcidosisFrontalSinusRng71to80" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_frontal_sinus
+		WHERE
+			totalScore >= 71
+		AND
+			totalScore <= 80	
+		]]>
+	</select>
+	
+	<select id="AcidosisFrontalSinusRng81to90" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_frontal_sinus
+		WHERE
+			totalScore >= 81
+		AND
+			totalScore <= 90	
+		]]>
+	</select>
+	
+	<select id="AcidosisFrontalSinusRng91to100" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_frontal_sinus
+		WHERE
+			totalScore >= 91
+		AND
+			totalScore <= 100	
+		]]>
+	</select>
+	
+	<select id="AcidosisEthmoidalSinusRng0to50" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_ethmoidal_sinus
+		WHERE
+			totalScore >= 0
+		AND
+			totalScore <= 50	
+		]]>
+	</select>
+	
+	<select id="AcidosisEthmoidalSinusRng51to60" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_ethmoidal_sinus
+		WHERE
+			totalScore >= 51
+		AND
+			totalScore <= 60	
+		]]>
+	</select>
+	
+	<select id="AcidosisEthmoidalSinusRng61to70" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_ethmoidal_sinus
+		WHERE
+			totalScore >= 61
+		AND
+			totalScore <= 70	
+		]]>
+	</select>
+	
+	<select id="AcidosisEthmoidalSinusRng71to80" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_ethmoidal_sinus
+		WHERE
+			totalScore >= 71
+		AND
+			totalScore <= 80	
+		]]>
+	</select>
+	
+	<select id="AcidosisEthmoidalSinusRng81to90" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_ethmoidal_sinus
+		WHERE
+			totalScore >= 81
+		AND
+			totalScore <= 90	
+		]]>
+	</select>
+	
+	<select id="AcidosisEthmoidalSinusRng91to100" resultType="String">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			ent_acidosis_ethmoidal_sinus
+		WHERE
+			totalScore >= 91
+		AND
+			totalScore <= 100	
+		]]>
+	</select>
+	
+</mapper>

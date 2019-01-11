@@ -1,0 +1,398 @@
+@charset "UTF-8";
+
+.os_eval_mother{
+	position: relative;
+	width: 80%;
+	/*height: 100%;*/
+	height: 6500px;
+	/*border: 2px dashed red;*/
+	margin:auto auto;
+}
+
+.os_eval_common_main{
+	position: relative;
+	width: 70%;
+	height: 450px;
+	top: 20px;
+	border: 1px dashed blue;
+	margin: auto auto;
+}
+
+.os_eval_common_title{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 500px;
+	height: 80px;
+}
+
+.os_eval_common_table{
+	position: absolute;
+	top: 100px;
+	left: 20px;
+	width: 700px;
+	height: 350px;
+}
+
+.femur_neck_cutting_main{
+	position: relative;
+	width: 70%;
+	height: 850px;
+	top: 40px;
+	border: 1px dashed blue;
+	margin:auto auto;
+}
+
+.femur_neck_cutting_title{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 500px;
+	height: 80px;
+}
+
+.femur_neck_cutting_table{
+	position: absolute;
+	top: 150px;
+	left: 20px;
+	width: 700px;
+	height: 350px;
+}
+
+.femur_neck_cutting_graph_caption{
+	position: absolute;
+	top: 220px;	
+}
+
+.one{
+	background: #d70206;
+	left: 20px;
+	width: 80px;
+}
+
+.two{
+	background: #f05b4f;
+	left: 120px;
+	width: 80px;
+}
+
+.three{
+	background: #f4c63d;
+	left: 220px;
+	width: 80px;
+}
+
+.four{
+	background: #d17905;
+	left: 320px;
+	width: 80px;
+}
+
+.femur_neck_cutting_graph{
+	position: absolute;
+	top: 450px;
+	left: 20px;
+	width: 600px;
+	height: 350px;
+}
+
+.femur_neck_cutting_img{
+	position: absolute;
+	top: 20px;
+	right: 40px;
+	width: 300px;
+	height: 500px;
+}
+
+.femur_neck_cutting_img2{
+	position: absolute;
+	top: 520px;
+	right: 60px;
+	width: 500px;
+	height: 30px;
+}
+
+.acetabulum_reaming_main{
+	position: relative;
+	width: 70%;
+	height: 850px;
+	top:60px;
+	border: 1px dashed blue;
+	margin:auto auto;
+}
+
+.acetabulum_reaming_title{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 500px;
+	height: 80px;
+}
+
+.acetabulum_reaming_table{
+	position: absolute;
+	top: 150px;
+	left: 20px;
+	width: 700px;
+	height: 350px;
+}
+
+.acetabulum_reaming_graph_caption{
+	position: absolute;
+	top: 220px;	
+}
+
+.acetabulum_reaming_graph{
+	position: absolute;
+	top: 450px;
+	left: 20px;
+	width: 600px;
+	height: 350px;
+}
+
+.acetabulum_reaming_img{
+	position: absolute;
+	top:80px;
+	right: 50px;
+	width: 350px;
+	height: 350px;
+}
+
+.acetabulum_reaming_img2{
+	position: absolute;
+	top: 470px;
+	right: 150px;
+	width: 400px;
+	height: 90px;
+}
+
+.cup_insertion_main{
+	position: relative;
+	width: 70%;
+	height: 650px;
+	top:80px;
+	border: 1px dashed blue;
+	margin:auto auto;
+}
+
+.cup_insertion_title{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 500px;
+	height: 80px;
+}
+
+.cup_insertion_table{
+	position: absolute;
+	top: 90px;
+	left: 20px;
+	width: 700px;
+	height: 290px;
+}
+
+.cup_insertion_img{
+	position: absolute;
+	top:270px;
+	left: 90px;
+	width: 300px;
+	height: 300px;
+}
+
+.cup_insertion_img2{
+	position: absolute;
+	top: 270px;
+	right: 150px;
+	width: 400px;
+	height: 90px;
+}
+
+.box_chisel_main{
+	position: relative;
+	width: 70%;
+	height: 850px;
+	top:100px;
+	border: 1px dashed blue;
+	margin:auto auto;
+}
+
+.box_chisel_title{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 500px;
+	height: 80px;
+}
+
+.box_chisel_table{
+	position: absolute;
+	top: 90px;
+	left: 20px;
+	width: 900px;
+	height: 250px;
+}
+
+.box_chisel_graph_caption{
+	position: absolute;
+	top: 205px;	
+}
+
+.box_chisel_graph{
+	position: absolute;
+	top: 450px;
+	left: 20px;
+	width: 600px;
+	height: 350px;
+}
+
+.box_chisel_img{
+	position: absolute;
+	top:330px;
+	right: 50px;
+	width: 360px;
+	height: 180px;
+}
+
+.box_chisel_img2{
+	position: absolute;
+	top: 530px;
+	right: 50px;
+	width: 440px;
+	height: 280px;
+}
+
+.trail_stem_main{
+	position: relative;
+	width: 70%;
+	height: 850px;
+	top:120px;
+	border: 1px dashed blue;
+	margin:auto auto;
+}
+
+.trail_stem_title{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 500px;
+	height: 80px;
+}
+
+.trail_stem_table{
+	position: absolute;
+	top: 90px;
+	left: 20px;
+	width: 900px;
+	height: 250px;
+}
+
+.trail_stem_graph_caption{
+	position: absolute;
+	top: 205px;	
+}
+
+.trail_stem_graph{
+	position: absolute;
+	top: 450px;
+	left: 20px;
+	width: 600px;
+	height: 350px;
+}
+
+.trail_stem_img{
+	position: absolute;
+	top:330px;
+	right: 50px;
+	width: 360px;
+	height: 180px;
+}
+
+.trail_stem_img2{
+	position: absolute;
+	top: 530px;
+	right: 50px;
+	width: 440px;
+	height: 280px;
+}
+
+.real_stem_main{
+	position: relative;
+	width: 70%;
+	height: 850px;
+	top:140px;
+	border: 1px dashed blue;
+	margin:auto auto;
+}
+
+.real_stem_title{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 500px;
+	height: 80px;
+}
+
+.real_stem_table{
+	position: absolute;
+	top: 90px;
+	left: 20px;
+	width: 900px;
+	height: 250px;
+}
+
+.real_stem_graph_caption{
+	position: absolute;
+	top: 205px;	
+}
+
+.real_stem_graph{
+	position: absolute;
+	top: 450px;
+	left: 20px;
+	width: 600px;
+	height: 350px;
+}
+
+.real_stem_img{
+	position: absolute;
+	top:330px;
+	right: 50px;
+	width: 360px;
+	height: 180px;
+}
+
+.real_stem_img2{
+	position: absolute;
+	top: 530px;
+	right: 50px;
+	width: 440px;
+	height: 280px;
+}
+
+.final_result_main{
+	position: relative;
+	width: 70%;
+	height: 1150px;
+	top:160px;
+	border: 1px dashed blue;
+	margin:auto auto;
+}
+
+.final_result_title{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 500px;
+	height: 80px;
+}
+
+.final_result_table{
+	position: absolute;
+	top: 90px;
+	left: 20px;
+	width: 920px;
+	height: 980px;
+	border: 1px solid black;
+}
+
+

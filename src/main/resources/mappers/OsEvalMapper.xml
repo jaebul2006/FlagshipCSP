@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.crc.CSP.OsEvalMapper">
+
+	<insert id="insertHipCommon">
+		INSERT INTO hip_common (user_id, date, ID, UID, ActionCount, totalScore, file_name)
+		VALUES (#{user_id}, #{date}, #{ID}, #{UID}, #{ActionCount}, #{totalScore}, #{file_name})
+	</insert>
+
+	<insert id="insertHip01">
+		INSERT INTO hip01 (user_id, id, positionA, rotationA, localcaleA, pinCountA, pinsA, AxResult, AzResult, positionB, rotationB, localcaleB, pinCountB, pinsB, BxResult, BzResult, degree, degreeScore, distance, distanceScore, hip01Score, graphAx, graphAz, graphBx, graphBz)
+		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{localcaleA}, #{pinCountA}, #{pinsA}, #{AxResult}, #{AzResult}, #{positionB}, #{rotationB}, #{localcaleB}, #{pinCountB}, #{pinsB}, #{BxResult}, #{BzResult}, #{degree}, #{degreeScore}, #{distance}, #{distanceScore}, #{hip01Score}, #{graphAx}, #{graphAz}, #{graphBx}, #{graphBz})
+	</insert>
+
+	<insert id="insertHip02">
+		INSERT INTO hip02 (user_id, id, positionA, rotationA, scaleA, pointsX, pointsY, pointsZ, pointsGapX, pointsGapY, pointsGapZ, pointsgapAvg, pointsgapMax, cupDiatance, Score, hip02Score)
+		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{scaleA}, #{pointsX}, #{pointsY}, #{pointsZ}, #{pointsGapX}, #{pointsGapY}, #{pointsGapZ}, 
+			#{pointsgapAvg}, #{pointsgapMax}, #{cupDiatance}, #{Score}, #{hip02Score})
+	</insert>
+
+	<insert id="insertHip03">
+		INSERT INTO hip03 (user_id, id, positionA, rotationA, scaleA, cupRotation, cupPosition, cupDiatance, Score, hip03Score)
+		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{scaleA}, #{cupRotation}, #{cupPosition},  
+			#{cupDiatance}, #{Score}, #{hip03Score})
+	</insert>
+
+	<insert id="insertHip04">
+		INSERT INTO hip04 (user_id, id, positionA, rotationA, scaleA, entryPointDiatance, degree15, pathWay, 
+		pathWayLinearX, pathWayLinearZ, Score, hip04Score)
+		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{scaleA}, #{entryPointDiatance}, #{degree15}, #{pathWay},  
+			#{pathWayLinearX}, #{pathWayLinearZ}, #{Score}, #{hip04Score})
+	</insert>
+
+	<insert id="insertHip04Points">
+		INSERT INTO hip04_points (user_id, id, positionA, rotationA)
+		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA})
+	</insert>
+
+	<insert id="insertHip05">
+		INSERT INTO hip05 (user_id, id, positionA, rotationA, scaleA, entryPointDiatance, degree15, pathWay, 
+		pathWayLinearX, pathWayLinearZ, Score, hip05Score)
+		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{scaleA}, #{entryPointDiatance}, #{degree15}, #{pathWay},  
+			#{pathWayLinearX}, #{pathWayLinearZ}, #{Score}, #{hip05Score})
+	</insert>
+
+	<insert id="insertHip05Points">
+		INSERT INTO hip05_points (user_id, id, positionA, rotationA)
+		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA})
+	</insert>
+
+	<insert id="insertHip06">
+		INSERT INTO hip06 (user_id, id, positionA, rotationA, scaleA, entryPointDiatance, degree15, pathWay, 
+		pathWayLinearX, pathWayLinearZ, Score, hip06Score)
+		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{scaleA}, #{entryPointDiatance}, #{degree15}, #{pathWay},  
+			#{pathWayLinearX}, #{pathWayLinearZ}, #{Score}, #{hip06Score})
+	</insert>
+
+	<insert id="insertHip06Points">
+		INSERT INTO hip06_points (user_id, id, positionA, rotationA)
+		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA})
+	</insert>
+
+	<select id="count" resultType="int">
+		SELECT COUNT(*)
+		FROM
+			hip_common
+		WHERE 
+			user_id = #{user_id}
+	</select>
+
+	<select id="list" resultType="com.crc.CSP.bean.HipCommonVO">
+		SELECT * FROM 
+		(
+			SELECT @ROWNUM:= @ROWNUM + 1 as rn, A.* FROM
+			(
+				SELECT b.user_id, b.date, b.ID, b.UID, b.ActionCount, b.totalScore, b.file_name
+				FROM 
+					hip_common b,
+					(SELECT @ROWNUM:=0)R
+				WHERE 
+					b.user_id = #{user_id} 
+			)A
+		)B WHERE rn BETWEEN #{start} AND #{end}
+	</select>   
+	
+	<select id="view" resultType="com.crc.CSP.bean.Hip01DataVOStr">
+		SELECT * 
+		FROM
+			hip01
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id="view2" resultType="com.crc.CSP.bean.Hip02DataVOStr">
+		SELECT * 
+		FROM
+			hip02
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id="view3" resultType="com.crc.CSP.bean.Hip03DataVOStr">
+		SELECT * 
+		FROM
+			hip03
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id="view4" resultType="com.crc.CSP.bean.Hip04DataVOStr">
+		SELECT * 
+		FROM
+			hip04
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id="view4_points" resultType="com.crc.CSP.bean.Hip04PointsVOStr">
+		SELECT * 
+		FROM
+			hip04_points
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id="view5" resultType="com.crc.CSP.bean.Hip05DataVOStr">
+		SELECT * 
+		FROM
+			hip05
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id="view5_points" resultType="com.crc.CSP.bean.Hip05PointsVOStr">
+		SELECT * 
+		FROM
+			hip05_points
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id="view6" resultType="com.crc.CSP.bean.Hip06DataVOStr">
+		SELECT * 
+		FROM
+			hip06
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id="view6_points" resultType="com.crc.CSP.bean.Hip06PointsVOStr">
+		SELECT * 
+		FROM
+			hip06_points
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id="view_common" resultType="com.crc.CSP.bean.HipCommonVO">
+		SELECT * 
+		FROM
+			hip_common
+		WHERE
+			ID = #{id}
+	</select>
+	
+	<select id="getOSFilename" resultType="String">
+		SELECT file_name FROM hip_common
+		WHERE ID = #{raw_id}
+	</select>
+
+	<select id="recent10_os_common" resultType="com.crc.CSP.bean.HipCommonVO">
+		SELECT * FROM hip_common 
+		WHERE user_id = #{user_id} 
+		ORDER BY DATE LIMIT 10
+	</select>
+	
+	<select id="recent_os_common_month" resultType="com.crc.CSP.bean.HipCommonVO">
+		SEELCT * FROM hip_common
+		WHERE month = #{month}
+		AND user_id = #{user_id}
+		ORDER BY DATE LIMIT 10
+	</select>
+
+</mapper>

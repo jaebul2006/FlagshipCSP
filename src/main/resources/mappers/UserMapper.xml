@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.crc.CSP.UserMapper">
+
+	<select id='user' parameterType="String" resultType="com.crc.CSP.bean.UserBean">
+		select * from user where ID = #{id}
+	</select>
+
+	<insert id='user_regist' parameterType="hashMap">
+		insert into user (ID, PASSWORD, ENABLED, AUTHORITY, USERNAME, USERTYPE, ACCOUNT_ID) 
+		values (#{id}, #{password}, #{enabled}, #{authority}, #{userName}, #{userType}, #{account_id})
+	</insert>
+
+	<insert id='userrole_regist' parameterType="hashMap">
+		insert into user_role (ID, AUTHORITY) values (#{id}, #{a})
+	</insert>
+
+	<delete id='user_delete' parameterType="String">
+		delete from user where ID = #{id}
+	</delete>
+
+	<delete id='user_role_delete' parameterType="String">
+		delete from user_role where ID = #{id}
+	</delete>
+
+	<select id="countUserID" resultType="int">
+		SELECT COUNT(*)
+		FROM
+			user
+		WHERE 
+			ID = #{userid}
+	</select>
+
+	<insert id='userPhoneNumberRegist' parameterType="hashMap">
+		insert into user_phone_number (user_id, phone_number) values (#{user_id}, #{phone_number})
+	</insert>
+
+	<select id='getPhoneNumber' parameterType="String" resultType="String">
+		SELECT phone_number from user_phone_number 
+		where user_id = #{user_id}
+	</select>
+	
+	<insert id='pushTokenUpdate' parameterType="hashMap">
+		INSERT INTO user_push_token (user_id, push_token) VALUES (#{user_id}, #{push_token})
+		ON DUPLICATE KEY UPDATE user_id = #{user_id}, push_token = #{push_token}
+	</insert>
+
+</mapper>
+ 
