@@ -509,7 +509,7 @@
                   
                   <div class="col-md-6 col-sm-12">
                       <div class="chart-inner-content">
-                          <h6 class="chart-top-title">구상돌기 제거 수술 부위 도식</h6>
+                          <h6 class="chart-top-title">Acidosis Ethmoidal Sinus 수술 부위 도식</h6>
                           <img src="./KVRF/final/images/chart-sub-img.jpg" alt="수술부위도식 이미지" class="img100">
                       </div>
                   </div>

@@ -22,6 +22,8 @@ public class Hip01DataVO {
 	private double distance;
 	private double distanceScore;
 	private double hip01Score;
+	private int dropPoint;
+	private String isDroped;
 	private double[] graphAx;
 	private double[] graphAz;
 	private double[] graphBx;
@@ -225,6 +227,26 @@ public class Hip01DataVO {
 	public void setHip01Score(double hip01Score)
 	{
 		this.hip01Score = hip01Score;
+	}
+	
+	public int getDropPoint()
+	{
+		return dropPoint;
+	}
+	
+	public void setDropPoint(int dropPoint)
+	{
+		this.dropPoint = dropPoint;
+	}
+	
+	public String getIsDroped()
+	{
+		return isDroped;
+	}
+	
+	public void setIsDroped(String isDroped)
+	{
+		this.isDroped = isDroped;
 	}
 	
 	public double[] getGraphAx()

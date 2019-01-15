@@ -815,4 +815,60 @@
 		]]>
 	</select>
 	
+	<select id="getAverScoreOuterBreak" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			outer_break
+		]]>
+	</select>
+	
+	<select id="getAverScoreSeptalFlap" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			septal_flap
+		]]>
+	</select>
+	
+	<select id="getAverScoreSuperiorTurbinate" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			superior_turbinate
+		]]>
+	</select>
+	
+	<select id="getAverScoreSellaDuramater" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			sella_duramater
+		]]>
+	</select>
+	
+	<select id="getAverScoreTumorRemoval" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			tumor_removal
+		]]>
+	</select>
+	
+	<select id="getAverScoreSphenoidCellsRemoval" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			sphenoid_cells_removal
+		]]>
+	</select>
+	
+	<select id="getAverScoreTransclivalDrilling" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			transclival_drilling
+		]]>
+	</select>
+	
 </mapper>

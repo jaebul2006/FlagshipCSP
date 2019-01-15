@@ -95,4 +95,13 @@ public interface TsaEvalDAO {
 	public RangeScoreVO getRngAcidosisMaxillarySinus() throws Exception;
 	public RangeScoreVO getRngAcidosisFrontalSinus() throws Exception;
 	public RangeScoreVO getRngAcidosisEthmoidalSinus() throws Exception;
+	
+	public int getAverScoreOuterBreak() throws Exception;
+	public int getAverScoreSeptalFlap() throws Exception;
+	public int getAverScoreSuperiorTurbinate() throws Exception;
+	public int getAverScoreSellaDuramater() throws Exception;
+	public int getAverScoreTumorRemoval() throws Exception;
+	public int getAverScoreSphenoidCellsRemoval() throws Exception;
+	public int getAverScoreTransclivalDrilling() throws Exception;
+	
 }

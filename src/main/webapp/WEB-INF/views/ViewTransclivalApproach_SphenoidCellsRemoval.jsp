@@ -509,7 +509,7 @@
                   
                   <div class="col-md-6 col-sm-12">
                       <div class="chart-inner-content">
-                          <h6 class="chart-top-title">Sphenoid Cells Removal 수술 부위 도식</h6>
+                          <h6 class="chart-top-title">Transclival Approach 수술 부위 도식</h6>
                           <img src="./KVRF/final/images/chart-sub-img.jpg" alt="수술부위도식 이미지" class="img100">
                       </div>
                   </div>
@@ -544,25 +544,25 @@
                                   <tr>
                                       <th scope="row">외향골절</th>
                                       <td>${map.sc_outer_break}</td>
-                                      <td>10</td>
+                                      <td>${map.aver_sc_outer_break}</td>
                                       <td>100</td>
                                   </tr>
                                   <tr>
                                       <th scope="row">비중격피판도안</th>
                                       <td>${map.sc_septal_flap}</td>
-                                      <td>10</td>
+                                      <td>${map.aver_sc_septal_flap}</td>
                                       <td>100</td>
                                   </tr>
                                   <tr>
                                       <th scope="row">접형동개방</th>
                                       <td>${map.sc_sphenoid_cells_removal}</td>
-                                      <td>10</td>
+                                      <td>${map.aver_sc_sphenoid_cells_removal}</td>
                                       <td>100</td>
                                   </tr>
                                   <tr>
                                       <th scope="row">경사대 드릴링</th>
                                       <td>${map.sc_transclival_drilling}</td>
-                                      <td>10</td>
+                                      <td>${map.aver_sc_transclival_drilling}</td>
                                       <td>100</td>
                                   </tr>
                               </tbody>

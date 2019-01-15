@@ -420,4 +420,47 @@ public class TsaEvalServiceImpl implements TsaEvalService{
 	{
 		return dao.getRngAcidosisEthmoidalSinus();
 	}
+	
+	@Override
+	public int getAverScoreOuterBreak() throws Exception
+	{
+		return dao.getAverScoreOuterBreak();
+	}
+	
+	@Override
+	public int getAverScoreSeptalFlap() throws Exception
+	{
+		return dao.getAverScoreSeptalFlap();
+	}
+	
+	@Override
+	public int getAverScoreSuperiorTurbinate() throws Exception
+	{
+		return dao.getAverScoreSuperiorTurbinate();
+	}
+	
+	@Override
+	public int getAverScoreSellaDuramater() throws Exception
+	{
+		return dao.getAverScoreSellaDuramater();
+	}
+	
+	@Override
+	public int getAverScoreTumorRemoval() throws Exception
+	{
+		return dao.getAverScoreTumorRemoval();
+	}
+	
+	@Override
+	public int getAverScoreSphenoidCellsRemoval() throws Exception
+	{
+		return dao.getAverScoreSphenoidCellsRemoval();
+	}
+	
+	@Override
+	public int getAverScoreTransclivalDrilling() throws Exception
+	{
+		return dao.getAverScoreTransclivalDrilling();
+	}
+	
 }

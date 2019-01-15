@@ -10,8 +10,15 @@ public class Hip03DataVOStr {
 	private String cupRotation;
 	private String cupPosition;
 	private double cupDiatance;
+	
+	private String result;
+	
 	private String Score;
 	private double hip03Score;
+	
+	private int dropPoint;
+	private int maxPoint;
+	private String isDroped;
 	
 	public String getId()
 	{
@@ -83,6 +90,16 @@ public class Hip03DataVOStr {
 		this.cupDiatance = cupDiatance;
 	}
 	
+	public String getResult()
+	{
+		return result;
+	}
+	
+	public void setResult(String result)
+	{
+		this.result = result;
+	}
+	
 	public String getScore()
 	{
 		return Score;
@@ -101,6 +118,36 @@ public class Hip03DataVOStr {
 	public void setHip03Score(double hip03Score)
 	{
 		this.hip03Score = hip03Score;
+	}
+	
+	public int getDropPoint()
+	{
+		return dropPoint;
+	}
+	
+	public void setDropPoint(int dropPoint)
+	{
+		this.dropPoint = dropPoint;
+	}
+	
+	public int getMaxPoint()
+	{
+		return maxPoint;
+	}
+	
+	public void setMaxPoint(int maxPoint)
+	{
+		this.maxPoint = maxPoint;
+	}
+	
+	public String getIsDroped()
+	{
+		return isDroped;
+	}
+	
+	public void setIsDroped(String isDroped)
+	{
+		this.isDroped = isDroped;
 	}
 	
 }

@@ -507,7 +507,7 @@
                   
                   <div class="col-md-6 col-sm-12">
                       <div class="chart-inner-content">
-                          <h6 class="chart-top-title">tumor removal 수술 부위 도식</h6>
+                          <h6 class="chart-top-title">TSA 수술 부위 도식</h6>
                           <img src="./KVRF/final/images/chart-sub-img.jpg" alt="수술부위도식 이미지" class="img100">
                       </div>
                   </div>
@@ -543,31 +543,31 @@
                                   <tr>
                                       <th scope="row">외향골절</th>
                                       <td>${map.sc_outer_break}</td>
-                                      <td>10</td>
+                                      <td>${map.aver_sc_outer_break}</td>
                                       <td>100</td>
                                   </tr>
                                   <tr>
                                       <th scope="row">비중격피판도안</th>
                                       <td>${map.sc_septal_flap}</td>
-                                      <td>10</td>
+                                      <td>${map.aver_sc_septal_flap}</td>
                                       <td>100</td>
                                   </tr>
                                   <tr>
                                       <th scope="row">접형동개방</th>
                                       <td>${map.sc_superior_turbinate}</td>
-                                      <td>10</td>
+                                      <td>${map.aver_sc_superior_turbinate}</td>
                                       <td>100</td>
                                   </tr>
                                   <tr>
                                       <th scope="row">터키안개방 및 경막절개</th>
                                       <td>${map.sc_sella_duramater}</td>
-                                      <td>10</td>
+                                      <td>${map.aver_sc_sella_duramater}</td>
                                       <td>100</td>
                                   </tr>
                                   <tr>
                                       <th scope="row">종양 절제</th>
                                       <td>${map.sc_tumor_removal}</td>
-                                      <td>10</td>
+                                      <td>${map.aver_sc_tumor_removal}</td>
                                       <td>100</td>
                                   </tr>
                               </tbody>

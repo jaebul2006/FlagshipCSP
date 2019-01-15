@@ -12,8 +12,12 @@ public class Hip06DataVO {
 	private double pathWay;
 	private double[] pathWayLinearX;
 	private double[] pathWayLinearZ;
+	private double[] result;
 	private int[] Score;
 	private double hip06Score;
+	private int dropPoint;
+	private int maxPoint;
+	private String isDroped;
 	
 	public String getId()
 	{
@@ -116,6 +120,16 @@ public class Hip06DataVO {
 		this.pathWayLinearZ = pathWayLinearZ;
 	}
 	
+	public double[] getResult()
+	{
+		return result;
+	}
+	
+	public void setResult(double[] result)
+	{
+		this.result = result;
+	}
+	
 	public int[] getScore()
 	{
 		return Score;
@@ -136,4 +150,33 @@ public class Hip06DataVO {
 		this.hip06Score = hip06Score;
 	}
 	
+	public int getDropPoint()
+	{
+		return dropPoint;
+	}
+	
+	public void setDropPoint(int dropPoint)
+	{
+		this.dropPoint = dropPoint;
+	}
+	
+	public int getMaxPoint()
+	{
+		return maxPoint;
+	}
+	
+	public void setMaxPoint(int maxPoint)
+	{
+		this.maxPoint = maxPoint;
+	}
+	
+	public String getIsDroped()
+	{
+		return isDroped;
+	}
+	
+	public void setIsDroped(String isDroped)
+	{
+		this.isDroped = isDroped;
+	}
 }

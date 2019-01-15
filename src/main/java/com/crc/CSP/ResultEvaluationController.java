@@ -345,6 +345,18 @@ public class ResultEvaluationController {
 		VolumeTriggerVOStr tumor_removal_vo = tsa_eval_service.getTumorRemoval(ent_tsa_id);
 		map.put("sc_tumor_removal", tumor_removal_vo.getScore());
 		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_superior_turbinate = tsa_eval_service.getAverScoreSuperiorTurbinate();
+		map.put("aver_sc_superior_turbinate", aver_superior_turbinate);
+		int aver_sella_duramater = tsa_eval_service.getAverScoreSellaDuramater();
+		map.put("aver_sc_sella_duramater", aver_sella_duramater);
+		int aver_tumor_removal = tsa_eval_service.getAverScoreTumorRemoval();
+		map.put("aver_sc_tumor_removal", aver_tumor_removal);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);
 		mav.setViewName("ViewTSA_OuterBreak");
@@ -452,6 +464,18 @@ public class ResultEvaluationController {
 		VolumeTriggerVOStr tumor_removal_vo = tsa_eval_service.getTumorRemoval(ent_tsa_id);
 		map.put("sc_tumor_removal", tumor_removal_vo.getScore());
 		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_superior_turbinate = tsa_eval_service.getAverScoreSuperiorTurbinate();
+		map.put("aver_sc_superior_turbinate", aver_superior_turbinate);
+		int aver_sella_duramater = tsa_eval_service.getAverScoreSellaDuramater();
+		map.put("aver_sc_sella_duramater", aver_sella_duramater);
+		int aver_tumor_removal = tsa_eval_service.getAverScoreTumorRemoval();
+		map.put("aver_sc_tumor_removal", aver_tumor_removal);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);
 		mav.setViewName("ViewTSA_SeptalFlap");
@@ -555,6 +579,18 @@ public class ResultEvaluationController {
 		map.put("sc_sella_duramater", sella_duramater_vo.getScore());
 		VolumeTriggerVOStr tumor_removal_vo = tsa_eval_service.getTumorRemoval(ent_tsa_id);
 		map.put("sc_tumor_removal", tumor_removal_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_superior_turbinate = tsa_eval_service.getAverScoreSuperiorTurbinate();
+		map.put("aver_sc_superior_turbinate", aver_superior_turbinate);
+		int aver_sella_duramater = tsa_eval_service.getAverScoreSellaDuramater();
+		map.put("aver_sc_sella_duramater", aver_sella_duramater);
+		int aver_tumor_removal = tsa_eval_service.getAverScoreTumorRemoval();
+		map.put("aver_sc_tumor_removal", aver_tumor_removal);
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);
@@ -664,6 +700,18 @@ public class ResultEvaluationController {
 		VolumeTriggerVOStr tumor_removal_vo = tsa_eval_service.getTumorRemoval(ent_tsa_id);
 		map.put("sc_tumor_removal", tumor_removal_vo.getScore());
 		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_superior_turbinate = tsa_eval_service.getAverScoreSuperiorTurbinate();
+		map.put("aver_sc_superior_turbinate", aver_superior_turbinate);
+		int aver_sella_duramater = tsa_eval_service.getAverScoreSellaDuramater();
+		map.put("aver_sc_sella_duramater", aver_sella_duramater);
+		int aver_tumor_removal = tsa_eval_service.getAverScoreTumorRemoval();
+		map.put("aver_sc_tumor_removal", aver_tumor_removal);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);
 		mav.setViewName("ViewTSA_SellaDuramater");
@@ -772,6 +820,18 @@ public class ResultEvaluationController {
 		VolumeTriggerVOStr tumor_removal_vo = tsa_eval_service.getTumorRemoval(ent_tsa_id);
 		map.put("sc_tumor_removal", tumor_removal_vo.getScore());
 		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_superior_turbinate = tsa_eval_service.getAverScoreSuperiorTurbinate();
+		map.put("aver_sc_superior_turbinate", aver_superior_turbinate);
+		int aver_sella_duramater = tsa_eval_service.getAverScoreSellaDuramater();
+		map.put("aver_sc_sella_duramater", aver_sella_duramater);
+		int aver_tumor_removal = tsa_eval_service.getAverScoreTumorRemoval();
+		map.put("aver_sc_tumor_removal", aver_tumor_removal);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);
 		mav.setViewName("ViewTSA_TumorRemoval");
@@ -878,6 +938,16 @@ public class ResultEvaluationController {
 		VolumeTriggerVOStr transclival_drilling_vo = tsa_eval_service.getTransclivalDrilling(transclival_approach_id);
 		map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
 		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_sphenoid_cells_removal = tsa_eval_service.getAverScoreSphenoidCellsRemoval();
+		map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
+		int aver_transclival_drilling = tsa_eval_service.getAverScoreTransclivalDrilling();
+		map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);
 		mav.setViewName("ViewTransclivalApproach_OuterBreak");
@@ -981,6 +1051,16 @@ public class ResultEvaluationController {
 		map.put("sc_sphenoid_cells_removal", sphenoid_cells_removal_vo.getScore());
 		VolumeTriggerVOStr transclival_drilling_vo = tsa_eval_service.getTransclivalDrilling(transclival_approach_id);
 		map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_sphenoid_cells_removal = tsa_eval_service.getAverScoreSphenoidCellsRemoval();
+		map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
+		int aver_transclival_drilling = tsa_eval_service.getAverScoreTransclivalDrilling();
+		map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);
@@ -1086,6 +1166,16 @@ public class ResultEvaluationController {
 		VolumeTriggerVOStr transclival_drilling_vo = tsa_eval_service.getTransclivalDrilling(transclival_approach_id);
 		map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
 		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_sphenoid_cells_removal = tsa_eval_service.getAverScoreSphenoidCellsRemoval();
+		map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
+		int aver_transclival_drilling = tsa_eval_service.getAverScoreTransclivalDrilling();
+		map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);
 		mav.setViewName("ViewTransclivalApproach_SphenoidCellsRemoval");
@@ -1189,6 +1279,16 @@ public class ResultEvaluationController {
 		map.put("sc_sphenoid_cells_removal", sphenoid_cells_removal_vo.getScore());
 		VolumeTriggerVOStr transclival_drilling_vo = tsa_eval_service.getTransclivalDrilling(transclival_approach_id);
 		map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_sphenoid_cells_removal = tsa_eval_service.getAverScoreSphenoidCellsRemoval();
+		map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
+		int aver_transclival_drilling = tsa_eval_service.getAverScoreTransclivalDrilling();
+		map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);

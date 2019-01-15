@@ -22,6 +22,8 @@ public class Hip01DataVOStr {
 	private double distance;
 	private double distanceScore;
 	private double hip01Score;
+	private int dropPoint;
+	private String isDroped;
 	private String graphAx;
 	private String graphAz;
 	private String graphBx;
@@ -85,6 +87,26 @@ public class Hip01DataVOStr {
 	public void setPinsA(String pinsA)
 	{
 		this.pinsA = pinsA;
+	}
+	
+	public int getDropPoint() 
+	{
+		return dropPoint;
+	}
+	
+	public void setDropPoint(int dropPoint)
+	{
+		this.dropPoint = dropPoint;
+	}
+	
+	public String getIsDroped()
+	{
+		return isDroped;
+	}
+	
+	public void setIsDropted(String isDroped)
+	{
+		this.isDroped = isDroped;
 	}
 	
 	public String getAxResult()

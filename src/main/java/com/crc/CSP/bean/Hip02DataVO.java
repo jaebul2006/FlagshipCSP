@@ -17,8 +17,12 @@ public class Hip02DataVO {
 	private double[] pointsgapMax;
 	
 	private double cupDiatance;
+	private double[] result;
 	private int[] Score;
 	private double hip02Score;
+	private int dropPoint;
+	private int maxPoint;
+	private String isDroped;
 	
 	public String getId()
 	{
@@ -150,6 +154,16 @@ public class Hip02DataVO {
 		this.cupDiatance = cupDiatance;
 	}
 	
+	public double[] getResult()
+	{
+		return result;
+	}
+	
+	public void setResult(double[] result)
+	{
+		this.result = result;
+	}
+	
 	public int[] getScore()
 	{
 		return Score;
@@ -168,5 +182,35 @@ public class Hip02DataVO {
 	public void setHip02Score(double hip02Score)
 	{
 		this.hip02Score = hip02Score;
+	}
+	
+	public int getDropPoint()
+	{
+		return dropPoint;
+	}
+	
+	public void setDropPoint(int dropPoint)
+	{
+		this.dropPoint = dropPoint;
+	}
+	
+	public int getMaxPoint()
+	{
+		return maxPoint;
+	}
+	
+	public void setMaxPoint(int maxPoint)
+	{
+		this.maxPoint = maxPoint;
+	}
+	
+	public String getIsDroped()
+	{
+		return isDroped;
+	}
+	
+	public void setIsDroped(String isDroped)
+	{
+		this.isDroped = isDroped;
 	}
 }

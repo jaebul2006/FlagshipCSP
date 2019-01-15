@@ -20,6 +20,10 @@ public class Hip02DataVOStr {
 	private String Score;
 	private double hip02Score;
 
+	private int dropPoint;
+	private int maxPoint;
+	private String isDroped;
+	
 	public String getId()
 	{
 		return id;
@@ -168,6 +172,36 @@ public class Hip02DataVOStr {
 	public void setHip02Score(double hip02Score)
 	{
 		this.hip02Score = hip02Score;
+	}
+	
+	public int getDropPoint()
+	{
+		return dropPoint;
+	}
+	
+	public void setDropPoint(int dropPoint)
+	{
+		this.dropPoint = dropPoint;
+	}
+	
+	public int getMaxPoint()
+	{
+		return maxPoint;
+	}
+	
+	public void setMaxPoint(int maxPoint)
+	{
+		this.maxPoint = maxPoint;
+	}
+	
+	public String getIsDroped()
+	{
+		return isDroped;
+	}
+	
+	public void setIsDroped(String isDroped)
+	{
+		this.isDroped = isDroped;
 	}
 	
 }

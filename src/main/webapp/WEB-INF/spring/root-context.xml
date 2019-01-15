@@ -40,7 +40,6 @@
 		<property name="password" value="crc20061" />
 	</bean> 
 	
-	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:/mybatis-config.xml" />
@@ -50,6 +49,25 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
 	</bean>
+	
+	<!--  2번째 db -->	
+	<bean id="dataSource2" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+		<property name="url" value="jdbc:mariadb://127.0.0.1:3306/test2" />
+		<property name="username" value="root" />
+		<property name="password" value="crc20061" />
+	</bean>	
+	
+	<bean id="sqlSessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource2" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />
+	</bean>
+		
+	<bean id="sqlSession2" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory2"></constructor-arg>
+	</bean>
+	<!--  -->
 		
 	<bean id="feedSuccessHandler" class="com.crc.CSP.Utility.FeedSuccessHandler"></bean>	
 	
@@ -67,5 +85,7 @@
 		<!--  <constructor-arg value="C:\\Users\\USER\\Documents\\workspace-sts-3.9.0.RELEASE\\CSP\\src\\main\\webapp\\WEB-INF\\assets" /> --> 
 		<constructor-arg value="/usr/local/tomcat8/webapps/CSP/WEB-INF/assets" /> 
 	</bean>
+		
+		
 		
 </beans>

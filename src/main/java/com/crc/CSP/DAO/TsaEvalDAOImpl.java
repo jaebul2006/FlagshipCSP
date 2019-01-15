@@ -457,4 +457,47 @@ public class TsaEvalDAOImpl implements TsaEvalDAO{
 		vo.setRn91_to_100(sqlSession.selectOne(namespace + ".AcidosisEthmoidalSinusRng91to100").toString());
 		return vo;
 	}
+	
+	@Override
+	public int getAverScoreOuterBreak() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScoreOuterBreak");
+	}
+	
+	@Override
+	public int getAverScoreSeptalFlap() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScoreSeptalFlap");
+	}
+	
+	@Override
+	public int getAverScoreSuperiorTurbinate() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScoreSuperiorTurbinate");
+	}
+	
+	@Override
+	public int getAverScoreSellaDuramater() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScoreSellaDuramater");
+	}
+	
+	@Override
+	public int getAverScoreTumorRemoval() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScoreTumorRemoval");
+	}
+	
+	@Override
+	public int getAverScoreSphenoidCellsRemoval() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScoreSphenoidCellsRemoval");
+	}
+	
+	@Override
+	public int getAverScoreTransclivalDrilling() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScoreTransclivalDrilling");
+	}
+	
 }
