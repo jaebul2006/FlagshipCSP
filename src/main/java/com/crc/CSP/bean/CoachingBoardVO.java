@@ -1,7 +1,5 @@
 package com.crc.CSP.bean;
 
-import java.util.Date;
-
 public class CoachingBoardVO {
 
 	private int rn;
@@ -10,7 +8,7 @@ public class CoachingBoardVO {
 	private String content;
 	private String writer;
 	private String userName;
-	private Date regdate;
+	private String regdate;
 	private int viewcnt;
 	private int recnt;
 	private String isshow;
@@ -77,12 +75,12 @@ public class CoachingBoardVO {
 		this.userName = userName;
 	}
 	
-	public Date getRegdate()
+	public String getRegdate()
 	{
 		return regdate;
 	}
 	
-	public void setRegdate(Date regdate)
+	public void setRegdate(String regdate)
 	{
 		this.regdate = regdate;
 	}

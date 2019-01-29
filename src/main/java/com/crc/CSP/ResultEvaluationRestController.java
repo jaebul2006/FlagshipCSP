@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +30,7 @@ import com.crc.CSP.bean.Hip05DataVO;
 import com.crc.CSP.bean.Hip06DataVO;
 import com.crc.CSP.bean.HipCommonVO;
 import com.crc.CSP.bean.PathTriggerVO;
+import com.crc.CSP.bean.RangeScoreVO;
 import com.crc.CSP.bean.ToolsVO;
 import com.crc.CSP.bean.VolumeTriggerVO;
 import com.crc.CSP.service.AuthTokenService;
@@ -42,7 +44,7 @@ import com.google.gson.JsonParser;
 @RestController
 public class ResultEvaluationRestController {
 
-	private static final long session_time = 600000;
+	private static final long session_time = 6000000;
 	
 	@Resource(name="uploadPath")
 	String uploadPath;
@@ -175,6 +177,8 @@ public class ResultEvaluationRestController {
 		map.put("date", ts);
 		map.put("ID", id);
 		map.put("UID", uid);
+		map.put("name", hipcommonvo.getName());
+		map.put("classNo", hipcommonvo.getClassNo());
 		map.put("ActionCount", hipcommonvo.getActionCount());
 		map.put("totalScore", hipcommonvo.getTotalScore());
 		map.put("file_name", file_name);
@@ -206,6 +210,9 @@ public class ResultEvaluationRestController {
 		map2.put("distance", hip01datavo.getDistance());
 		map2.put("distanceScore", hip01datavo.getDistanceScore());
 		map2.put("hip01Score", hip01datavo.getHip01Score());
+		map2.put("dropPoint", hip01datavo.getDropPoint());
+		map2.put("maxPoint", hip01datavo.getMaxPoint());
+		map2.put("isDroped", hip01datavo.getIsDroped());
 		map2.put("graphAx", Arrays.toString(hip01datavo.getGraphAx()));
 		map2.put("graphAz", Arrays.toString(hip01datavo.getGraphAz()));
 		map2.put("graphBx", Arrays.toString(hip01datavo.getGraphBx()));
@@ -231,8 +238,12 @@ public class ResultEvaluationRestController {
 		map_hip02.put("pointsgapAvg", Arrays.toString(hip02datavo.getPointsgapAvg()));
 		map_hip02.put("pointsgapMax", Arrays.toString(hip02datavo.getPointsgapMax()));
 		map_hip02.put("cupDiatance", hip02datavo.getCupDiatance());
+		map_hip02.put("result", Arrays.toString(hip02datavo.getResult()));
 		map_hip02.put("Score", Arrays.toString(hip02datavo.getScore()));
 		map_hip02.put("hip02Score", hip02datavo.getHip02Score());
+		map_hip02.put("dropPoint", hip02datavo.getDropPoint());
+		map_hip02.put("maxPoint", hip02datavo.getMaxPoint());
+		map_hip02.put("isDroped", hip02datavo.getIsDroped());
 		os_eval_service.insertHip02(map_hip02);
 		
 		// 'hip03'
@@ -248,8 +259,12 @@ public class ResultEvaluationRestController {
 		map_hip03.put("cupRotation", Arrays.toString(hip03datavo.getCupRotation()));
 		map_hip03.put("cupPosition", Arrays.toString(hip03datavo.getCupPosition()));
 		map_hip03.put("cupDiatance", hip03datavo.getCupDiatance());
+		map_hip03.put("result", Arrays.toString(hip03datavo.getResult()));
 		map_hip03.put("Score", Arrays.toString(hip03datavo.getScore()));
 		map_hip03.put("hip03Score", hip03datavo.getHip03Score());
+		map_hip03.put("dropPoint", hip03datavo.getDropPoint());
+		map_hip03.put("maxPoint", hip03datavo.getMaxPoint());
+		map_hip03.put("isDroped", hip03datavo.getIsDroped());
 		os_eval_service.insertHip03(map_hip03);
 		
 		// 'hip04'
@@ -267,8 +282,12 @@ public class ResultEvaluationRestController {
 		map_hip04.put("pathWay", hip04datavo.getPathWay());
 		map_hip04.put("pathWayLinearX", Arrays.toString(hip04datavo.getPathWayLinearX()));
 		map_hip04.put("pathWayLinearZ", Arrays.toString(hip04datavo.getPathWayLinearZ()));
+		map_hip04.put("result", Arrays.toString(hip04datavo.getResult()));
 		map_hip04.put("Score", Arrays.toString(hip04datavo.getScore()));
 		map_hip04.put("hip04Score", hip04datavo.getHip04Score());
+		map_hip04.put("dropPoint", hip04datavo.getDropPoint());
+		map_hip04.put("maxPoint", hip04datavo.getMaxPoint());
+		map_hip04.put("isDroped", hip04datavo.getIsDroped());
 		os_eval_service.insertHip04(map_hip04);
 		
 		// 'hip04 points'
@@ -312,7 +331,11 @@ public class ResultEvaluationRestController {
 		map_hip05.put("pathWayLinearX", Arrays.toString(hip05datavo.getPathWayLinearX()));
 		map_hip05.put("pathWayLinearZ", Arrays.toString(hip05datavo.getPathWayLinearZ()));
 		map_hip05.put("Score", Arrays.toString(hip05datavo.getScore()));
+		map_hip05.put("result", Arrays.toString(hip05datavo.getResult()));
 		map_hip05.put("hip05Score", hip05datavo.getHip05Score());
+		map_hip05.put("dropPoint", hip05datavo.getDropPoint());
+		map_hip05.put("maxPoint", hip05datavo.getMaxPoint());
+		map_hip05.put("isDroped", hip05datavo.getIsDroped());
 		os_eval_service.insertHip05(map_hip05);
 		
 		// 'hip05 points'
@@ -344,7 +367,11 @@ public class ResultEvaluationRestController {
 		map_hip06.put("pathWayLinearX", Arrays.toString(hip06datavo.getPathWayLinearX()));
 		map_hip06.put("pathWayLinearZ", Arrays.toString(hip06datavo.getPathWayLinearZ()));
 		map_hip06.put("Score", Arrays.toString(hip06datavo.getScore()));
+		map_hip06.put("result", Arrays.toString(hip06datavo.getResult()));
 		map_hip06.put("hip06Score", hip06datavo.getHip06Score());
+		map_hip06.put("dropPoint", hip06datavo.getDropPoint());
+		map_hip06.put("maxPoint", hip06datavo.getMaxPoint());
+		map_hip06.put("isDroped", hip06datavo.getIsDroped());
 		os_eval_service.insertHip06(map_hip06);
 		
 		// 'hip06 points'
@@ -364,126 +391,6 @@ public class ResultEvaluationRestController {
 		return new ResponseEntity<Object>("success", HttpStatus.OK);
 	}
 	
-	/*
-	// 이비인후과 결과 데이터 업로드
-	@Transactional
-	@PostMapping(value="/restful/upd_tsa_evaluation", produces="text/plain;charset=utf-8")
-	public ResponseEntity<Object> upd_tsa_evaluation(@RequestParam("ent_tsa")String ent_tsa, 
-			@RequestParam("ent_transclival_approach")String ent_transclival_approach,
-			@RequestParam("ent_acidosis_maxillary_sinus")String ent_acidosis_maxillary_sinus,
-			@RequestParam("ent_acidosis_frontal_sinus")String ent_acidosis_frontal_sinus,
-			@RequestParam("ent_acidosis_ethmoidal_sinus")String ent_acidosis_ethmoidal_sinus) throws Exception
-	{
-		// ent_common 에 들어간 user_id를 ent_tsa에서 빼옴
-		Gson gson = new Gson();
-		JsonParser parser = new JsonParser();
-		JsonElement entCommonElement = parser.parse(ent_tsa).getAsJsonObject().get("ENTCommon");
-		EntCommonVO entcommonvo = gson.fromJson(entCommonElement, EntCommonVO.class); // pid는 아래에서 생성된 ent_total 거를 채워넣음
-		
-		String user_id;
-		AuthTokenVO atvo = ValidAuthToken(entcommonvo.getUID());
-		if(atvo == null) {
-			return new ResponseEntity<Object>("session expiration", HttpStatus.OK);
-		}
-		else {
-			user_id = atvo.getUserId();
-		}
-		
-		// ent_total 의 삽입
-		EntTotalVO enttotalvo = new EntTotalVO();
-		String total_id = UUID.randomUUID().toString();
-		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		Calendar cal = Calendar.getInstance();
-		String today = null;
-		today = date.format(cal.getTime());
-		Timestamp ts = Timestamp.valueOf(today);
-		HashMap<String, Object>ent_total_map = new HashMap<String, Object>();
-		ent_total_map.put("user_id", user_id);
-		ent_total_map.put("date", ts);
-		ent_total_map.put("ID", total_id);
-		tsa_eval_service.insertEntTotal(ent_total_map);
-		
-		// 1. ent tsa
-		String ent_tsa_id = UUID.randomUUID().toString();
-		HashMap<String, Object>ent_tsa_map = new HashMap<String, Object>();
-		ent_tsa_map.put("ID", ent_tsa_id);
-		ent_tsa_map.put("pid", total_id);
-		ent_tsa_map.put("totalScore", entcommonvo.getTotalScore());
-		tsa_eval_service.insertEntTsa(ent_tsa_map);
-		InsertEntCommon(ent_tsa_id, entcommonvo, ts); // ent common 삽입
-		InsertTools(ent_tsa, ent_tsa_id); // tools 삽입
-		InsertOuterBreak(ent_tsa, ent_tsa_id, "OuterBreak");
-		InsertSeptalFlap(ent_tsa, ent_tsa_id, "Septal_Flap");
-		InsertSuperiorTurbinate(ent_tsa, ent_tsa_id, "Superior_Turbinate");
-		InsertSellaDuramater(ent_tsa, ent_tsa_id, "Sella_Duramater");
-		InsertTumorRemoval(ent_tsa, ent_tsa_id, "Tumor_Removal");
-		
-		// 2. ent transclival approach
-		String ent_transclival_approach_id = UUID.randomUUID().toString();
-		HashMap<String, Object>ent_transclival_approach_map = new HashMap<String, Object>();
-		JsonElement entTransClivalApproachCommonElement = parser.parse(ent_transclival_approach).getAsJsonObject().get("ENTCommon");
-		EntCommonVO entTransClivalApproachcommonvo = gson.fromJson(entTransClivalApproachCommonElement, EntCommonVO.class); 
-		ent_transclival_approach_map.put("ID", ent_transclival_approach_id);
-		ent_transclival_approach_map.put("pid", total_id);
-		ent_transclival_approach_map.put("totalScore", entTransClivalApproachcommonvo.getTotalScore());
-		tsa_eval_service.insertEntTransclivalApproach(ent_transclival_approach_map);
-		InsertEntCommon(ent_transclival_approach_id, entTransClivalApproachcommonvo, ts);
-		InsertTools(ent_transclival_approach, ent_transclival_approach_id);
-		InsertOuterBreak(ent_transclival_approach, ent_transclival_approach_id, "OuterBreak");
-		InsertSeptalFlap(ent_transclival_approach, ent_transclival_approach_id, "Septal_Flap");
-		InsertSuperiorTurbinate(ent_transclival_approach, ent_transclival_approach_id, "Superior_Turbinate");
-		InsertSellaDuramater(ent_transclival_approach, ent_transclival_approach_id, "Sella_Duramater");
-		
-		// 3. ent acidosis maxillary sinus
-		String ent_acidosis_maxillary_sinus_id = UUID.randomUUID().toString();
-		HashMap<String, Object>ent_acidosis_maxillary_sinus_map = new HashMap<String, Object>();
-		JsonElement entAcidosisMaxillarySinusCommonElement = parser.parse(ent_acidosis_maxillary_sinus).getAsJsonObject().get("ENTCommon");
-		EntCommonVO entAcidosisMaxillarySinuscommonvo = gson.fromJson(entAcidosisMaxillarySinusCommonElement, EntCommonVO.class); 
-		ent_acidosis_maxillary_sinus_map.put("ID", ent_acidosis_maxillary_sinus_id);
-		ent_acidosis_maxillary_sinus_map.put("pid", total_id);
-		ent_acidosis_maxillary_sinus_map.put("totalScore", entAcidosisMaxillarySinuscommonvo.getTotalScore());
-		tsa_eval_service.insertEntAcidosisMaxillarySinus(ent_acidosis_maxillary_sinus_map);
-		InsertEntCommon(ent_acidosis_maxillary_sinus_id, entAcidosisMaxillarySinuscommonvo, ts);
-		InsertTools(ent_acidosis_maxillary_sinus, ent_acidosis_maxillary_sinus_id);
-		InsertOuterBreak(ent_acidosis_maxillary_sinus, ent_acidosis_maxillary_sinus_id, "OuterBreak");
-		InsertUncinectomy(ent_acidosis_maxillary_sinus, ent_acidosis_maxillary_sinus_id, "Uncinectomy");
-		InsertSuperiorTurbinate(ent_acidosis_maxillary_sinus, ent_acidosis_maxillary_sinus_id, "Superior_Turbinate");
-		
-		// 4. ent acidosis frontal sinus
-		String ent_acidosis_frontal_sinus_id = UUID.randomUUID().toString();
-		HashMap<String, Object>ent_acidosis_frontal_sinus_map = new HashMap<String, Object>();
-		JsonElement entAcidosisFrontalSinusCommonElement = parser.parse(ent_acidosis_frontal_sinus).getAsJsonObject().get("ENTCommon");
-		EntCommonVO entAcidosisFrontalSinuscommonvo = gson.fromJson(entAcidosisFrontalSinusCommonElement, EntCommonVO.class); 
-		ent_acidosis_frontal_sinus_map.put("ID", ent_acidosis_frontal_sinus_id);
-		ent_acidosis_frontal_sinus_map.put("pid", total_id);
-		ent_acidosis_frontal_sinus_map.put("totalScore", entAcidosisFrontalSinuscommonvo.getTotalScore());
-		tsa_eval_service.insertEntAcidosisFrontalSinus(ent_acidosis_frontal_sinus_map);
-		InsertEntCommon(ent_acidosis_frontal_sinus_id, entAcidosisFrontalSinuscommonvo, ts);
-		InsertTools(ent_acidosis_frontal_sinus, ent_acidosis_frontal_sinus_id);
-		InsertOuterBreak(ent_acidosis_frontal_sinus, ent_acidosis_frontal_sinus_id, "OuterBreak");
-		InsertUncinectomy(ent_acidosis_frontal_sinus, ent_acidosis_frontal_sinus_id, "Uncinectomy");
-		InsertAnteriorEthmoidectomy(ent_acidosis_frontal_sinus, ent_acidosis_frontal_sinus_id, "Anterior_ethmoidectomy");
-		InsertAnteriorSinus(ent_acidosis_frontal_sinus, ent_acidosis_frontal_sinus_id, "Anterior_sinus");
-		
-		// 5. ent acidosis ethmoidal sinus
-		String ent_acidosis_ethmoidal_sinus_id = UUID.randomUUID().toString();
-		HashMap<String, Object>ent_acidosis_ethmoidal_sinus_map = new HashMap<String, Object>();
-		JsonElement entAcidosisEthmoidalSinusCommonElement = parser.parse(ent_acidosis_ethmoidal_sinus).getAsJsonObject().get("ENTCommon");
-		EntCommonVO entAcidosisEthmoidalSinuscommonvo = gson.fromJson(entAcidosisEthmoidalSinusCommonElement, EntCommonVO.class); 
-		ent_acidosis_ethmoidal_sinus_map.put("ID", ent_acidosis_ethmoidal_sinus_id);
-		ent_acidosis_ethmoidal_sinus_map.put("pid", total_id);
-		ent_acidosis_ethmoidal_sinus_map.put("totalScore", entAcidosisEthmoidalSinuscommonvo.getTotalScore());
-		tsa_eval_service.insertEntAcidosisEthmoidalSinus(ent_acidosis_ethmoidal_sinus_map);
-		InsertEntCommon(ent_acidosis_ethmoidal_sinus_id, entAcidosisEthmoidalSinuscommonvo, ts);
-		InsertTools(ent_acidosis_ethmoidal_sinus, ent_acidosis_ethmoidal_sinus_id);
-		InsertOuterBreak(ent_acidosis_ethmoidal_sinus, ent_acidosis_ethmoidal_sinus_id, "OuterBreak");
-		InsertUncinectomy(ent_acidosis_ethmoidal_sinus, ent_acidosis_ethmoidal_sinus_id, "Uncinectomy");
-		InsertAnteriorEthmoidalAirCellRemoval(ent_acidosis_ethmoidal_sinus, ent_acidosis_ethmoidal_sinus_id, "Anterior_ethmoidal_air_cell_removal");
-		InsertPosteriorAirCellRemoval(ent_acidosis_ethmoidal_sinus, ent_acidosis_ethmoidal_sinus_id, "Posterior_air_cell_removal");
-		
-		return new ResponseEntity<Object>("success", HttpStatus.OK);
-	}
-	*/
 	
 	// ent common 삽입함수
 	@Transactional
@@ -1514,4 +1421,155 @@ public class ResultEvaluationRestController {
 		return new ResponseEntity<Object>("success", HttpStatus.OK);
 	}
 	
+	// tsa 수술 통계
+	@GetMapping(value="/restful/tsa_stats")
+	public ResponseEntity<Object> tsa_stats() throws Exception
+	{
+		HashMap<String, Object>ret_map = new HashMap<String, Object>();
+		
+		HashMap<String, Object>score_range_map = new HashMap<String, Object>();
+		RangeScoreVO rnscore_vo = tsa_eval_service.getRngTSA();
+		score_range_map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
+		score_range_map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
+		score_range_map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
+		score_range_map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
+		score_range_map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
+		score_range_map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		ret_map.put("Score_Range", score_range_map);
+		
+		// 각 단위 수술 유저 평균
+		HashMap<String, Object>user_average_map = new HashMap<String, Object>();
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		user_average_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		user_average_map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_superior_turbinate = tsa_eval_service.getAverScoreSuperiorTurbinate();
+		user_average_map.put("aver_sc_superior_turbinate", aver_superior_turbinate);
+		int aver_sella_duramater = tsa_eval_service.getAverScoreSellaDuramater();
+		user_average_map.put("aver_sc_sella_duramater", aver_sella_duramater);
+		int aver_tumor_removal = tsa_eval_service.getAverScoreTumorRemoval();
+		user_average_map.put("aver_sc_tumor_removal", aver_tumor_removal);
+		ret_map.put("User_Average", user_average_map);
+		
+		return new ResponseEntity<Object>(ret_map, HttpStatus.OK);
+	}
+	
+	// transclival approach 수술 통계
+	@GetMapping(value="/restful/transcliaval_approach_stats")
+	public ResponseEntity<Object> transcliaval_approach_stats() throws Exception
+	{
+		HashMap<String, Object>ret_map = new HashMap<String, Object>();
+		
+		HashMap<String, Object>score_range_map = new HashMap<String, Object>();
+		RangeScoreVO rnscore_vo = tsa_eval_service.getRngTransclivalApproach();
+		score_range_map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
+		score_range_map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
+		score_range_map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
+		score_range_map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
+		score_range_map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
+		score_range_map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		ret_map.put("Score_Range", score_range_map);
+		
+		// 각 단위 수술 유저 평균
+		HashMap<String, Object>user_average_map = new HashMap<String, Object>();
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		user_average_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
+		user_average_map.put("aver_sc_septal_flap", aver_septal_flap);
+		int aver_sphenoid_cells_removal = tsa_eval_service.getAverScoreSphenoidCellsRemoval();
+		user_average_map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
+		int aver_transclival_drilling = tsa_eval_service.getAverScoreTransclivalDrilling();
+		user_average_map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
+		ret_map.put("User_Average", user_average_map);
+		
+		return new ResponseEntity<Object>(ret_map, HttpStatus.OK);
+	}
+	
+	// acidosis maxillary sinus 수술 통계
+	@GetMapping(value="/restful/acidosis_maxillary_sinus_stats")
+	public ResponseEntity<Object> acidosis_maxillary_sinus_stats() throws Exception
+	{
+		HashMap<String, Object>ret_map = new HashMap<String, Object>();
+		HashMap<String, Object>score_range_map = new HashMap<String, Object>();
+		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisMaxillarySinus();
+		score_range_map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
+		score_range_map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
+		score_range_map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
+		score_range_map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
+		score_range_map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
+		score_range_map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		ret_map.put("Score_Range", score_range_map);
+		
+		// 각 단위 수술 유저 평균
+		HashMap<String, Object>user_average_map = new HashMap<String, Object>();
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		user_average_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverUncinectomy();
+		user_average_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_superior_turbinate = tsa_eval_service.getAverSuperiorTurbinate();
+		user_average_map.put("aver_sc_superior_turbinate", aver_superior_turbinate);
+		ret_map.put("User_Average", user_average_map);
+		
+		return new ResponseEntity<Object>(ret_map, HttpStatus.OK);
+	}
+	
+	// acidosis frontal sinus 수술 통계
+	@GetMapping(value="/restful/acidosis_frontal_sinus_stats")
+	public ResponseEntity<Object> acidosis_frontal_sinus_stats() throws Exception
+	{
+		HashMap<String, Object>ret_map = new HashMap<String, Object>();
+		HashMap<String, Object>score_range_map = new HashMap<String, Object>();
+		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisFrontalSinus();
+		score_range_map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
+		score_range_map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
+		score_range_map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
+		score_range_map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
+		score_range_map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
+		score_range_map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		ret_map.put("Score_Range", score_range_map);
+		
+		// 각 단위 수술 유저 평균
+		HashMap<String, Object>user_average_map = new HashMap<String, Object>();
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		user_average_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		user_average_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_anterior_ethmoidectomy = tsa_eval_service.getAverAnteriorEthmoidectomy();
+		user_average_map.put("aver_sc_aver_anterior_ethmoidectomy", aver_anterior_ethmoidectomy);
+		int aver_anterior_sinus = tsa_eval_service.getAverScoreAnteriorSinus();
+		user_average_map.put("aver_sc_anterior_sinus", aver_anterior_sinus);
+		ret_map.put("User_Average", user_average_map);
+		
+		return new ResponseEntity<Object>(ret_map, HttpStatus.OK);
+	}
+	
+	// acidosis ethmoidal sinus 수술 통계
+	@GetMapping(value="/restful/acidosis_ethmoidal_sinus_stats")
+	public ResponseEntity<Object> acidosis_ethmoidal_sinus_stats() throws Exception
+	{
+		HashMap<String, Object>ret_map = new HashMap<String, Object>();
+		HashMap<String, Object>score_range_map = new HashMap<String, Object>();
+		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisEthmoidalSinus();
+		score_range_map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
+		score_range_map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
+		score_range_map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
+		score_range_map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
+		score_range_map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
+		score_range_map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		ret_map.put("Score_Range", score_range_map);
+		
+		// 각 단위 수술 유저 평균
+		HashMap<String, Object>user_average_map = new HashMap<String, Object>();
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		user_average_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		user_average_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_anterior_ethmoidal_air_cell_removal = tsa_eval_service.getAverScoreAnteriorEthmoidalAirCellRemoval();
+		user_average_map.put("aver_sc_anterior_ethmoidal_air_cell_removal", aver_anterior_ethmoidal_air_cell_removal);
+		int aver_posterior_air_cell_removal = tsa_eval_service.getAverScorePosteriorAirCellRemoval();
+		user_average_map.put("aver_sc_posterior_air_cell_removal", aver_posterior_air_cell_removal);		
+		ret_map.put("User_Average", user_average_map);
+		
+		return new ResponseEntity<Object>(ret_map, HttpStatus.OK);
+	}
 }

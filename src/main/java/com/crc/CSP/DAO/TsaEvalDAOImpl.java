@@ -244,6 +244,12 @@ public class TsaEvalDAOImpl implements TsaEvalDAO{
 	}
 	
 	@Override
+	public List<EntTotalVO> list_every(HashMap map) throws Exception
+	{
+		return sqlSession.selectList(namespace + ".list_every", map);
+	}
+	
+	@Override
 	public List<PointDataVOStr> getPoints(String id) throws Exception
 	{
 		return sqlSession.selectList(namespace + ".getPoints", id);
@@ -500,4 +506,45 @@ public class TsaEvalDAOImpl implements TsaEvalDAO{
 		return sqlSession.selectOne(namespace + ".getAverScoreTransclivalDrilling");
 	}
 	
+	@Override
+	public int getAverScoreUncinectomy() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScoreUncinectomy");
+	}
+	
+	@Override
+	public int getAverScoreAnteriorEthmoidalAirCellRemoval() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScoreAnteriorEthmoidalAirCellRemoval");
+	}
+	
+	@Override
+	public int getAverScorePosteriorAirCellRemoval() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScorePosteriorAirCellRemoval");
+	}
+	
+	@Override
+	public int getAverAnteriorEthmoidectomy() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverAnteriorEthmoidectomy");
+	}
+	
+	@Override
+	public int getAverScoreAnteriorSinus() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverScoreAnteriorSinus");
+	}
+	
+	@Override
+	public int getAverSuperiorTurbinate() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverSuperiorTurbinate");
+	}
+	
+	@Override
+	public int getAverUncinectomy() throws Exception
+	{
+		return sqlSession.selectOne(namespace + ".getAverUncinectomy");
+	}
 }

@@ -242,6 +242,12 @@ public class TsaEvalServiceImpl implements TsaEvalService{
 	}
 	
 	@Override
+	public List<EntTotalVO> list_every(HashMap map) throws Exception
+	{
+		return dao.list_every(map);
+	}
+	
+	@Override
 	public List<PointDataVOStr> getPoints(String id) throws Exception
 	{
 		return dao.getPoints(id);
@@ -463,4 +469,45 @@ public class TsaEvalServiceImpl implements TsaEvalService{
 		return dao.getAverScoreTransclivalDrilling();
 	}
 	
+	@Override
+	public int getAverScoreUncinectomy() throws Exception
+	{
+		return dao.getAverScoreUncinectomy();
+	}
+	
+	@Override
+	public int getAverScoreAnteriorEthmoidalAirCellRemoval() throws Exception
+	{
+		return dao.getAverScoreAnteriorEthmoidalAirCellRemoval();
+	}
+	
+	@Override
+	public int getAverScorePosteriorAirCellRemoval() throws Exception
+	{
+		return dao.getAverScorePosteriorAirCellRemoval();
+	}
+	
+	@Override
+	public int getAverAnteriorEthmoidectomy() throws Exception
+	{
+		return dao.getAverAnteriorEthmoidectomy();
+	}
+	
+	@Override
+	public int getAverScoreAnteriorSinus() throws Exception
+	{
+		return dao.getAverScoreAnteriorSinus();
+	}
+	
+	@Override
+	public int getAverSuperiorTurbinate() throws Exception
+	{
+		return dao.getAverSuperiorTurbinate();
+	}
+	
+	@Override
+	public int getAverUncinectomy() throws Exception
+	{
+		return dao.getAverUncinectomy();
+	}
 }

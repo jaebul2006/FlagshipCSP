@@ -17,6 +17,7 @@ public class Hip02DataVOStr {
 	private String pointsgapMax;
 	
 	private double cupDiatance;
+	private String result;
 	private String Score;
 	private double hip02Score;
 
@@ -152,6 +153,16 @@ public class Hip02DataVOStr {
 	public void setCupDiatance(double cupDiatance)
 	{
 		this.cupDiatance = cupDiatance;
+	}
+	
+	public String getResult()
+	{
+		return result;
+	}
+	
+	public void setResult(String result)
+	{
+		this.result = result;
 	}
 	
 	public String getScore()

@@ -63,6 +63,7 @@ public interface TsaEvalService {
 	public VolumeTriggerVOStr getTumorRemoval(String id) throws Exception;
 	
 	public List<EntTotalVO> list(HashMap map) throws Exception;
+	public List<EntTotalVO> list_every(HashMap map) throws Exception;
 	public List<PointTriggerVO> getPointTriggers(String id) throws Exception;
 	
 	public String getEntTansclivalApproach(String id) throws Exception;
@@ -102,11 +103,17 @@ public interface TsaEvalService {
 	public RangeScoreVO getRngAcidosisEthmoidalSinus() throws Exception;
 	
 	public int getAverScoreOuterBreak() throws Exception;
+	public int getAverScoreUncinectomy() throws Exception;
 	public int getAverScoreSeptalFlap() throws Exception;
 	public int getAverScoreSuperiorTurbinate() throws Exception;
 	public int getAverScoreSellaDuramater() throws Exception;
 	public int getAverScoreTumorRemoval() throws Exception;
 	public int getAverScoreSphenoidCellsRemoval() throws Exception;
 	public int getAverScoreTransclivalDrilling() throws Exception;
-
+	public int getAverScoreAnteriorEthmoidalAirCellRemoval() throws Exception;
+	public int getAverScorePosteriorAirCellRemoval() throws Exception;
+	public int getAverAnteriorEthmoidectomy() throws Exception;
+	public int getAverScoreAnteriorSinus() throws Exception;
+	public int getAverSuperiorTurbinate() throws Exception;
+	public int getAverUncinectomy() throws Exception;
 }

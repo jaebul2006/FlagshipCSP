@@ -23,11 +23,13 @@ public class Hip01DataVOStr {
 	private double distanceScore;
 	private double hip01Score;
 	private int dropPoint;
+	private int maxPoint;
 	private String isDroped;
 	private String graphAx;
 	private String graphAz;
 	private String graphBx;
 	private String graphBz;
+	
 	
 	public String getId()
 	{
@@ -97,6 +99,16 @@ public class Hip01DataVOStr {
 	public void setDropPoint(int dropPoint)
 	{
 		this.dropPoint = dropPoint;
+	}
+	
+	public int getMaxPoint()
+	{
+		return maxPoint;
+	}
+	
+	public void setMaxPoint(int maxPoint)
+	{
+		this.maxPoint = maxPoint;
 	}
 	
 	public String getIsDroped()

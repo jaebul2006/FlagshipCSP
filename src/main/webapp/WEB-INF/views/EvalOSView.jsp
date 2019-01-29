@@ -125,29 +125,29 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row">거리1</th>
-                                            <td>5mm</td>
-                                            <td>${map.hip01_distance}</td>
-                                            <td>${map.hip01_distanceScore}/5</td>
-                                            <td rowspan="4" class="align-middle">5</td>
-                                            <td rowspan="4" class="align-middle total-score-txt">${map.hip01Score} / 20</td>
+                                            <td>10mm</td>
+                                            <td>${map.hip01_distance}mm</td>
+                                            <td>${map.hip01_distanceScore} / 5</td>
+                                            <td rowspan="4" class="align-middle">${map.hip01_100div_score}</td>
+                                            <td rowspan="4" class="align-middle total-score-txt">${map.hip01_ResScore} / 20</td>
                                         </tr>
                                         <tr>
                                            <th scope="row">각도1</th>
                                             <td>135˚</td>
-                                            <td>${map.hip01_degree1}</td>
-                                            <td>${map.hip01_degreeScore1}/5</td>
+                                            <td>${map.hip01_degree1}˚</td>
+                                            <td>${map.hip01_degreeScore1} / 5</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">각도2</th>
                                             <td>45˚</td>
-                                            <td>${map.hip01_degree2}</td>
-                                            <td>${map.hip01_degreeScore2}/5</td>
+                                            <td>${map.hip01_degree2}˚</td>
+                                            <td>${map.hip01_degreeScore2} / 5</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">각도3</th>
                                             <td>0˚</td>
-                                            <td>${map.hip01_degree3}</td>
-                                            <td>${map.hip01_degreeScore3}/5</td>
+                                            <td>${map.hip01_degree3}˚</td>
+                                            <td>${map.hip01_degreeScore3} / 5</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -168,9 +168,9 @@
                                            //var pin_cnt = ${map.hip01_pinCountAx};
                                            var pin_cnt = ${map.hip01_graphAx}.length;
                                            var pin_cnts = [];
-                                           for(i=0; i<pin_cnt; i++){
+                                           /*for(i=0; i<pin_cnt; i++){
                                         	   pin_cnts.push(i);
-                                           }
+                                           }*/
                                             
                                            var chart = new Chartist.Line('.ct-chart-j1', {
                                               labels: pin_cnts,
@@ -189,7 +189,7 @@
                                               lineSmooth: Chartist.Interpolation.cardinal({
                                                 fillHoles: true,
                                               }),
-                                              low: 0
+                                              //low: 0
                                             });
                                             </script>
 
@@ -227,23 +227,23 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row">거리1</th>
-                                            <td>5mm</td>
-                                            <td>${map.hip02_cupDistance}</td>
-                                            <td>${map.hip02_distance_score}/5</td>
-                                            <td rowspan="4" class="align-middle"></td>
+                                            <td>10mm</td>
+                                            <td>${map.hip02_result1}mm</td>
+                                            <td>${map.hip02_distance_score} / 5</td>
+                                            <td rowspan="4" class="align-middle">${map.hip02_100div_score}</td>
                                             <td rowspan="4" class="align-middle total-score-txt">${map.hip02_ResScore} / 25</td>
                                         </tr>
                                         <tr>
                                            <th scope="row">각도1</th>
                                             <td>40˚</td>
-                                            <td></td>
-                                            <td>${map.hip02_degree_score1}/10</td>
+                                            <td>${map.hip02_result2}˚</td>
+                                            <td>${map.hip02_degree_score1} / 10</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">각도2</th>
                                             <td>15˚</td>
-                                            <td></td>
-                                            <td>${map.hip02_degree_score2}/10</td>
+                                            <td>${map.hip02_result3}˚</td>
+                                            <td>${map.hip02_degree_score2} / 10</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -262,9 +262,9 @@
                                             <script type="text/javascript">
                                           	var pointsXArr = ${map.hip02_pointsX};
                                           	var pointsXCnt = [];
-                                          	for(i=0; i<pointsXArr.length; i++){
+                                          	/*for(i=0; i<pointsXArr.length; i++){
                         						pointsXCnt.push(i);
-                        					}
+                        					}*/
                                           	
                                            var chart = new Chartist.Line('.ct-chart-j2', {
                                               labels: pointsXCnt,
@@ -280,7 +280,7 @@
                                               lineSmooth: Chartist.Interpolation.cardinal({
                                                 fillHoles: true,
                                               }),
-                                              low: 0
+                                              //low: 0
                                             });
                                             </script>
 
@@ -318,16 +318,16 @@
                                         <tr>
                                             <th scope="row">각도1(θ1)</th>
                                             <td>40˚</td>
-                                            <td>${map.hip03_cupDiatance}</td>
-                                            <td>${map.hip03_score1}/5</td>
-                                            <td rowspan="4" class="align-middle"></td>
+                                            <td>${map.hip03_result2}˚</td>
+                                            <td>${map.hip03_score2} / 5</td>
+                                            <td rowspan="4" class="align-middle">${map.hip03_100div_score}</td>
                                             <td rowspan="4" class="align-middle total-score-txt">${map.hip03_ResScore} / 10</td>
                                         </tr>
                                         <tr>
                                            <th scope="row">각도2(θ2)</th>
                                             <td>15˚</td>
-                                            <td>${map.hip03_cupRotation}</td>
-                                            <td>${map.hip03_score2}/5</td>
+                                            <td>${map.hip03_result3}˚</td>
+                                            <td>${map.hip03_score3} / 5</td>
                                         </tr>
 
                                     </tbody>
@@ -364,22 +364,22 @@
                                         <tr>
                                             <th scope="row">거리1</th>
                                             <td>5mm</td>
-                                            <td>${map.hip04_entryPointDiatance}</td>
-                                            <td>${map.hip04_score1}/5</td>
-                                            <td rowspan="4" class="align-middle"></td>
+                                            <td>${map.hip04_result1}mm</td>
+                                            <td>${map.hip04_score1} / 5</td>
+                                            <td rowspan="4" class="align-middle">${map.hip04_100div_score}</td>
                                             <td rowspan="4" class="align-middle total-score-txt">${map.hip04_ResScore} / 15</td>
                                         </tr>
                                         <tr>
                                            <th scope="row">각도1</th>
                                             <td>15˚</td>
-                                            <td></td>
-                                            <td>${map.hip04_score2}/5</td>
+                                            <td>${map.hip04_result2}˚</td>
+                                            <td>${map.hip04_score2} / 5</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">각도2</th>
                                             <td>0˚</td>
-                                            <td></td>
-                                            <td>${map.hip04_score3}/5</td>
+                                            <td>${map.hip04_result3}˚</td>
+                                            <td>${map.hip04_score3} / 5</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -403,8 +403,8 @@
                         					var hip04_z_arr = [];
                         					
                         					<c:forEach var="row" items="${map.hip04_points}">
-                        						hip04_points_labels.push(hip04_label_idx);
-                        						hip04_label_idx++;
+                        						//hip04_points_labels.push(hip04_label_idx);
+                        						//hip04_label_idx++;
                         						hip04_x_arr.push(${row.positionA}[0]);
                         						hip04_y_arr.push(${row.positionA}[1]);
                         						hip04_z_arr.push(${row.positionA}[2]);
@@ -424,7 +424,7 @@
                                               lineSmooth: Chartist.Interpolation.cardinal({
                                                 fillHoles: true,
                                               }),
-                                              low: 0
+                                              //low: 0
                                             });
                                             </script>
 
@@ -443,7 +443,7 @@
             </div>
                 <div class="container">
                  <div class="row">
-                     <div class="col-sm-12"><h4 class="title-lg-otp mb-3 mt-4">5. Trail stem</h4></div>
+                     <div class="col-sm-12"><h4 class="title-lg-otp mb-3 mt-4">5. Trial stem</h4></div>
                     <div class="col-md-8">
                         <div class="chart-inner-content">
                             <div class="chart-inner-content-2">
@@ -461,24 +461,18 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">거리1</th>
-                                            <td>0mm</td>
-                                            <td>${map.hip05_entryPointDiatance}</td>
-                                            <td>7/5</td>
-                                            <td rowspan="4" class="align-middle"></td>
-                                            <td rowspan="4" class="align-middle total-score-txt"> / 25</td>
-                                        </tr>
-                                        <tr>
                                            <th scope="row">각도1</th>
                                             <td>15˚</td>
-                                            <td></td>
-                                            <td>/5</td>
+                                            <td>${map.hip05_result2}˚</td>
+                                            <td> ${map.hip05_score2} / 10</td>
+                                            <td rowspan="3" class="align-middle">${map.hip05_100div_score}</td>
+                                            <td rowspan="3" class="align-middle total-score-txt"> ${map.hip05_ResScore} / 20</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">각도2</th>
                                             <td>0˚</td>
-                                            <td></td>
-                                            <td>/5</td>
+                                            <td>${map.hip05_result3}˚</td>
+                                            <td> ${map.hip05_score3} / 10</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -502,8 +496,8 @@
                             				var hip05_z_arr = [];
                             				
                             				<c:forEach var="row" items="${map.hip05_points}">
-                            					hip05_points_labels.push(hip05_label_idx);
-                            					hip05_label_idx++;
+                            					//hip05_points_labels.push(hip05_label_idx);
+                            					//hip05_label_idx++;
                             					hip05_x_arr.push(${row.positionA}[0]);
                             					hip05_y_arr.push(${row.positionA}[1]);
                             					hip05_z_arr.push(${row.positionA}[2]);
@@ -523,7 +517,7 @@
                                               lineSmooth: Chartist.Interpolation.cardinal({
                                                 fillHoles: true,
                                               }),
-                                              low: 0
+                                              //low: 0
                                             });
                                             </script>
 
@@ -559,24 +553,18 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">거리1</th>
-                                            <td>0mm</td>
-                                            <td></td>
-                                            <td>/10</td>
-                                            <td rowspan="4" class="align-middle"></td>
-                                            <td rowspan="4" class="align-middle total-score-txt"> / 25</td>
-                                        </tr>
-                                        <tr>
                                            <th scope="row">각도1</th>
                                             <td>15˚</td>
-                                            <td></td>
-                                            <td>/5</td>
+                                            <td>${map.hip06_result2}˚</td>
+                                            <td>${map.hip06_score2} / 5</td>
+                                            <td rowspan="3" class="align-middle">${map.hip06_100div_score}</td>
+                                            <td rowspan="3" class="align-middle total-score-txt"> ${map.hip06_ResScore} / 10</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">각도2</th>
                                             <td>0˚</td>
-                                            <td></td>
-                                            <td>/5</td>
+                                            <td>${map.hip06_result3}˚</td>
+                                            <td>${map.hip06_score3} / 5</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -600,8 +588,8 @@
                             				var hip06_z_arr = [];
                             				
                             				<c:forEach var="row" items="${map.hip06_points}">
-                            					hip06_points_labels.push(hip06_label_idx);
-                            					hip06_label_idx++;
+                            					//hip06_points_labels.push(hip06_label_idx);
+                            					//hip06_label_idx++;
                             					hip06_x_arr.push(${row.positionA}[0]);
                             					hip06_y_arr.push(${row.positionA}[1]);
                             					hip06_z_arr.push(${row.positionA}[2]);
@@ -621,7 +609,7 @@
                                               lineSmooth: Chartist.Interpolation.cardinal({
                                                 fillHoles: true,
                                               }),
-                                              low: 0
+                                              //low: 0
                                             });
                                             </script>
 
@@ -661,115 +649,120 @@
                                             <th rowspan="4" scope="row">1</th>
                                             <th rowspan="4">Femur neck cutting</th>
                                             <td>거리1</td>
-                                            <td>5mm</td>
-                                            <td>${map.hip01_distance}</td>
+                                            <td>10mm</td>
+                                            <td>${map.hip01_distance}mm</td>
                                             <td>${map.hip01_distanceScore}/5</td>
-                                            <td rowspan="4" class="total-score-txt">${map.hip01Score}</td>
+                                            <td rowspan="4" class="total-score-txt">${map.hip01_ResScore}</td>
                                           </tr>
                                           <tr>
                                             <td>각도1</td>
-                                            <td>135</td>
-                                            <td>${map.hip01_degree1}</td>
+                                            <td>135˚</td>
+                                            <td>${map.hip01_degree1}˚</td>
                                             <td>${map.hip01_degreeScore1}/5</td>
                                           </tr>
                                           <tr>
                                             <td>각도2</td>
-                                            <td>45</td>
-                                            <td>${map.hip01_degree2}</td>
+                                            <td>45˚</td>
+                                            <td>${map.hip01_degree2}˚</td>
                                             <td>${map.hip01_degreeScore2}/5</td>
                                           </tr>
                                           <tr>
                                             <td>각도3</td>
-                                            <td>0</td>
-                                            <td>${map.hip01_degree3}</td>
+                                            <td>0˚</td>
+                                            <td>${map.hip01_degree3}˚</td>
                                             <td>${map.hip01_degreeScore3}/5</td>
                                           </tr>
+                                          
                                           <tr>
                                             <th rowspan="3" scope="row">2</th>
                                             <th rowspan="3">Acetabulum Reaming</th>
                                             <td>거리1</td>
                                             <td>10mm</td>
-                                            <td>10mm</td>
-                                            <td>/5</td>
-                                            <td rowspan="3" class="total-score-txt">20</td>
+                                            <td>${map.hip02_result1}mm</td>
+                                            <td>${map.hip02_distance_score} / 5</td>
+                                            <td rowspan="3" class="total-score-txt">${map.hip02_ResScore}</td>
                                           </tr>
                                           <tr>
                                             <td>각도1</td>
-                                            <td>45</td>
-                                            <td>45</td>
-                                            <td>/5</td>
+                                            <td>40˚</td>
+                                            <td>${map.hip02_result2}˚</td>
+                                            <td>${map.hip02_degree_score1} / 10</td>
                                           </tr>
                                           <tr>
                                             <td>각도2</td>
-                                            <td>135</td>
-                                            <td>135</td>
-                                            <td>/5</td>
+                                            <td>15˚</td>
+                                            <td>${map.hip02_result3}˚</td>
+                                            <td>${map.hip02_degree_score2} / 10</td>
                                           </tr>
+                                          
                                           <tr>
                                             <th rowspan="2" scope="row">3</th>
                                             <th rowspan="2">Cup</th>
                                             <td>각도1</td>
-                                            <td>40</td>
-                                            <td>40</td>
-                                            <td>/5</td>
-                                            <td rowspan="2" class="total-score-txt">20</td>
+                                            <td>40˚</td>
+                                            <td>${map.hip03_result2}</td>
+                                            <td>${map.hip03_score2} / 5</td>
+                                            <td rowspan="2" class="total-score-txt">${map.hip03_ResScore}</td>
                                           </tr>
                                           <tr>
                                             <td>각도2</td>
-                                            <td>15</td>
-                                            <td>15</td>
-                                            <td>/5</td>
+                                            <td>15˚</td>
+                                            <td>${map.hip03_result3}</td>
+                                            <td>${map.hip03_score3} / 5</td>
                                           </tr>
+                                          
                                           <tr>
                                             <th rowspan="3" scope="row">4</th>
                                             <th rowspan="3">Box chisel</th>
                                             <td>거리1</td>
-                                            <td>10mm</td>
-                                            <td>10mm</td>
-                                            <td>/5</td>
-                                            <td rowspan="3" class="total-score-txt">20</td>
+                                            <td>5mm</td>
+                                            <td>${map.hip04_result1}mm</td>
+                                            <td>${map.hip04_score1} / 5</td>
+                                            <td rowspan="3" class="total-score-txt">${map.hip04_ResScore}</td>
                                           </tr>
                                           <tr>
                                             <td>각도1</td>
-                                            <td>45</td>
-                                            <td>45</td>
-                                            <td>5/5</td>
+                                            <td>15˚</td>
+                                            <td>${map.hip04_result2}˚</td>
+                                            <td>${map.hip04_score2} / 5</td>
                                           </tr>
                                           <tr>
                                             <td>각도2</td>
-                                            <td>135</td>
-                                            <td>135</td>
-                                            <td>5/5</td>
+                                            <td>0˚</td>
+                                            <td>${map.hip04_result3}˚</td>
+                                            <td>${map.hip04_score3} / 5</td>
                                           </tr>
+                                          
                                           <tr>
-                                            <th rowspan="2" scope="row">5</th>
-                                            <th rowspan="2">Trail stem</th>
+                                          	<th rowspan="2" scope="row">5</th>
+                                            <th rowspan="2">Trial stem</th>
                                             <td>각도1</td>
-                                            <td>40</td>
-                                            <td>40</td>
-                                            <td>2/5</td>
-                                            <td rowspan="2" class="total-score-txt">20</td>
+                                            <td>15˚</td>
+                                            <td>${map.hip05_result2}˚</td>
+                                            <td>${map.hip05_score2} / 10</td>
+                                            <td rowspan="2" class="total-score-txt">${map.hip05_ResScore}</td>
                                           </tr>
                                           <tr>
                                             <td>각도2</td>
-                                            <td>15</td>
-                                            <td>15</td>
-                                            <td>5/5</td>
+                                            <td>0˚</td>
+                                            <td>${map.hip05_result3}˚</td>
+                                            <td>${map.hip05_score3} / 10</td>
                                           </tr>
+                                          
                                           <tr>
-                                            <th rowspan="2" scope="row">6</th>
+                                          	<th rowspan="2" scope="row">6</th>
                                             <th rowspan="2">Real stem</th>
                                             <td>각도1</td>
-                                            <td>40</td>
-                                            <td>40</td>
-                                            <td>2/5</td>
-                                            <td rowspan="2" class="total-score-txt">20</td>
+                                            <td>15˚</td>
+                                            <td>${map.hip06_result2}˚</td>
+                                            <td>${map.hip06_score2} / 5</td>
+                                            <td rowspan="2" class="total-score-txt">${map.hip06_ResScore}</td>
                                           </tr>
                                           <tr>
                                             <td>각도2</td>
-                                            <td>15</td>
-                                            <td>15</td>
-                                            <td>5/5</td>
+                                            <td>0˚</td>
+                                            <td>${map.hip06_result3}˚</td>
+                                            <td>${map.hip06_score3} / 5</td>
                                           </tr>
                                           <tr class="total-td">
                                             <td>&nbsp;</td>
@@ -778,7 +771,7 @@
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
-                                            <td>100</td>
+                                            <td>${map.total_score}</td>
                                           </tr>
                                     </tbody>
                                 </table>

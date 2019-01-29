@@ -24,6 +24,7 @@ public class Hip02DataVO {
 	private int maxPoint;
 	private String isDroped;
 	
+	
 	public String getId()
 	{
 		return id;

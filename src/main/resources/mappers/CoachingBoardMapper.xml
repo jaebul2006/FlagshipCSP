@@ -21,6 +21,7 @@
 					b.content_type = #{content_type}
 				AND	
 					b.isshow = 'y'
+				ORDER BY b.regdate desc
 					<!--  에러남 <include refid="search"></include> -->
 			)A
 		)B WHERE rn BETWEEN #{start} AND #{end}

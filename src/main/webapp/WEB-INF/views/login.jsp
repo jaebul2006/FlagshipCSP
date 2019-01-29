@@ -65,7 +65,7 @@
   
     <form name="form1" class="form-signin" method="post" action="login_process">
         <div class="form-container">
-          <img class="mb-4" src="./KVRF/final/images/login-logo.png" alt="로고">
+          <img class="mb-4" src="./KVRF/final/images/logo.png" alt="로고">
           <label for="inputEmail" class="sr-only">Username</label>
           <input type="text" id="id" class="form-control" name="id" placeholder="ID" required autofocus>
           <label for="inputPassword" class="sr-only">Password</label>

@@ -19,7 +19,6 @@ private static final String namespace = "com.crc.CSP.ResultEvaluationMapper";
 	@Inject
 	private SqlSession sqlSession;
 	
-	
 	@Override
 	public void insert(HashMap map) throws Exception
 	{	
@@ -47,6 +46,7 @@ private static final String namespace = "com.crc.CSP.ResultEvaluationMapper";
 		map.put("end", end);
 		map.put("content_type", content_type);
 		map.put("username", username);
+		
 		return sqlSession.selectList(namespace + ".list", map);
 	}
 	

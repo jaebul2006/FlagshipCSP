@@ -20,6 +20,7 @@ public class Hip03DataVO {
 	private int maxPoint;
 	private String isDroped;
 	
+	
 	public String getId()
 	{
 		return id;

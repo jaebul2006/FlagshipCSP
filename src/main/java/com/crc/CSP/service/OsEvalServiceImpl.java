@@ -98,6 +98,12 @@ public class OsEvalServiceImpl implements OsEvalService{
 	}
 	
 	@Override
+	public List<HipCommonVO> list_every(int start, int end, String searchOption, String keyword, String user_id) throws Exception
+	{
+		return dao.list_every(start, end, searchOption, keyword, user_id);
+	}
+	
+	@Override
 	public Hip01DataVOStr view(String id) throws Exception
 	{
 		return dao.view(id);

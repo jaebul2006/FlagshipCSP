@@ -47,11 +47,13 @@ import com.crc.CSP.bean.PointDataVOStr;
 import com.crc.CSP.bean.PointTriggerVO;
 import com.crc.CSP.bean.RangeScoreVO;
 import com.crc.CSP.bean.ToolsVO;
+import com.crc.CSP.bean.UserBean;
 import com.crc.CSP.bean.VolumeTriggerVOStr;
 import com.crc.CSP.service.BoardPager;
 import com.crc.CSP.service.OsEvalService;
 import com.crc.CSP.service.ResultEvaluationService;
 import com.crc.CSP.service.TsaEvalService;
+import com.crc.CSP.service.UserService;
 
 
 @Controller
@@ -69,6 +71,9 @@ public class ResultEvaluationController {
 	
 	@Inject
 	ResultEvaluationService evalBoardService;
+	
+	@Inject
+	UserService userService;
 	
 	@RequestMapping("/ResultEvaluationHome")
 	public String ResultEvaluationHome(@RequestParam(defaultValue="title")String searchOption, @RequestParam(defaultValue="")String keyword,
@@ -92,10 +97,19 @@ public class ResultEvaluationController {
 	{
 		String content_type = "ENTSurgery";
 		
+		UserBean user_vo = userService.user(user_id);
+		
 		HashMap<String, Object> param_map = new HashMap<String, Object>();
 		param_map.put("user_id", user_id);
 		param_map.put("oper_name", oper_name);
-		List<EntTotalVO> list = tsa_eval_service.list(param_map);
+		List<EntTotalVO> list;
+		
+		if(user_vo.getUSERTYPE().equals("TEACHER")) {
+			list = tsa_eval_service.list_every(param_map);
+		}
+		else {
+			list = tsa_eval_service.list(param_map);
+		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
@@ -105,6 +119,7 @@ public class ResultEvaluationController {
 		mav.addObject("map", map);
 		mav.setViewName("TSAList");
 		return mav;
+		
 	}
 	
 	@RequestMapping("/TransclivalApproachList")
@@ -115,11 +130,18 @@ public class ResultEvaluationController {
 	{
 		String content_type = "ENTSurgery";
 		
+		UserBean user_vo = userService.user(user_id);
 		HashMap<String, Object> param_map = new HashMap<String, Object>();
 		param_map.put("user_id", user_id);
 		param_map.put("oper_name", oper_name);
-		List<EntTotalVO> list = tsa_eval_service.list(param_map);
+		List<EntTotalVO> list;
 		
+		if(user_vo.getUSERTYPE().equals("TEACHER")) {
+			list = tsa_eval_service.list_every(param_map);
+		}
+		else {
+			list = tsa_eval_service.list(param_map);
+		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("content_type", content_type);
@@ -138,11 +160,18 @@ public class ResultEvaluationController {
 	{
 		String content_type = "ENTSurgery";
 		
+		UserBean user_vo = userService.user(user_id);
 		HashMap<String, Object> param_map = new HashMap<String, Object>();
 		param_map.put("user_id", user_id);
 		param_map.put("oper_name", oper_name);
-		List<EntTotalVO> list = tsa_eval_service.list(param_map);
+		List<EntTotalVO> list;
 		
+		if(user_vo.getUSERTYPE().equals("TEACHER")) {
+			list = tsa_eval_service.list_every(param_map);
+		}
+		else {
+			list = tsa_eval_service.list(param_map);
+		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("content_type", content_type);
@@ -161,11 +190,18 @@ public class ResultEvaluationController {
 	{
 		String content_type = "ENTSurgery";
 		
+		UserBean user_vo = userService.user(user_id);
 		HashMap<String, Object> param_map = new HashMap<String, Object>();
 		param_map.put("user_id", user_id);
 		param_map.put("oper_name", oper_name);
-		List<EntTotalVO> list = tsa_eval_service.list(param_map);
+		List<EntTotalVO> list;
 		
+		if(user_vo.getUSERTYPE().equals("TEACHER")) {
+			list = tsa_eval_service.list_every(param_map);
+		}
+		else {
+			list = tsa_eval_service.list(param_map);
+		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("content_type", content_type);
@@ -184,11 +220,18 @@ public class ResultEvaluationController {
 	{
 		String content_type = "ENTSurgery";
 		
+		UserBean user_vo = userService.user(user_id);
 		HashMap<String, Object> param_map = new HashMap<String, Object>();
 		param_map.put("user_id", user_id);
 		param_map.put("oper_name", oper_name);
-		List<EntTotalVO> list = tsa_eval_service.list(param_map);
+		List<EntTotalVO> list;
 		
+		if(user_vo.getUSERTYPE().equals("TEACHER")) {
+			list = tsa_eval_service.list_every(param_map);
+		}
+		else {
+			list = tsa_eval_service.list(param_map);
+		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("content_type", content_type);
@@ -808,6 +851,7 @@ public class ResultEvaluationController {
 		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
 		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
 		
+		
 		// tsa 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(ent_tsa_id); 
 		map.put("sc_outer_break", outer_break_vo.getScore());
@@ -852,104 +896,43 @@ public class ResultEvaluationController {
 		List<PointDataVOStr> outerbreak_points = tsa_eval_service.getPoints(outerbreak_id);
 		List<PointDataVOStr> outerbreak_targetpoints = tsa_eval_service.getTargetPoints(outerbreak_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-		
-		map.put("outerbreak_MaxScore", outerbreak.getMaxScore());
-		map.put("outerbreak_Score", outerbreak.getScore());
-		map.put("outerbreak_Note", outerbreak.getNote());
-		map.put("outerbreak_Position", outerbreak.getPosition());
-		map.put("outerbreak_Rotation", outerbreak.getRotation());
-		map.put("outerbreak_Scale", outerbreak.getScale());
-		
-		map.put("outerbreak_Tools_TouchCount", outerbreak_tools_vo.getTouchCount());
-		map.put("outerbreak_Tools_ToolUseCount", outerbreak_tools_vo.getToolUseCount());
-		map.put("outerbreak_Tools_ToolInnerCount", outerbreak_tools_vo.getToolInnerCount());
-		map.put("outerbreak_Tools_ToolTouchScore", outerbreak_tools_vo.getToolTouchScore());
-		map.put("outerbreak_Tools_ToolViewScore", outerbreak_tools_vo.getToolViewScore());
-		map.put("outerbreak_Tools_MaxScore", outerbreak_tools_vo.getMaxScore());
-		
-		map.put("outerbreak_points", outerbreak_points); // jsp 에서 list 로 받아야함
-		map.put("outerbreak_target_points", outerbreak_targetpoints);
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getPathTriggerAsmbly("outerbreak_", outerbreak, res_map);	
+		res_map = getToolsAsmbly("outerbreak_Tools_", outerbreak_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("transclival_approach");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("outer_break");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(transclival_approach_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(transclival_approach_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(transclival_approach_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(transclival_approach_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(transclival_approach_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(transclival_approach_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(outerbreak_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(outerbreak_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(outerbreak_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(outerbreak_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(outerbreak_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(outerbreak_id));
-		
-		// transclival approach 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", transclival_approach_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", outerbreak_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngTransclivalApproach();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// transclival approach 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(transclival_approach_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		PathTriggerVOStr septal_flap_vo = tsa_eval_service.getSeptalFlap(transclival_approach_id);
-		map.put("sc_septal_flap", septal_flap_vo.getScore());
+		res_map.put("sc_septal_flap", septal_flap_vo.getScore());
 		VolumeTriggerVOStr sphenoid_cells_removal_vo = tsa_eval_service.getSphenoidCellsRemoval(transclival_approach_id);
-		map.put("sc_sphenoid_cells_removal", sphenoid_cells_removal_vo.getScore());
+		res_map.put("sc_sphenoid_cells_removal", sphenoid_cells_removal_vo.getScore());
 		VolumeTriggerVOStr transclival_drilling_vo = tsa_eval_service.getTransclivalDrilling(transclival_approach_id);
-		map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
+		res_map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
 		
 		// 각 단위 수술 유저 평균
 		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
-		map.put("aver_sc_outer_break", aver_outer_break);
+		res_map.put("aver_sc_outer_break", aver_outer_break);
 		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
-		map.put("aver_sc_septal_flap", aver_septal_flap);
+		res_map.put("aver_sc_septal_flap", aver_septal_flap);
 		int aver_sphenoid_cells_removal = tsa_eval_service.getAverScoreSphenoidCellsRemoval();
-		map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
+		res_map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
 		int aver_transclival_drilling = tsa_eval_service.getAverScoreTransclivalDrilling();
-		map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
+		res_map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewTransclivalApproach_OuterBreak");
 		return mav;
 	}
@@ -967,103 +950,44 @@ public class ResultEvaluationController {
 		List<PointDataVOStr> septal_flap_points = tsa_eval_service.getPoints(septal_flap_id);
 		List<PointDataVOStr> septal_flap_targetpoints = tsa_eval_service.getTargetPoints(septal_flap_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-		
-		map.put("septalflap_MaxScore", septal_flap.getMaxScore());
-		map.put("septalflap_Score", septal_flap.getScore());
-		map.put("septalflap_Note", septal_flap.getNote());
-		map.put("septalflap_Position", septal_flap.getPosition());
-		map.put("septalflap_Rotation", septal_flap.getRotation());
-		map.put("septalflap_Scale", septal_flap.getScale());
-
-		map.put("septalflap_Tools_TouchCount", septal_flap_tools_vo.getTouchCount());
-		map.put("septalflap_Tools_ToolUseCount", septal_flap_tools_vo.getToolUseCount());
-		map.put("septalflap_Tools_ToolInnerCount", septal_flap_tools_vo.getToolInnerCount());
-		map.put("septalflap_Tools_ToolTouchScore", septal_flap_tools_vo.getToolTouchScore());
-		map.put("septalflap_Tools_ToolViewScore", septal_flap_tools_vo.getToolViewScore());
-		map.put("septalflap_Tools_MaxScore", septal_flap_tools_vo.getMaxScore());
-		
-		map.put("septalflap_points", septal_flap_points); // jsp 에서 list 로 받아야함
-		map.put("septalflap_target_points", septal_flap_targetpoints);
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getPathTriggerAsmbly("septalflap_", septal_flap, res_map);	
+		res_map = getToolsAsmbly("septalflap_Tools_", septal_flap_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("transclival_approach");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("septal_flap");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(transclival_approach_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(transclival_approach_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(transclival_approach_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(transclival_approach_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(transclival_approach_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(transclival_approach_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(septal_flap_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(septal_flap_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(septal_flap_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(septal_flap_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(septal_flap_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(septal_flap_id));
-		
-		// transclival approach 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", transclival_approach_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", septal_flap_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngTransclivalApproach();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
+		
 		
 		// transclival approach 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(transclival_approach_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		PathTriggerVOStr septal_flap_vo = tsa_eval_service.getSeptalFlap(transclival_approach_id);
-		map.put("sc_septal_flap", septal_flap_vo.getScore());
+		res_map.put("sc_septal_flap", septal_flap_vo.getScore());
 		VolumeTriggerVOStr sphenoid_cells_removal_vo = tsa_eval_service.getSphenoidCellsRemoval(transclival_approach_id);
-		map.put("sc_sphenoid_cells_removal", sphenoid_cells_removal_vo.getScore());
+		res_map.put("sc_sphenoid_cells_removal", sphenoid_cells_removal_vo.getScore());
 		VolumeTriggerVOStr transclival_drilling_vo = tsa_eval_service.getTransclivalDrilling(transclival_approach_id);
-		map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
+		res_map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
 		
 		// 각 단위 수술 유저 평균
 		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
-		map.put("aver_sc_outer_break", aver_outer_break);
+		res_map.put("aver_sc_outer_break", aver_outer_break);
 		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
-		map.put("aver_sc_septal_flap", aver_septal_flap);
+		res_map.put("aver_sc_septal_flap", aver_septal_flap);
 		int aver_sphenoid_cells_removal = tsa_eval_service.getAverScoreSphenoidCellsRemoval();
-		map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
+		res_map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
 		int aver_transclival_drilling = tsa_eval_service.getAverScoreTransclivalDrilling();
-		map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
+		res_map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewTransclivalApproach_SeptalFlap");
 		return mav;
 	}
@@ -1080,104 +1004,44 @@ public class ResultEvaluationController {
 		ToolsVO sphenoid_cells_removal_tools_vo = tsa_eval_service.getTools(sphenoid_cells_removal_id);
 		List<PointTriggerVO> sphenoid_cells_removal_points = tsa_eval_service.getPointTriggers(sphenoid_cells_removal_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-			
-		map.put("sphenoid_cells_removal_MaxScore", sphenoid_cells_removal.getMaxScore());
-		map.put("sphenoid_cells_removal_Score", sphenoid_cells_removal.getScore());
-		map.put("sphenoid_cells_removal_Note", sphenoid_cells_removal.getNote());
-		map.put("sphenoid_cells_removal_points", sphenoid_cells_removal.getPoints()); 
-		map.put("sphenoid_cells_removal_Position", sphenoid_cells_removal.getPosition());
-		map.put("sphenoid_cells_removal_Rotation", sphenoid_cells_removal.getRotation());
-		map.put("sphenoid_cells_removal_Localcale", sphenoid_cells_removal.getLocalcale());
-		map.put("sphenoid_cells_removal_PinCount", sphenoid_cells_removal.getPinCount());
-		map.put("sphenoid_cells_removal_Pins", sphenoid_cells_removal.getPins());
-		map.put("sphenoid_cells_removal_TargetPins", sphenoid_cells_removal.getTargetPins());
-		
-		map.put("sphenoid_cells_removal_Tools_TouchCount", sphenoid_cells_removal_tools_vo.getTouchCount());
-		map.put("sphenoid_cells_removal_Tools_ToolUseCount", sphenoid_cells_removal_tools_vo.getToolUseCount());
-		map.put("sphenoid_cells_removal_Tools_ToolInnerCount", sphenoid_cells_removal_tools_vo.getToolInnerCount());
-		map.put("sphenoid_cells_removal_Tools_ToolTouchScore", sphenoid_cells_removal_tools_vo.getToolTouchScore());
-		map.put("sphenoid_cells_removal_Tools_ToolViewScore", sphenoid_cells_removal_tools_vo.getToolViewScore());
-		map.put("sphenoid_cells_removal_Tools_MaxScore", sphenoid_cells_removal_tools_vo.getMaxScore());
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getVolumeTriggerAsmbly("sphenoid_cells_removal_", sphenoid_cells_removal, res_map);	
+		res_map = getToolsAsmbly("sphenoid_cells_removal_Tools_", sphenoid_cells_removal_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("transclival_approach");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("sphenoid_cells_removal");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(transclival_approach_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(transclival_approach_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(transclival_approach_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(transclival_approach_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(transclival_approach_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(transclival_approach_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(sphenoid_cells_removal_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(sphenoid_cells_removal_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(sphenoid_cells_removal_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(sphenoid_cells_removal_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(sphenoid_cells_removal_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(sphenoid_cells_removal_id));
-		
-		// transclival approach 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", transclival_approach_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", sphenoid_cells_removal_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngTransclivalApproach();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
+		
 		
 		// transclival approach 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(transclival_approach_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		PathTriggerVOStr septal_flap_vo = tsa_eval_service.getSeptalFlap(transclival_approach_id);
-		map.put("sc_septal_flap", septal_flap_vo.getScore());
+		res_map.put("sc_septal_flap", septal_flap_vo.getScore());
 		VolumeTriggerVOStr sphenoid_cells_removal_vo = tsa_eval_service.getSphenoidCellsRemoval(transclival_approach_id);
-		map.put("sc_sphenoid_cells_removal", sphenoid_cells_removal_vo.getScore());
+		res_map.put("sc_sphenoid_cells_removal", sphenoid_cells_removal_vo.getScore());
 		VolumeTriggerVOStr transclival_drilling_vo = tsa_eval_service.getTransclivalDrilling(transclival_approach_id);
-		map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
+		res_map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
 		
 		// 각 단위 수술 유저 평균
 		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
-		map.put("aver_sc_outer_break", aver_outer_break);
+		res_map.put("aver_sc_outer_break", aver_outer_break);
 		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
-		map.put("aver_sc_septal_flap", aver_septal_flap);
+		res_map.put("aver_sc_septal_flap", aver_septal_flap);
 		int aver_sphenoid_cells_removal = tsa_eval_service.getAverScoreSphenoidCellsRemoval();
-		map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
+		res_map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
 		int aver_transclival_drilling = tsa_eval_service.getAverScoreTransclivalDrilling();
-		map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
+		res_map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewTransclivalApproach_SphenoidCellsRemoval");
 		return mav;
 	}
@@ -1194,104 +1058,43 @@ public class ResultEvaluationController {
 		ToolsVO transclival_drilling_tools_vo = tsa_eval_service.getTools(transclival_drilling_id);
 		List<PointTriggerVO> transclival_drilling_points = tsa_eval_service.getPointTriggers(transclival_drilling_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-			
-		map.put("transclival_drilling_MaxScore", transclival_drilling.getMaxScore());
-		map.put("transclival_drilling_Score", transclival_drilling.getScore());
-		map.put("transclival_drilling_Note", transclival_drilling.getNote());
-		map.put("transclival_drilling_points", transclival_drilling.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("transclival_drilling_Position", transclival_drilling.getPosition());
-		map.put("transclival_drilling_Rotation", transclival_drilling.getRotation());
-		map.put("transclival_drilling_Localcale", transclival_drilling.getLocalcale());
-		map.put("transclival_drilling_PinCount", transclival_drilling.getPinCount());
-		map.put("transclival_drilling_Pins", transclival_drilling.getPins());
-		map.put("transclival_drilling_TargetPins", transclival_drilling.getTargetPins());
-		
-		map.put("transclival_drilling_Tools_TouchCount", transclival_drilling_tools_vo.getTouchCount());
-		map.put("transclival_drilling_Tools_ToolUseCount", transclival_drilling_tools_vo.getToolUseCount());
-		map.put("transclival_drilling_Tools_ToolInnerCount", transclival_drilling_tools_vo.getToolInnerCount());
-		map.put("transclival_drilling_Tools_ToolTouchScore", transclival_drilling_tools_vo.getToolTouchScore());
-		map.put("transclival_drilling_Tools_ToolViewScore", transclival_drilling_tools_vo.getToolViewScore());
-		map.put("transclival_drilling_Tools_MaxScore", transclival_drilling_tools_vo.getMaxScore());
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getVolumeTriggerAsmbly("transclival_drilling_", transclival_drilling, res_map);	
+		res_map = getToolsAsmbly("transclival_drilling_Tools_", transclival_drilling_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("transclival_approach");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("transclival_drilling");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(transclival_approach_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(transclival_approach_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(transclival_approach_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(transclival_approach_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(transclival_approach_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(transclival_approach_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(transclival_drilling_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(transclival_drilling_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(transclival_drilling_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(transclival_drilling_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(transclival_drilling_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(transclival_drilling_id));
-		
-		// transclival approach 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", transclival_approach_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", transclival_drilling_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngTransclivalApproach();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// transclival approach 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(transclival_approach_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		PathTriggerVOStr septal_flap_vo = tsa_eval_service.getSeptalFlap(transclival_approach_id);
-		map.put("sc_septal_flap", septal_flap_vo.getScore());
+		res_map.put("sc_septal_flap", septal_flap_vo.getScore());
 		VolumeTriggerVOStr sphenoid_cells_removal_vo = tsa_eval_service.getSphenoidCellsRemoval(transclival_approach_id);
-		map.put("sc_sphenoid_cells_removal", sphenoid_cells_removal_vo.getScore());
+		res_map.put("sc_sphenoid_cells_removal", sphenoid_cells_removal_vo.getScore());
 		VolumeTriggerVOStr transclival_drilling_vo = tsa_eval_service.getTransclivalDrilling(transclival_approach_id);
-		map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
+		res_map.put("sc_transclival_drilling", transclival_drilling_vo.getScore());
 		
 		// 각 단위 수술 유저 평균
 		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
-		map.put("aver_sc_outer_break", aver_outer_break);
+		res_map.put("aver_sc_outer_break", aver_outer_break);
 		int aver_septal_flap = tsa_eval_service.getAverScoreSeptalFlap();
-		map.put("aver_sc_septal_flap", aver_septal_flap);
+		res_map.put("aver_sc_septal_flap", aver_septal_flap);
 		int aver_sphenoid_cells_removal = tsa_eval_service.getAverScoreSphenoidCellsRemoval();
-		map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
+		res_map.put("aver_sc_sphenoid_cells_removal", aver_sphenoid_cells_removal);
 		int aver_transclival_drilling = tsa_eval_service.getAverScoreTransclivalDrilling();
-		map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
+		res_map.put("aver_sc_transclival_drilling", aver_transclival_drilling);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewTransclivalApproach_TransclivalDrilling");
 		return mav;
 	}
@@ -1310,92 +1113,39 @@ public class ResultEvaluationController {
 		List<PointDataVOStr> outerbreak_points = tsa_eval_service.getPoints(outerbreak_id);
 		List<PointDataVOStr> outerbreak_targetpoints = tsa_eval_service.getTargetPoints(outerbreak_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-		
-		map.put("outerbreak_MaxScore", outerbreak.getMaxScore());
-		map.put("outerbreak_Score", outerbreak.getScore());
-		map.put("outerbreak_Note", outerbreak.getNote());
-		map.put("outerbreak_Position", outerbreak.getPosition());
-		map.put("outerbreak_Rotation", outerbreak.getRotation());
-		map.put("outerbreak_Scale", outerbreak.getScale());
-		
-		map.put("outerbreak_Tools_TouchCount", outerbreak_tools_vo.getTouchCount());
-		map.put("outerbreak_Tools_ToolUseCount", outerbreak_tools_vo.getToolUseCount());
-		map.put("outerbreak_Tools_ToolInnerCount", outerbreak_tools_vo.getToolInnerCount());
-		map.put("outerbreak_Tools_ToolTouchScore", outerbreak_tools_vo.getToolTouchScore());
-		map.put("outerbreak_Tools_ToolViewScore", outerbreak_tools_vo.getToolViewScore());
-		map.put("outerbreak_Tools_MaxScore", outerbreak_tools_vo.getMaxScore());
-		
-		map.put("outerbreak_points", outerbreak_points); 
-		map.put("outerbreak_target_points", outerbreak_targetpoints);
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getPathTriggerAsmbly("outerbreak_", outerbreak, res_map);	
+		res_map = getToolsAsmbly("outerbreak_Tools_", outerbreak_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_maxillary_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("outer_break");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_maxillary_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(outerbreak_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(outerbreak_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(outerbreak_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(outerbreak_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(outerbreak_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(outerbreak_id));
-		
-		// acidosis_maxillary_sinus 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_maxillary_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", outerbreak_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisMaxillarySinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// acidosis_maxillary_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_maxillary_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_maxillary_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		BoxTriggerVO superior_turbinate_vo = tsa_eval_service.getSuperiorTurbinate(acidosis_maxillary_sinus_id);
-		map.put("sc_superior_turbinate", superior_turbinate_vo.getScore());
+		res_map.put("sc_superior_turbinate", superior_turbinate_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_superior_turbinate = tsa_eval_service.getAverSuperiorTurbinate();
+		res_map.put("aver_sc_superior_turbinate", aver_superior_turbinate);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisMaxillarySinus_OuterBreak");
 		return mav;
 	}
@@ -1412,92 +1162,39 @@ public class ResultEvaluationController {
 		ToolsVO uncinectomy_tools_vo = tsa_eval_service.getTools(uncinectomy_id);
 		List<PointTriggerVO> uncinectomy_points = tsa_eval_service.getPointTriggers(uncinectomy_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-			
-		map.put("uncinectomy_MaxScore", uncinectomy.getMaxScore());
-		map.put("uncinectomy_Score", uncinectomy.getScore());
-		map.put("uncinectomy_Note", uncinectomy.getNote());
-		map.put("uncinectomy_points", uncinectomy.getPoints()); 
-		map.put("uncinectomy_Position", uncinectomy.getPosition());
-		map.put("uncinectomy_Rotation", uncinectomy.getRotation());
-		map.put("uncinectomy_Localcale", uncinectomy.getLocalcale());
-		map.put("uncinectomy_PinCount", uncinectomy.getPinCount());
-		map.put("uncinectomy_Pins", uncinectomy.getPins());
-		map.put("uncinectomy_TargetPins", uncinectomy.getTargetPins());
-		
-		map.put("uncinectomy_Tools_TouchCount", uncinectomy_tools_vo.getTouchCount());
-		map.put("uncinectomy_Tools_ToolUseCount", uncinectomy_tools_vo.getToolUseCount());
-		map.put("uncinectomy_Tools_ToolInnerCount", uncinectomy_tools_vo.getToolInnerCount());
-		map.put("uncinectomy_Tools_ToolTouchScore", uncinectomy_tools_vo.getToolTouchScore());
-		map.put("uncinectomy_Tools_ToolViewScore", uncinectomy_tools_vo.getToolViewScore());
-		map.put("uncinectomy_Tools_MaxScore", uncinectomy_tools_vo.getMaxScore());
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getVolumeTriggerAsmbly("uncinectomy_", uncinectomy, res_map);	
+		res_map = getToolsAsmbly("uncinectomy_Tools_", uncinectomy_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_maxillary_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("uncinectomy");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_maxillary_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(uncinectomy_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(uncinectomy_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(uncinectomy_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(uncinectomy_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(uncinectomy_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(uncinectomy_id));
-		
-		// acidosis_maxillary_sinus 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_maxillary_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", uncinectomy_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisMaxillarySinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// acidosis_maxillary_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_maxillary_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_maxillary_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		BoxTriggerVO superior_turbinate_vo = tsa_eval_service.getSuperiorTurbinate(acidosis_maxillary_sinus_id);
-		map.put("sc_superior_turbinate", superior_turbinate_vo.getScore());
+		res_map.put("sc_superior_turbinate", superior_turbinate_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);		
+		int aver_superior_turbinate = tsa_eval_service.getAverSuperiorTurbinate();
+		res_map.put("aver_sc_aver_superior_turbinate", aver_superior_turbinate);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisMaxillarySinus_Uncinectomy");
 		return mav;
 	}
@@ -1513,89 +1210,39 @@ public class ResultEvaluationController {
 		String superior_turbinate_id = superior_turbinate.getID();
 		ToolsVO superior_turbinate_tools_vo = tsa_eval_service.getTools(superior_turbinate_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-			
-		map.put("superior_turbinate_MaxScore", superior_turbinate.getMaxScore());
-		map.put("superior_turbinate_Score", superior_turbinate.getScore());
-		map.put("superior_turbinate_Note", superior_turbinate.getNote());
-		map.put("superior_turbinate_InnerTriggerCount", superior_turbinate.getInnerTriggerCount());
-		map.put("superior_turbinate_OuterTriggerCount", superior_turbinate.getOuterTriggerCount());
-		map.put("superior_turbinate_InnerTriggerTouchCount", superior_turbinate.getInnerTriggerTouchCount());
-		map.put("superior_turbinate_OuterTriggerTouchCount", superior_turbinate.getOuterTriggerTouchCount());
-		
-		map.put("superior_turbinate_Tools_TouchCount", superior_turbinate_tools_vo.getTouchCount());
-		map.put("superior_turbinate_Tools_ToolUseCount", superior_turbinate_tools_vo.getToolUseCount());
-		map.put("superior_turbinate_Tools_ToolInnerCount", superior_turbinate_tools_vo.getToolInnerCount());
-		map.put("superior_turbinate_Tools_ToolTouchScore", superior_turbinate_tools_vo.getToolTouchScore());
-		map.put("superior_turbinate_Tools_ToolViewScore", superior_turbinate_tools_vo.getToolViewScore());
-		map.put("superior_turbinate_Tools_MaxScore", superior_turbinate_tools_vo.getMaxScore());
-		
-		// 전문가 main oper 도구 점수
-		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_maxillary_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
-		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("superior_turbinate");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_maxillary_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_maxillary_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(superior_turbinate_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(superior_turbinate_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(superior_turbinate_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(superior_turbinate_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(superior_turbinate_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(superior_turbinate_id));
-		
-		// acidosis_maxillary_sinus 점수분포
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getBoxTriggerAsmbly("superior_turbinate_", superior_turbinate, res_map);	
+		res_map = getToolsAsmbly("superior_turbinate_Tools_", superior_turbinate_tools_vo, res_map);
+		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_frontal_sinus");
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
+		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("outer_break");
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_maxillary_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", superior_turbinate_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisMaxillarySinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// acidosis_maxillary_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_maxillary_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_maxillary_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		BoxTriggerVO superior_turbinate_vo = tsa_eval_service.getSuperiorTurbinate(acidosis_maxillary_sinus_id);
-		map.put("sc_superior_turbinate", superior_turbinate_vo.getScore());
+		res_map.put("sc_superior_turbinate", superior_turbinate_vo.getScore());
 		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);		
+		int aver_superior_turbinate = tsa_eval_service.getAverSuperiorTurbinate();
+		res_map.put("aver_sc_aver_superior_turbinate", aver_superior_turbinate);
+				
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisMaxillarySinus_SuperiorTurbinate");
 		return mav;
 	}
@@ -1614,94 +1261,43 @@ public class ResultEvaluationController {
 		List<PointDataVOStr> outerbreak_points = tsa_eval_service.getPoints(outerbreak_id);
 		List<PointDataVOStr> outerbreak_targetpoints = tsa_eval_service.getTargetPoints(outerbreak_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-		
-		map.put("outerbreak_MaxScore", outerbreak.getMaxScore());
-		map.put("outerbreak_Score", outerbreak.getScore());
-		map.put("outerbreak_Note", outerbreak.getNote());
-		map.put("outerbreak_Position", outerbreak.getPosition());
-		map.put("outerbreak_Rotation", outerbreak.getRotation());
-		map.put("outerbreak_Scale", outerbreak.getScale());
-		
-		map.put("outerbreak_Tools_TouchCount", outerbreak_tools_vo.getTouchCount());
-		map.put("outerbreak_Tools_ToolUseCount", outerbreak_tools_vo.getToolUseCount());
-		map.put("outerbreak_Tools_ToolInnerCount", outerbreak_tools_vo.getToolInnerCount());
-		map.put("outerbreak_Tools_ToolTouchScore", outerbreak_tools_vo.getToolTouchScore());
-		map.put("outerbreak_Tools_ToolViewScore", outerbreak_tools_vo.getToolViewScore());
-		map.put("outerbreak_Tools_MaxScore", outerbreak_tools_vo.getMaxScore());
-		
-		map.put("outerbreak_points", outerbreak_points); 
-		map.put("outerbreak_target_points", outerbreak_targetpoints);
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getPathTriggerAsmbly("outerbreak_", outerbreak, res_map);	
+		res_map = getToolsAsmbly("outerbreak_Tools_", outerbreak_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_frontal_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("outer_break");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_frontal_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_frontal_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_frontal_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(outerbreak_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(outerbreak_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(outerbreak_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(outerbreak_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(outerbreak_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(outerbreak_id));
-		
-		// acidosis frontal sinus 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_frontal_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", outerbreak_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisFrontalSinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// acidosis_frontal_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_frontal_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_frontal_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_ethmoidectomy_vo = tsa_eval_service.getAnteriorEthmoidectomy(acidosis_frontal_sinus_id);
-		map.put("sc_anterior_ethmoidectomy", anterior_ethmoidectomy_vo.getScore());
+		res_map.put("sc_anterior_ethmoidectomy", anterior_ethmoidectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_sinus_vo = tsa_eval_service.getAnteriorSinus(acidosis_frontal_sinus_id);
-		map.put("sc_anterior_sinus", anterior_sinus_vo.getScore());
+		res_map.put("sc_anterior_sinus", anterior_sinus_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_anterior_ethmoidectomy = tsa_eval_service.getAverAnteriorEthmoidectomy();
+		res_map.put("aver_sc_aver_anterior_ethmoidectomy", aver_anterior_ethmoidectomy);
+		int aver_anterior_sinus = tsa_eval_service.getAverScoreAnteriorSinus();
+		res_map.put("aver_sc_anterior_sinus", aver_anterior_sinus);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisFrontalSinus_OuterBreak");
 		return mav;
 	}
@@ -1718,94 +1314,43 @@ public class ResultEvaluationController {
 		ToolsVO uncinectomy_tools_vo = tsa_eval_service.getTools(uncinectomy_id);
 		List<PointTriggerVO> uncinectomy_points = tsa_eval_service.getPointTriggers(uncinectomy_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-			
-		map.put("uncinectomy_MaxScore", uncinectomy.getMaxScore());
-		map.put("uncinectomy_Score", uncinectomy.getScore());
-		map.put("uncinectomy_Note", uncinectomy.getNote());
-		map.put("uncinectomy_points", uncinectomy.getPoints()); 
-		map.put("uncinectomy_Position", uncinectomy.getPosition());
-		map.put("uncinectomy_Rotation", uncinectomy.getRotation());
-		map.put("uncinectomy_Localcale", uncinectomy.getLocalcale());
-		map.put("uncinectomy_PinCount", uncinectomy.getPinCount());
-		map.put("uncinectomy_Pins", uncinectomy.getPins());
-		map.put("uncinectomy_TargetPins", uncinectomy.getTargetPins());
-		
-		map.put("uncinectomy_Tools_TouchCount", uncinectomy_tools_vo.getTouchCount());
-		map.put("uncinectomy_Tools_ToolUseCount", uncinectomy_tools_vo.getToolUseCount());
-		map.put("uncinectomy_Tools_ToolInnerCount", uncinectomy_tools_vo.getToolInnerCount());
-		map.put("uncinectomy_Tools_ToolTouchScore", uncinectomy_tools_vo.getToolTouchScore());
-		map.put("uncinectomy_Tools_ToolViewScore", uncinectomy_tools_vo.getToolViewScore());
-		map.put("uncinectomy_Tools_MaxScore", uncinectomy_tools_vo.getMaxScore());
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getVolumeTriggerAsmbly("uncinectomy_", uncinectomy, res_map);	
+		res_map = getToolsAsmbly("uncinectomy_Tools_", uncinectomy_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_frontal_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("uncinectomy");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_frontal_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_frontal_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_frontal_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(uncinectomy_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(uncinectomy_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(uncinectomy_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(uncinectomy_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(uncinectomy_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(uncinectomy_id));
-		
-		// acidosis frontal sinus 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_frontal_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", uncinectomy_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisFrontalSinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// acidosis_frontal_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_frontal_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_frontal_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_ethmoidectomy_vo = tsa_eval_service.getAnteriorEthmoidectomy(acidosis_frontal_sinus_id);
-		map.put("sc_anterior_ethmoidectomy", anterior_ethmoidectomy_vo.getScore());
+		res_map.put("sc_anterior_ethmoidectomy", anterior_ethmoidectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_sinus_vo = tsa_eval_service.getAnteriorSinus(acidosis_frontal_sinus_id);
-		map.put("sc_anterior_sinus", anterior_sinus_vo.getScore());
+		res_map.put("sc_anterior_sinus", anterior_sinus_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_anterior_ethmoidectomy = tsa_eval_service.getAverAnteriorEthmoidectomy();
+		res_map.put("aver_sc_aver_anterior_ethmoidectomy", aver_anterior_ethmoidectomy);
+		int aver_anterior_sinus = tsa_eval_service.getAverScoreAnteriorSinus();
+		res_map.put("aver_sc_anterior_sinus", aver_anterior_sinus);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisFrontalSinus_Uncinectomy");
 		return mav;
 	}
@@ -1821,95 +1366,44 @@ public class ResultEvaluationController {
 		String anterior_ethmoidectomy_id = anterior_ethmoidectomy.getID();
 		ToolsVO anterior_ethmoidectomy_tools_vo = tsa_eval_service.getTools(anterior_ethmoidectomy_id);
 		List<PointTriggerVO> anterior_ethmoidectomy_points = tsa_eval_service.getPointTriggers(anterior_ethmoidectomy_id);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-			
-		map.put("anterior_ethmoidectomy_MaxScore", anterior_ethmoidectomy.getMaxScore());
-		map.put("anterior_ethmoidectomy_Score", anterior_ethmoidectomy.getScore());
-		map.put("anterior_ethmoidectomy_Note", anterior_ethmoidectomy.getNote());
-		map.put("anterior_ethmoidectomy_points", anterior_ethmoidectomy.getPoints()); 
-		map.put("anterior_ethmoidectomy_Position", anterior_ethmoidectomy.getPosition());
-		map.put("anterior_ethmoidectomy_Rotation", anterior_ethmoidectomy.getRotation());
-		map.put("anterior_ethmoidectomy_Localcale", anterior_ethmoidectomy.getLocalcale());
-		map.put("anterior_ethmoidectomy_PinCount", anterior_ethmoidectomy.getPinCount());
-		map.put("anterior_ethmoidectomy_Pins", anterior_ethmoidectomy.getPins());
-		map.put("anterior_ethmoidectomy_TargetPins", anterior_ethmoidectomy.getTargetPins());
-		
-		map.put("anterior_ethmoidectomy_Tools_TouchCount", anterior_ethmoidectomy_tools_vo.getTouchCount());
-		map.put("anterior_ethmoidectomy_Tools_ToolUseCount", anterior_ethmoidectomy_tools_vo.getToolUseCount());
-		map.put("anterior_ethmoidectomy_Tools_ToolInnerCount", anterior_ethmoidectomy_tools_vo.getToolInnerCount());
-		map.put("anterior_ethmoidectomy_Tools_ToolTouchScore", anterior_ethmoidectomy_tools_vo.getToolTouchScore());
-		map.put("anterior_ethmoidectomy_Tools_ToolViewScore", anterior_ethmoidectomy_tools_vo.getToolViewScore());
-		map.put("anterior_ethmoidectomy_Tools_MaxScore", anterior_ethmoidectomy_tools_vo.getMaxScore());
-		
-		// 전문가 main oper 도구 점수
+	
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getVolumeTriggerAsmbly("anterior_ethmoidectomy_", anterior_ethmoidectomy, res_map);	
+		res_map = getToolsAsmbly("anterior_ethmoidectomy_Tools_", anterior_ethmoidectomy_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_frontal_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("anterior_ethmoidectomy");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_frontal_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_frontal_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_frontal_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(anterior_ethmoidectomy_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(anterior_ethmoidectomy_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(anterior_ethmoidectomy_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(anterior_ethmoidectomy_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(anterior_ethmoidectomy_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(anterior_ethmoidectomy_id));
-		
-		// acidosis frontal sinus 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_frontal_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", anterior_ethmoidectomy_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisFrontalSinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// acidosis_frontal_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_frontal_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_frontal_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_ethmoidectomy_vo = tsa_eval_service.getAnteriorEthmoidectomy(acidosis_frontal_sinus_id);
-		map.put("sc_anterior_ethmoidectomy", anterior_ethmoidectomy_vo.getScore());
+		res_map.put("sc_anterior_ethmoidectomy", anterior_ethmoidectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_sinus_vo = tsa_eval_service.getAnteriorSinus(acidosis_frontal_sinus_id);
-		map.put("sc_anterior_sinus", anterior_sinus_vo.getScore());
+		res_map.put("sc_anterior_sinus", anterior_sinus_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_anterior_ethmoidectomy = tsa_eval_service.getAverAnteriorEthmoidectomy();
+		res_map.put("aver_sc_aver_anterior_ethmoidectomy", aver_anterior_ethmoidectomy);
+		int aver_anterior_sinus = tsa_eval_service.getAverScoreAnteriorSinus();
+		res_map.put("aver_sc_anterior_sinus", aver_anterior_sinus);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisFrontalSinus_AnteriorEthmoidectomy");
 		return mav;
 	}
@@ -1926,94 +1420,43 @@ public class ResultEvaluationController {
 		ToolsVO anterior_sinus_tools_vo = tsa_eval_service.getTools(anterior_sinus_id);
 		List<PointTriggerVO> anterior_sinus_points = tsa_eval_service.getPointTriggers(anterior_sinus_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-			
-		map.put("anterior_sinus_MaxScore", anterior_sinus.getMaxScore());
-		map.put("anterior_sinus_Score", anterior_sinus.getScore());
-		map.put("anterior_sinus_Note", anterior_sinus.getNote());
-		map.put("anterior_sinus_points", anterior_sinus.getPoints()); 
-		map.put("anterior_sinus_Position", anterior_sinus.getPosition());
-		map.put("anterior_sinus_Rotation", anterior_sinus.getRotation());
-		map.put("anterior_sinus_Localcale", anterior_sinus.getLocalcale());
-		map.put("anterior_sinus_PinCount", anterior_sinus.getPinCount());
-		map.put("anterior_sinus_Pins", anterior_sinus.getPins());
-		map.put("anterior_sinus_TargetPins", anterior_sinus.getTargetPins());
-		
-		map.put("anterior_sinus_Tools_TouchCount", anterior_sinus_tools_vo.getTouchCount());
-		map.put("anterior_sinus_Tools_ToolUseCount", anterior_sinus_tools_vo.getToolUseCount());
-		map.put("anterior_sinus_Tools_ToolInnerCount", anterior_sinus_tools_vo.getToolInnerCount());
-		map.put("anterior_sinus_Tools_ToolTouchScore", anterior_sinus_tools_vo.getToolTouchScore());
-		map.put("anterior_sinus_Tools_ToolViewScore", anterior_sinus_tools_vo.getToolViewScore());
-		map.put("anterior_sinus_Tools_MaxScore", anterior_sinus_tools_vo.getMaxScore());
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getVolumeTriggerAsmbly("anterior_sinus_", anterior_sinus, res_map);	
+		res_map = getToolsAsmbly("anterior_sinus_Tools_", anterior_sinus_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_frontal_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("anterior_sinus");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_frontal_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_frontal_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_frontal_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_frontal_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(anterior_sinus_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(anterior_sinus_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(anterior_sinus_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(anterior_sinus_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(anterior_sinus_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(anterior_sinus_id));
-		
-		// acidosis frontal sinus 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_frontal_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", anterior_sinus_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisFrontalSinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// acidosis_frontal_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_frontal_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_frontal_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_ethmoidectomy_vo = tsa_eval_service.getAnteriorEthmoidectomy(acidosis_frontal_sinus_id);
-		map.put("sc_anterior_ethmoidectomy", anterior_ethmoidectomy_vo.getScore());
+		res_map.put("sc_anterior_ethmoidectomy", anterior_ethmoidectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_sinus_vo = tsa_eval_service.getAnteriorSinus(acidosis_frontal_sinus_id);
-		map.put("sc_anterior_sinus", anterior_sinus_vo.getScore());
+		res_map.put("sc_anterior_sinus", anterior_sinus_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_anterior_ethmoidectomy = tsa_eval_service.getAverAnteriorEthmoidectomy();
+		res_map.put("aver_sc_aver_anterior_ethmoidectomy", aver_anterior_ethmoidectomy);
+		int aver_anterior_sinus = tsa_eval_service.getAverScoreAnteriorSinus();
+		res_map.put("aver_sc_anterior_sinus", aver_anterior_sinus);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisFrontalSinus_AnteriorSinus");
 		return mav;
 	}
@@ -2032,94 +1475,43 @@ public class ResultEvaluationController {
 		List<PointDataVOStr> outerbreak_points = tsa_eval_service.getPoints(outerbreak_id);
 		List<PointDataVOStr> outerbreak_targetpoints = tsa_eval_service.getTargetPoints(outerbreak_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-		
-		map.put("outerbreak_MaxScore", outerbreak.getMaxScore());
-		map.put("outerbreak_Score", outerbreak.getScore());
-		map.put("outerbreak_Note", outerbreak.getNote());
-		map.put("outerbreak_Position", outerbreak.getPosition());
-		map.put("outerbreak_Rotation", outerbreak.getRotation());
-		map.put("outerbreak_Scale", outerbreak.getScale());
-		
-		map.put("outerbreak_Tools_TouchCount", outerbreak_tools_vo.getTouchCount());
-		map.put("outerbreak_Tools_ToolUseCount", outerbreak_tools_vo.getToolUseCount());
-		map.put("outerbreak_Tools_ToolInnerCount", outerbreak_tools_vo.getToolInnerCount());
-		map.put("outerbreak_Tools_ToolTouchScore", outerbreak_tools_vo.getToolTouchScore());
-		map.put("outerbreak_Tools_ToolViewScore", outerbreak_tools_vo.getToolViewScore());
-		map.put("outerbreak_Tools_MaxScore", outerbreak_tools_vo.getMaxScore());
-		
-		map.put("outerbreak_points", outerbreak_points); 
-		map.put("outerbreak_target_points", outerbreak_targetpoints);
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getPathTriggerAsmbly("outerbreak_", outerbreak, res_map);	
+		res_map = getToolsAsmbly("outerbreak_Tools_", outerbreak_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_ethmoidal_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("outer_break");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_ethmoidal_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(outerbreak_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(outerbreak_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(outerbreak_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(outerbreak_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(outerbreak_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(outerbreak_id));
-		
-		// acidosis frontal sinus 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_ethmoidal_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", outerbreak_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisEthmoidalSinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// acidosis_ethmoidal_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_ethmoidal_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_ethmoidal_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_ethmoidal_air_cell_removal_vo = tsa_eval_service.getAnteriorEthmoidalAirCellRemoval(acidosis_ethmoidal_sinus_id);
-		map.put("sc_anterior_ethmoidal_air_cell_removal", anterior_ethmoidal_air_cell_removal_vo.getScore());
+		res_map.put("sc_anterior_ethmoidal_air_cell_removal", anterior_ethmoidal_air_cell_removal_vo.getScore());
 		VolumeTriggerVOStr posterior_air_cell_removal_vo = tsa_eval_service.getPosteriorAirCellRemoval(acidosis_ethmoidal_sinus_id);
-		map.put("sc_posterior_air_cell_removal", posterior_air_cell_removal_vo.getScore());
+		res_map.put("sc_posterior_air_cell_removal", posterior_air_cell_removal_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_anterior_ethmoidal_air_cell_removal = tsa_eval_service.getAverScoreAnteriorEthmoidalAirCellRemoval();
+		res_map.put("aver_sc_anterior_ethmoidal_air_cell_removal", aver_anterior_ethmoidal_air_cell_removal);
+		int aver_posterior_air_cell_removal = tsa_eval_service.getAverScorePosteriorAirCellRemoval();
+		res_map.put("aver_sc_posterior_air_cell_removal", aver_posterior_air_cell_removal);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisEthmoidalSinus_OuterBreak");
 		return mav;
 	}
@@ -2136,94 +1528,43 @@ public class ResultEvaluationController {
 		ToolsVO uncinectomy_tools_vo = tsa_eval_service.getTools(uncinectomy_id);
 		List<PointTriggerVO> uncinectomy_points = tsa_eval_service.getPointTriggers(uncinectomy_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-			
-		map.put("uncinectomy_MaxScore", uncinectomy.getMaxScore());
-		map.put("uncinectomy_Score", uncinectomy.getScore());
-		map.put("uncinectomy_Note", uncinectomy.getNote());
-		map.put("uncinectomy_points", uncinectomy.getPoints()); 
-		map.put("uncinectomy_Position", uncinectomy.getPosition());
-		map.put("uncinectomy_Rotation", uncinectomy.getRotation());
-		map.put("uncinectomy_Localcale", uncinectomy.getLocalcale());
-		map.put("uncinectomy_PinCount", uncinectomy.getPinCount());
-		map.put("uncinectomy_Pins", uncinectomy.getPins());
-		map.put("uncinectomy_TargetPins", uncinectomy.getTargetPins());
-		
-		map.put("uncinectomy_Tools_TouchCount", uncinectomy_tools_vo.getTouchCount());
-		map.put("uncinectomy_Tools_ToolUseCount", uncinectomy_tools_vo.getToolUseCount());
-		map.put("uncinectomy_Tools_ToolInnerCount", uncinectomy_tools_vo.getToolInnerCount());
-		map.put("uncinectomy_Tools_ToolTouchScore", uncinectomy_tools_vo.getToolTouchScore());
-		map.put("uncinectomy_Tools_ToolViewScore", uncinectomy_tools_vo.getToolViewScore());
-		map.put("uncinectomy_Tools_MaxScore", uncinectomy_tools_vo.getMaxScore());
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getVolumeTriggerAsmbly("uncinectomy_", uncinectomy, res_map);	
+		res_map = getToolsAsmbly("uncinectomy_Tools_", uncinectomy_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_ethmoidal_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("uncinectomy");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_ethmoidal_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(uncinectomy_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(uncinectomy_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(uncinectomy_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(uncinectomy_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(uncinectomy_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(uncinectomy_id));
-		
-		// acidosis frontal sinus 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_ethmoidal_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", uncinectomy_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisEthmoidalSinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// acidosis_ethmoidal_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_ethmoidal_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_ethmoidal_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_ethmoidal_air_cell_removal_vo = tsa_eval_service.getAnteriorEthmoidalAirCellRemoval(acidosis_ethmoidal_sinus_id);
-		map.put("sc_anterior_ethmoidal_air_cell_removal", anterior_ethmoidal_air_cell_removal_vo.getScore());
+		res_map.put("sc_anterior_ethmoidal_air_cell_removal", anterior_ethmoidal_air_cell_removal_vo.getScore());
 		VolumeTriggerVOStr posterior_air_cell_removal_vo = tsa_eval_service.getPosteriorAirCellRemoval(acidosis_ethmoidal_sinus_id);
-		map.put("sc_posterior_air_cell_removal", posterior_air_cell_removal_vo.getScore());
+		res_map.put("sc_posterior_air_cell_removal", posterior_air_cell_removal_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_anterior_ethmoidal_air_cell_removal = tsa_eval_service.getAverScoreAnteriorEthmoidalAirCellRemoval();
+		res_map.put("aver_sc_anterior_ethmoidal_air_cell_removal", aver_anterior_ethmoidal_air_cell_removal);
+		int aver_posterior_air_cell_removal = tsa_eval_service.getAverScorePosteriorAirCellRemoval();
+		res_map.put("aver_sc_posterior_air_cell_removal", aver_posterior_air_cell_removal);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisEthmoidalSinus_Uncinectomy");
 		return mav;
 	}
@@ -2240,94 +1581,43 @@ public class ResultEvaluationController {
 		ToolsVO anterior_ethmoidal_air_cell_removal_tools_vo = tsa_eval_service.getTools(anterior_ethmoidal_air_cell_removal_id);
 		List<PointTriggerVO> anterior_ethmoidal_air_cell_removal_points = tsa_eval_service.getPointTriggers(anterior_ethmoidal_air_cell_removal_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-			
-		map.put("anterior_ethmoidal_air_cell_removal_MaxScore", anterior_ethmoidal_air_cell_removal.getMaxScore());
-		map.put("anterior_ethmoidal_air_cell_removal_Score", anterior_ethmoidal_air_cell_removal.getScore());
-		map.put("anterior_ethmoidal_air_cell_removal_Note", anterior_ethmoidal_air_cell_removal.getNote());
-		map.put("anterior_ethmoidal_air_cell_removal_points", anterior_ethmoidal_air_cell_removal.getPoints()); 
-		map.put("anterior_ethmoidal_air_cell_removal_Position", anterior_ethmoidal_air_cell_removal.getPosition());
-		map.put("anterior_ethmoidal_air_cell_removal_Rotation", anterior_ethmoidal_air_cell_removal.getRotation());
-		map.put("anterior_ethmoidal_air_cell_removal_Localcale", anterior_ethmoidal_air_cell_removal.getLocalcale());
-		map.put("anterior_ethmoidal_air_cell_removal_PinCount", anterior_ethmoidal_air_cell_removal.getPinCount());
-		map.put("anterior_ethmoidal_air_cell_removal_Pins", anterior_ethmoidal_air_cell_removal.getPins());
-		map.put("anterior_ethmoidal_air_cell_removal_TargetPins", anterior_ethmoidal_air_cell_removal.getTargetPins());
-		
-		map.put("anterior_ethmoidal_air_cell_removal_Tools_TouchCount", anterior_ethmoidal_air_cell_removal_tools_vo.getTouchCount());
-		map.put("anterior_ethmoidal_air_cell_removal_Tools_ToolUseCount", anterior_ethmoidal_air_cell_removal_tools_vo.getToolUseCount());
-		map.put("anterior_ethmoidal_air_cell_removal_Tools_ToolInnerCount", anterior_ethmoidal_air_cell_removal_tools_vo.getToolInnerCount());
-		map.put("anterior_ethmoidal_air_cell_removal_Tools_ToolTouchScore", anterior_ethmoidal_air_cell_removal_tools_vo.getToolTouchScore());
-		map.put("anterior_ethmoidal_air_cell_removal_Tools_ToolViewScore", anterior_ethmoidal_air_cell_removal_tools_vo.getToolViewScore());
-		map.put("anterior_ethmoidal_air_cell_removal_Tools_MaxScore", anterior_ethmoidal_air_cell_removal_tools_vo.getMaxScore());
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getVolumeTriggerAsmbly("anterior_ethmoidal_air_cell_removal_", anterior_ethmoidal_air_cell_removal, res_map);	
+		res_map = getToolsAsmbly("anterior_ethmoidal_air_cell_removal_Tools_", anterior_ethmoidal_air_cell_removal_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_ethmoidal_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("anterior_ethmoidal_air_cell_removal");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_ethmoidal_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(anterior_ethmoidal_air_cell_removal_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(anterior_ethmoidal_air_cell_removal_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(anterior_ethmoidal_air_cell_removal_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(anterior_ethmoidal_air_cell_removal_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(anterior_ethmoidal_air_cell_removal_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(anterior_ethmoidal_air_cell_removal_id));
-		
-		// acidosis frontal sinus 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_ethmoidal_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", anterior_ethmoidal_air_cell_removal_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisEthmoidalSinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
 		// acidosis_ethmoidal_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_ethmoidal_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_ethmoidal_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_ethmoidal_air_cell_removal_vo = tsa_eval_service.getAnteriorEthmoidalAirCellRemoval(acidosis_ethmoidal_sinus_id);
-		map.put("sc_anterior_ethmoidal_air_cell_removal", anterior_ethmoidal_air_cell_removal_vo.getScore());
+		res_map.put("sc_anterior_ethmoidal_air_cell_removal", anterior_ethmoidal_air_cell_removal_vo.getScore());
 		VolumeTriggerVOStr posterior_air_cell_removal_vo = tsa_eval_service.getPosteriorAirCellRemoval(acidosis_ethmoidal_sinus_id);
-		map.put("sc_posterior_air_cell_removal", posterior_air_cell_removal_vo.getScore());
+		res_map.put("sc_posterior_air_cell_removal", posterior_air_cell_removal_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_anterior_ethmoidal_air_cell_removal = tsa_eval_service.getAverScoreAnteriorEthmoidalAirCellRemoval();
+		res_map.put("aver_sc_anterior_ethmoidal_air_cell_removal", aver_anterior_ethmoidal_air_cell_removal);
+		int aver_posterior_air_cell_removal = tsa_eval_service.getAverScorePosteriorAirCellRemoval();
+		res_map.put("aver_sc_posterior_air_cell_removal", aver_posterior_air_cell_removal);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisEthmoidalSinus_AnteriorEthmoidalAirCellRemoval");
 		return mav;
 	}
@@ -2344,883 +1634,138 @@ public class ResultEvaluationController {
 		ToolsVO posterior_air_cell_removal_tools_vo = tsa_eval_service.getTools(posterior_air_cell_removal_id);
 		List<PointTriggerVO> posterior_air_cell_removal_points = tsa_eval_service.getPointTriggers(posterior_air_cell_removal_id);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		map.put("common_Name", common.getName());
-		map.put("common_ClassNo", common.getClassNo());
-		map.put("common_Date", common.getDate());
-		map.put("common_ActionCount", common.getActionCount());
-		map.put("common_TotalScore", common.getTotalScore());
-		
-		map.put("tools_TouchCount", tools_vo.getTouchCount());
-		map.put("tools_ToolUseCount", tools_vo.getToolUseCount());
-		map.put("tools_ToolInnerCount", tools_vo.getToolInnerCount());
-		map.put("tools_ToolTouchScore", tools_vo.getToolTouchScore());
-		map.put("tools_ToolViewScore", tools_vo.getToolViewScore());
-		map.put("tools_MaxScore", tools_vo.getMaxScore());
-			
-		map.put("posterior_air_cell_removal_MaxScore", posterior_air_cell_removal.getMaxScore());
-		map.put("posterior_air_cell_removal_Score", posterior_air_cell_removal.getScore());
-		map.put("posterior_air_cell_removal_Note", posterior_air_cell_removal.getNote());
-		map.put("posterior_air_cell_removal_points", posterior_air_cell_removal.getPoints()); 
-		map.put("posterior_air_cell_removal_Position", posterior_air_cell_removal.getPosition());
-		map.put("posterior_air_cell_removal_Rotation", posterior_air_cell_removal.getRotation());
-		map.put("posterior_air_cell_removal_Localcale", posterior_air_cell_removal.getLocalcale());
-		map.put("posterior_air_cell_removal_PinCount", posterior_air_cell_removal.getPinCount());
-		map.put("posterior_air_cell_removal_Pins", posterior_air_cell_removal.getPins());
-		map.put("posterior_air_cell_removal_TargetPins", posterior_air_cell_removal.getTargetPins());
-		
-		map.put("posterior_air_cell_removal_Tools_TouchCount", posterior_air_cell_removal_tools_vo.getTouchCount());
-		map.put("posterior_air_cell_removal_Tools_ToolUseCount", posterior_air_cell_removal_tools_vo.getToolUseCount());
-		map.put("posterior_air_cell_removal_Tools_ToolInnerCount", posterior_air_cell_removal_tools_vo.getToolInnerCount());
-		map.put("posterior_air_cell_removal_Tools_ToolTouchScore", posterior_air_cell_removal_tools_vo.getToolTouchScore());
-		map.put("posterior_air_cell_removal_Tools_ToolViewScore", posterior_air_cell_removal_tools_vo.getToolViewScore());
-		map.put("posterior_air_cell_removal_Tools_MaxScore", posterior_air_cell_removal_tools_vo.getMaxScore());
-		
-		// 전문가 main oper 도구 점수
+		HashMap<String, Object> res_map = new HashMap<String, Object>();
+		res_map.put("no", no);
+		res_map = getCommonAsmbly("common_", common, res_map);
+		res_map = getToolsAsmbly("tools_", tools_vo, res_map);
+		res_map = getVolumeTriggerAsmbly("posterior_air_cell_removal_", posterior_air_cell_removal, res_map);	
+		res_map = getToolsAsmbly("posterior_air_cell_removal_Tools_", posterior_air_cell_removal_tools_vo, res_map);
 		ExpertToolsVO main_oper_tool_exvo = tsa_eval_service.getExpertTools("acidosis_ethmoidal_sinus");
-		map.put("mo_ex_TouchCount", main_oper_tool_exvo.getTouchCount());
-		map.put("mo_ex_ToolUseCount", main_oper_tool_exvo.getToolUseCount());
-		map.put("mo_ex_ToolInnerCount", main_oper_tool_exvo.getToolInnerCount());
-		map.put("mo_ex_ToolTouchScore", main_oper_tool_exvo.getToolTouchScore());
-		map.put("mo_ex_ToolViewScore", main_oper_tool_exvo.getToolViewScore());
-		map.put("mo_ex_MaxScore", main_oper_tool_exvo.getMaxScore());
-		
-		// 전문가 sub oper 도구 점수
+		res_map = getExpertToolsAsmbly("mo_ex_", main_oper_tool_exvo, res_map);
 		ExpertToolsVO sub_oper_tool_exvo = tsa_eval_service.getExpertTools("posterior_air_cell_removal");
-		map.put("so_ex_TouchCount", sub_oper_tool_exvo.getTouchCount());
-		map.put("so_ex_ToolUseCount", sub_oper_tool_exvo.getToolUseCount());
-		map.put("so_ex_ToolInnerCount", sub_oper_tool_exvo.getToolInnerCount());
-		map.put("so_ex_ToolTouchScore", sub_oper_tool_exvo.getToolTouchScore());
-		map.put("so_ex_ToolViewScore", sub_oper_tool_exvo.getToolViewScore());
-		map.put("so_ex_MaxScore", sub_oper_tool_exvo.getMaxScore());
-		
-		// 실습자 main oper 평균 점수
-		map.put("aver_moTouchCount", tsa_eval_service.getAverTouchCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolUseCount", tsa_eval_service.getAverToolUseCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolInnerCount", tsa_eval_service.getAverToolInnerCount(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolTouchScore", tsa_eval_service.getAverToolTouchScore(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolViewScore", tsa_eval_service.getAverToolViewScore(acidosis_ethmoidal_sinus_id));
-		map.put("aver_moToolMaxScore", tsa_eval_service.getAverMaxScore(acidosis_ethmoidal_sinus_id));
-		
-		// 실습자 sub oper 도구 평균 점수
-		map.put("aver_soTouchCount", tsa_eval_service.getAverTouchCount(posterior_air_cell_removal_id));
-		map.put("aver_soToolUseCount", tsa_eval_service.getAverToolUseCount(posterior_air_cell_removal_id));
-		map.put("aver_soToolInnerCount", tsa_eval_service.getAverToolInnerCount(posterior_air_cell_removal_id));
-		map.put("aver_soToolTouchScore", tsa_eval_service.getAverToolTouchScore(posterior_air_cell_removal_id));
-		map.put("aver_soToolViewScore", tsa_eval_service.getAverToolViewScore(posterior_air_cell_removal_id));
-		map.put("aver_soToolMaxScore", tsa_eval_service.getAverMaxScore(posterior_air_cell_removal_id));
-		
-		// acidosis frontal sinus 점수분포
+		res_map = getExpertToolsAsmbly("so_ex_", sub_oper_tool_exvo, res_map);
+		res_map = getAverTools("aver_mo", acidosis_ethmoidal_sinus_id, tsa_eval_service, res_map);
+		res_map = getAverTools("aver_so", posterior_air_cell_removal_id, tsa_eval_service, res_map);
 		RangeScoreVO rnscore_vo = tsa_eval_service.getRngAcidosisEthmoidalSinus();
-		map.put("Rn0_to_50", rnscore_vo.getRn0_to_50());
-		map.put("Rn51_to_60", rnscore_vo.getRn51_to_60());
-		map.put("Rn61_to_70", rnscore_vo.getRn61_to_70());
-		map.put("Rn71_to_80", rnscore_vo.getRn71_to_80());
-		map.put("Rn81_to_90", rnscore_vo.getRn81_to_90());
-		map.put("Rn91_to_100", rnscore_vo.getRn91_to_100());
+		res_map = getScoreRange("Rn", rnscore_vo, res_map);
 		
-		// acidosis_ethmoidal_sinus 각 수술단계에 공통적으로 보여지는 표와 그래프를 위해 전체 점수를 가져와야함
 		PathTriggerVOStr outer_break_vo = tsa_eval_service.getOuterBreak(acidosis_ethmoidal_sinus_id); 
-		map.put("sc_outer_break", outer_break_vo.getScore());
+		res_map.put("sc_outer_break", outer_break_vo.getScore());
 		VolumeTriggerVOStr uncinectomy_vo = tsa_eval_service.getUncinectomy(acidosis_ethmoidal_sinus_id);
-		map.put("sc_uncinectomy", uncinectomy_vo.getScore());
+		res_map.put("sc_uncinectomy", uncinectomy_vo.getScore());
 		VolumeTriggerVOStr anterior_ethmoidal_air_cell_removal_vo = tsa_eval_service.getAnteriorEthmoidalAirCellRemoval(acidosis_ethmoidal_sinus_id);
-		map.put("sc_anterior_ethmoidal_air_cell_removal", anterior_ethmoidal_air_cell_removal_vo.getScore());
+		res_map.put("sc_anterior_ethmoidal_air_cell_removal", anterior_ethmoidal_air_cell_removal_vo.getScore());
 		VolumeTriggerVOStr posterior_air_cell_removal_vo = tsa_eval_service.getPosteriorAirCellRemoval(acidosis_ethmoidal_sinus_id);
-		map.put("sc_posterior_air_cell_removal", posterior_air_cell_removal_vo.getScore());
+		res_map.put("sc_posterior_air_cell_removal", posterior_air_cell_removal_vo.getScore());
+		
+		// 각 단위 수술 유저 평균
+		int aver_outer_break = tsa_eval_service.getAverScoreOuterBreak();
+		res_map.put("aver_sc_outer_break", aver_outer_break);
+		int aver_uncinectomy = tsa_eval_service.getAverScoreUncinectomy();
+		res_map.put("aver_sc_uncinectomy", aver_uncinectomy);
+		int aver_anterior_ethmoidal_air_cell_removal = tsa_eval_service.getAverScoreAnteriorEthmoidalAirCellRemoval();
+		res_map.put("aver_sc_anterior_ethmoidal_air_cell_removal", aver_anterior_ethmoidal_air_cell_removal);
+		int aver_posterior_air_cell_removal = tsa_eval_service.getAverScorePosteriorAirCellRemoval();
+		res_map.put("aver_sc_posterior_air_cell_removal", aver_posterior_air_cell_removal);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
+		mav.addObject("map", res_map);
 		mav.setViewName("ViewAcidosisEthmoidalSinus_PosteriorAirCellRemoval");
 		return mav;
 	}
 	
-	/*
-	// 이비인후과 수술 구조에대한 오해로 항상 처음 읽어지는 페이지인데 이 페이지는 ent total과 연결된 5가지 수술유형중에서 
-	// 유효한 하나의 값을 렌더링
-	@RequestMapping(value="/ViewTSA", method=RequestMethod.GET)
-	public ModelAndView ViewTSA(@RequestParam("id")int no, HttpSession session) throws Exception
+	// 이비인후과 Common 데이터 map을 조립해서 리턴
+	private HashMap<String, Object> getCommonAsmbly(String head_str, EntCommonVO common, HashMap<String, Object> map)
 	{
-		EntTotalVO ent_total_vo = tsa_eval_service.getEntTotal(no);
-		
-		// 1. ent_tsa
-		// ENTCommon / Tools / OuterBreak / Septal_Flap / Superior_Turbinate / Sella_Duramater / Tumor_Removal
-		String ent_tsa_id = tsa_eval_service.getEntTsa(ent_total_vo.getID());
-		EntCommonVO tsa_ent_common = tsa_eval_service.getEntCommon(ent_tsa_id);
-		ToolsVO ent_tsa_tools_vo = tsa_eval_service.getTools(ent_tsa_id); // ent_tsa 의 툴 id
-		
-		PathTriggerVOStr ent_tsa_outerbreak = tsa_eval_service.getOuterBreak(ent_tsa_id); // 부모의 id로 자신의 id를 찾아냄
-		String outer_break_id = ent_tsa_outerbreak.getID();
-		ToolsVO ent_tsa_outerbreak_tools_vo = tsa_eval_service.getTools(outer_break_id);
-		List<PointDataVOStr> ent_tsa_outerbreak_points = tsa_eval_service.getPoints(outer_break_id);
-		List<PointDataVOStr> ent_tsa_outerbreak_targetpoints = tsa_eval_service.getTargetPoints(outer_break_id);
-		
-		PathTriggerVOStr ent_tsa_septal_flap = tsa_eval_service.getSeptalFlap(ent_tsa_id);
-		String septal_flap_id = ent_tsa_septal_flap.getID();
-		ToolsVO ent_tsa_septal_flap_tools_vo = tsa_eval_service.getTools(septal_flap_id);
-		List<PointDataVOStr> ent_tsa_septal_flap_points = tsa_eval_service.getPoints(septal_flap_id);
-		List<PointDataVOStr> ent_tsa_septal_flap_targetpoints = tsa_eval_service.getTargetPoints(septal_flap_id);
-		
-		BoxTriggerVO ent_tsa_superior_turbinate = tsa_eval_service.getSuperiorTurbinate(ent_tsa_id);
-		String ent_tsa_superior_turbinate_id = ent_tsa_superior_turbinate.getID();
-		ToolsVO ent_tsa_superior_turbinate_tools_vo = tsa_eval_service.getTools(ent_tsa_superior_turbinate_id);
-		
-		VolumeTriggerVOStr ent_tsa_sella_duramater = tsa_eval_service.getSellaDuramater(ent_tsa_id);
-		String ent_tsa_sella_duramater_id = ent_tsa_sella_duramater.getID();
-		ToolsVO ent_tsa_sella_duramater_tools_vo = tsa_eval_service.getTools(ent_tsa_sella_duramater_id);
-		List<PointTriggerVO> ent_tsa_sella_duramater_points = tsa_eval_service.getPointTriggers(ent_tsa_sella_duramater_id);
-		
-		VolumeTriggerVOStr ent_tsa_tumor_removal = tsa_eval_service.getTumorRemoval(ent_tsa_id);
-		String ent_tsa_tumor_removal_id = ent_tsa_tumor_removal.getID();
-		ToolsVO ent_tsa_tumor_removal_tools_vo = tsa_eval_service.getTools(ent_tsa_tumor_removal_id);
-		List<PointTriggerVO> ent_tsa_tumor_removal_points = tsa_eval_service.getPointTriggers(ent_tsa_tumor_removal_id);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		
-		map.put("tsa_ent_common_Name", tsa_ent_common.getName());
-		map.put("tsa_ent_common_ClassNo", tsa_ent_common.getClassNo());
-		map.put("tsa_ent_common_Date", tsa_ent_common.getDate());
-		map.put("tsa_ent_common_ActionCount", tsa_ent_common.getActionCount());
-		map.put("tsa_ent_common_TotalScore", tsa_ent_common.getTotalScore());
-		
-		map.put("ent_tsa_tools_TouchCount", ent_tsa_tools_vo.getTouchCount());
-		map.put("ent_tsa_tools_ToolUseCount", ent_tsa_tools_vo.getToolUseCount());
-		map.put("ent_tsa_tools_ToolInnerCount", ent_tsa_tools_vo.getToolInnerCount());
-		map.put("ent_tsa_tools_ToolTouchScore", ent_tsa_tools_vo.getToolTouchScore());
-		map.put("ent_tsa_tools_ToolViewScore", ent_tsa_tools_vo.getToolViewScore());
-		map.put("ent_tsa_tools_MaxScore", ent_tsa_tools_vo.getMaxScore());
-		
-		map.put("ent_tsa_outerbreak_MaxScore", ent_tsa_outerbreak.getMaxScore());
-		map.put("ent_tsa_outerbreak_Score", ent_tsa_outerbreak.getScore());
-		map.put("ent_tsa_outerbreak_Note", ent_tsa_outerbreak.getNote());
-		map.put("ent_tsa_outerbreak_Position", ent_tsa_outerbreak.getPosition());
-		map.put("ent_tsa_outerbreak_Rotation", ent_tsa_outerbreak.getRotation());
-		map.put("ent_tsa_outerbreak_Scale", ent_tsa_outerbreak.getScale());
-		
-		map.put("ent_tsa_outerbreak_Tools_TouchCount", ent_tsa_outerbreak_tools_vo.getTouchCount());
-		map.put("ent_tsa_outerbreak_Tools_ToolUseCount", ent_tsa_outerbreak_tools_vo.getToolUseCount());
-		map.put("ent_tsa_outerbreak_Tools_ToolInnerCount", ent_tsa_outerbreak_tools_vo.getToolInnerCount());
-		map.put("ent_tsa_outerbreak_Tools_ToolTouchScore", ent_tsa_outerbreak_tools_vo.getToolTouchScore());
-		map.put("ent_tsa_outerbreak_Tools_ToolViewScore", ent_tsa_outerbreak_tools_vo.getToolViewScore());
-		map.put("ent_tsa_outerbreak_Tools_MaxScore", ent_tsa_outerbreak_tools_vo.getMaxScore());
-		
-		map.put("ent_tsa_outerbreak_points", ent_tsa_outerbreak_points); // jsp 에서 list 로 받아야함
-		map.put("ent_tsa_outerbreak_target_points", ent_tsa_outerbreak_targetpoints);
-		
-		map.put("ent_tsa_septalflap_MaxScore", ent_tsa_septal_flap.getMaxScore());
-		map.put("ent_tsa_septalflap_Score", ent_tsa_septal_flap.getScore());
-		map.put("ent_tsa_septalflap_Note", ent_tsa_septal_flap.getNote());
-		map.put("ent_tsa_septalflap_Position", ent_tsa_septal_flap.getPosition());
-		map.put("ent_tsa_septalflap_Rotation", ent_tsa_septal_flap.getRotation());
-		map.put("ent_tsa_septalflap_Scale", ent_tsa_septal_flap.getScale());
-		
-		map.put("ent_tsa_septalflap_Tools_TouchCount", ent_tsa_septal_flap_tools_vo.getTouchCount());
-		map.put("ent_tsa_septalflap_Tools_ToolUseCount", ent_tsa_septal_flap_tools_vo.getToolUseCount());
-		map.put("ent_tsa_septalflap_Tools_ToolInnerCount", ent_tsa_septal_flap_tools_vo.getToolInnerCount());
-		map.put("ent_tsa_septalflap_Tools_ToolTouchScore", ent_tsa_septal_flap_tools_vo.getToolTouchScore());
-		map.put("ent_tsa_septalflap_Tools_ToolViewScore", ent_tsa_septal_flap_tools_vo.getToolViewScore());
-		map.put("ent_tsa_septalflap_Tools_MaxScore", ent_tsa_septal_flap_tools_vo.getMaxScore());
-		
-		map.put("ent_tsa_septalflap_points", ent_tsa_septal_flap_points); // jsp 에서 list 로 받아야함
-		map.put("ent_tsa_septalflap_target_points", ent_tsa_septal_flap_targetpoints);
-		
-		map.put("ent_tsa_superior_turbinate_MaxScore", ent_tsa_superior_turbinate.getMaxScore());
-		map.put("ent_tsa_superior_turbinate_Score", ent_tsa_superior_turbinate.getScore());
-		map.put("ent_tsa_superior_turbinate_Note", ent_tsa_superior_turbinate.getNote());
-		map.put("ent_tsa_superior_turbinate_InnerTriggerCount", ent_tsa_superior_turbinate.getInnerTriggerCount());
-		map.put("ent_tsa_superior_turbinate_OuterTriggerCount", ent_tsa_superior_turbinate.getOuterTriggerCount());
-		map.put("ent_tsa_superior_turbinate_InnerTriggerTouchCount", ent_tsa_superior_turbinate.getInnerTriggerTouchCount());
-		map.put("ent_tsa_superior_turbinate_OuterTriggerTouchCount", ent_tsa_superior_turbinate.getOuterTriggerTouchCount());
-		
-		map.put("ent_tsa_superior_turbinate_Tools_TouchCount", ent_tsa_superior_turbinate_tools_vo.getTouchCount());
-		map.put("ent_tsa_superior_turbinate_Tools_ToolUseCount", ent_tsa_superior_turbinate_tools_vo.getToolUseCount());
-		map.put("ent_tsa_superior_turbinate_Tools_ToolInnerCount", ent_tsa_superior_turbinate_tools_vo.getToolInnerCount());
-		map.put("ent_tsa_superior_turbinate_Tools_ToolTouchScore", ent_tsa_superior_turbinate_tools_vo.getToolTouchScore());
-		map.put("ent_tsa_superior_turbinate_Tools_ToolViewScore", ent_tsa_superior_turbinate_tools_vo.getToolViewScore());
-		map.put("ent_tsa_superior_turbinate_Tools_MaxScore", ent_tsa_superior_turbinate_tools_vo.getMaxScore());
-		
-		map.put("ent_tsa_sella_duramater_MaxScore", ent_tsa_sella_duramater.getMaxScore());
-		map.put("ent_tsa_sella_duramater_Score", ent_tsa_sella_duramater.getScore());
-		map.put("ent_tsa_sella_duramater_Note", ent_tsa_sella_duramater.getNote());
-		map.put("ent_tsa_sella_duramater_points", ent_tsa_sella_duramater.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("ent_tsa_sella_duramater_Position", ent_tsa_sella_duramater.getPosition());
-		map.put("ent_tsa_sella_duramater_Rotation", ent_tsa_sella_duramater.getRotation());
-		map.put("ent_tsa_sella_duramater_Localcale", ent_tsa_sella_duramater.getLocalcale());
-		map.put("ent_tsa_sella_duramater_PinCount", ent_tsa_sella_duramater.getPinCount());
-		map.put("ent_tsa_sella_duramater_Pins", ent_tsa_sella_duramater.getPins());
-		map.put("ent_tsa_sella_duramater_TargetPins", ent_tsa_sella_duramater.getTargetPins());
-		
-		map.put("ent_tsa_sella_duramater_Tools_TouchCount", ent_tsa_sella_duramater_tools_vo.getTouchCount());
-		map.put("ent_tsa_sella_duramater_Tools_ToolUseCount", ent_tsa_sella_duramater_tools_vo.getToolUseCount());
-		map.put("ent_tsa_sella_duramater_Tools_ToolInnerCount", ent_tsa_sella_duramater_tools_vo.getToolInnerCount());
-		map.put("ent_tsa_sella_duramater_Tools_ToolTouchScore", ent_tsa_sella_duramater_tools_vo.getToolTouchScore());
-		map.put("ent_tsa_sella_duramater_Tools_ToolViewScore", ent_tsa_sella_duramater_tools_vo.getToolViewScore());
-		map.put("ent_tsa_sella_duramater_Tools_MaxScore", ent_tsa_sella_duramater_tools_vo.getMaxScore());
-		
-		map.put("ent_tsa_tumor_removal_MaxScore", ent_tsa_tumor_removal.getMaxScore());
-		map.put("ent_tsa_tumor_removal_Score", ent_tsa_tumor_removal.getScore());
-		map.put("ent_tsa_tumor_removal_Note", ent_tsa_tumor_removal.getNote());
-		map.put("ent_tsa_tumor_removal_points", ent_tsa_tumor_removal.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("ent_tsa_tumor_removal_Position", ent_tsa_tumor_removal.getPosition());
-		map.put("ent_tsa_tumor_removal_Rotation", ent_tsa_tumor_removal.getRotation());
-		map.put("ent_tsa_tumor_removal_Localcale", ent_tsa_tumor_removal.getLocalcale());
-		map.put("ent_tsa_tumor_removal_PinCount", ent_tsa_tumor_removal.getPinCount());
-		map.put("ent_tsa_tumor_removal_Pins", ent_tsa_tumor_removal.getPins());
-		map.put("ent_tsa_tumor_removal_TargetPins", ent_tsa_tumor_removal.getTargetPins());
-		
-		map.put("ent_tsa_tumor_removal_Tools_TouchCount", ent_tsa_tumor_removal_tools_vo.getTouchCount());
-		map.put("ent_tsa_tumor_removal_Tools_ToolUseCount", ent_tsa_tumor_removal_tools_vo.getToolUseCount());
-		map.put("ent_tsa_tumor_removal_Tools_ToolInnerCount", ent_tsa_tumor_removal_tools_vo.getToolInnerCount());
-		map.put("ent_tsa_tumor_removal_Tools_ToolTouchScore", ent_tsa_tumor_removal_tools_vo.getToolTouchScore());
-		map.put("ent_tsa_tumor_removal_Tools_ToolViewScore", ent_tsa_tumor_removal_tools_vo.getToolViewScore());
-		map.put("ent_tsa_tumor_removal_Tools_MaxScore", ent_tsa_tumor_removal_tools_vo.getMaxScore());
-		
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
-		mav.setViewName("ViewTSA");
-		return mav;
+		map.put(head_str + "Name", common.getName());
+		map.put(head_str + "ClassNo", common.getClassNo());
+		map.put(head_str + "Date", common.getDate());
+		map.put(head_str + "ActionCount", common.getActionCount());
+		map.put(head_str + "TotalScore", common.getTotalScore());
+		return map;
 	}
 	
-	// 2
-	@RequestMapping(value="/ViewTransclivalApproach", method=RequestMethod.GET)
-	public ModelAndView ViewTransclivalApproach(@RequestParam("id")int no, HttpSession session) throws Exception
+	private HashMap<String, Object> getToolsAsmbly(String head_str, ToolsVO tools_vo, HashMap<String, Object> map)
 	{
-		EntTotalVO ent_total_vo = tsa_eval_service.getEntTotal(no);
-		
-		// 2. ent_transclival_approach
-		// ENTCommon / Tools / OuterBreak / Septal_Flap / Superior_Turbinate / Sella_Duramater
-		String ent_transclival_approach_id = tsa_eval_service.getEntTansclivalApproach(ent_total_vo.getID());
-		EntCommonVO ent_transclival_approach_common = tsa_eval_service.getEntCommon(ent_transclival_approach_id);
-		ToolsVO ent_transclival_approach_tools_vo = tsa_eval_service.getTools(ent_transclival_approach_id); 
-		
-		PathTriggerVOStr ent_transclival_approach_outerbreak = tsa_eval_service.getOuterBreak(ent_transclival_approach_id); 
-		String ent_transclival_approach_outerbreak_id = ent_transclival_approach_outerbreak.getID();
-		ToolsVO ent_transclival_approach_outerbreak_tools_vo = tsa_eval_service.getTools(ent_transclival_approach_outerbreak_id);
-		List<PointDataVOStr> ent_transclival_approach_outerbreak_points = tsa_eval_service.getPoints(ent_transclival_approach_outerbreak_id);
-		List<PointDataVOStr> ent_transclival_approach_outerbreak_targetpoints = tsa_eval_service.getTargetPoints(ent_transclival_approach_outerbreak_id);
-		
-		PathTriggerVOStr ent_transclival_approach_septal_flap = tsa_eval_service.getSeptalFlap(ent_transclival_approach_id);
-		String ent_transclival_approach_septal_flap_id = ent_transclival_approach_septal_flap.getID();
-		ToolsVO ent_transclival_approach_septal_flap_tools_vo = tsa_eval_service.getTools(ent_transclival_approach_septal_flap_id);
-		List<PointDataVOStr> ent_transclival_approach_septal_flap_points = tsa_eval_service.getPoints(ent_transclival_approach_septal_flap_id);
-		List<PointDataVOStr> ent_transclival_approach_septal_flap_targetpoints = tsa_eval_service.getTargetPoints(ent_transclival_approach_septal_flap_id);
-		
-		BoxTriggerVO ent_transclival_approach_superior_turbinate = tsa_eval_service.getSuperiorTurbinate(ent_transclival_approach_id);
-		String ent_transclival_approach_superior_turbinate_id = ent_transclival_approach_superior_turbinate.getID();
-		ToolsVO ent_transclival_approach_superior_turbinate_tools_vo = tsa_eval_service.getTools(ent_transclival_approach_superior_turbinate_id);
-		
-		VolumeTriggerVOStr ent_transclival_approach_sella_duramater = tsa_eval_service.getSellaDuramater(ent_transclival_approach_id);
-		String ent_transclival_approach_sella_duramater_id = ent_transclival_approach_sella_duramater.getID();
-		ToolsVO ent_transclival_approach_sella_duramater_tools_vo = tsa_eval_service.getTools(ent_transclival_approach_sella_duramater_id);
-		List<PointTriggerVO> ent_transclival_approach_sella_duramater_points = tsa_eval_service.getPointTriggers(ent_transclival_approach_sella_duramater_id);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		
-		map.put("ent_transclival_approach_common_Name", ent_transclival_approach_common.getName());
-		map.put("ent_transclival_approach_common_ClassNo", ent_transclival_approach_common.getClassNo());
-		map.put("ent_transclival_approach_common_Date", ent_transclival_approach_common.getDate());
-		map.put("ent_transclival_approach_common_ActionCount", ent_transclival_approach_common.getActionCount());
-		map.put("ent_transclival_approach_common_TotalScore", ent_transclival_approach_common.getTotalScore());
-		
-		map.put("ent_transclival_approach_tools_TouchCount", ent_transclival_approach_tools_vo.getTouchCount());
-		map.put("ent_transclival_approach_tools_ToolUseCount", ent_transclival_approach_tools_vo.getToolUseCount());
-		map.put("ent_transclival_approach_tools_ToolInnerCount", ent_transclival_approach_tools_vo.getToolInnerCount());
-		map.put("ent_transclival_approach_tools_ToolTouchScore", ent_transclival_approach_tools_vo.getToolTouchScore());
-		map.put("ent_transclival_approach_tools_ToolViewScore", ent_transclival_approach_tools_vo.getToolViewScore());
-		map.put("ent_transclival_approach_tools_MaxScore", ent_transclival_approach_tools_vo.getMaxScore());
-		
-		map.put("ent_transclival_approach_outerbreak_MaxScore", ent_transclival_approach_outerbreak.getMaxScore());
-		map.put("ent_transclival_approach_outerbreak_Score", ent_transclival_approach_outerbreak.getScore());
-		map.put("ent_transclival_approach_outerbreak_Note", ent_transclival_approach_outerbreak.getNote());
-		map.put("ent_transclival_approach_outerbreak_Position", ent_transclival_approach_outerbreak.getPosition());
-		map.put("ent_transclival_approach_outerbreak_Rotation", ent_transclival_approach_outerbreak.getRotation());
-		map.put("ent_transclival_approach_outerbreak_Scale", ent_transclival_approach_outerbreak.getScale());
-		
-		map.put("ent_transclival_approach_outerbreak_Tools_TouchCount", ent_transclival_approach_outerbreak_tools_vo.getTouchCount());
-		map.put("ent_transclival_approach_outerbreak_Tools_ToolUseCount", ent_transclival_approach_outerbreak_tools_vo.getToolUseCount());
-		map.put("ent_transclival_approach_outerbreak_Tools_ToolInnerCount", ent_transclival_approach_outerbreak_tools_vo.getToolInnerCount());
-		map.put("ent_transclival_approach_outerbreak_Tools_ToolTouchScore", ent_transclival_approach_outerbreak_tools_vo.getToolTouchScore());
-		map.put("ent_transclival_approach_outerbreak_Tools_ToolViewScore", ent_transclival_approach_outerbreak_tools_vo.getToolViewScore());
-		map.put("ent_transclival_approach_outerbreak_Tools_MaxScore", ent_transclival_approach_outerbreak_tools_vo.getMaxScore());
-		
-		map.put("ent_transclival_approach_outerbreak_points", ent_transclival_approach_outerbreak_points); // jsp 에서 list 로 받아야함
-		map.put("ent_transclival_approach_outerbreak_target_points", ent_transclival_approach_outerbreak_targetpoints);
-		
-		map.put("ent_transclival_approach_septalflap_MaxScore", ent_transclival_approach_septal_flap.getMaxScore());
-		map.put("ent_transclival_approach_septalflap_Score", ent_transclival_approach_septal_flap.getScore());
-		map.put("ent_transclival_approach_septalflap_Note", ent_transclival_approach_septal_flap.getNote());
-		map.put("ent_transclival_approach_septalflap_Position", ent_transclival_approach_septal_flap.getPosition());
-		map.put("ent_transclival_approach_septalflap_Rotation", ent_transclival_approach_septal_flap.getRotation());
-		map.put("ent_transclival_approach_septalflap_Scale", ent_transclival_approach_septal_flap.getScale());
-		
-		map.put("ent_transclival_approach_septalflap_Tools_TouchCount", ent_transclival_approach_septal_flap_tools_vo.getTouchCount());
-		map.put("ent_transclival_approach_septalflap_Tools_ToolUseCount", ent_transclival_approach_septal_flap_tools_vo.getToolUseCount());
-		map.put("ent_transclival_approach_septalflap_Tools_ToolInnerCount", ent_transclival_approach_septal_flap_tools_vo.getToolInnerCount());
-		map.put("ent_transclival_approach_septalflap_Tools_ToolTouchScore", ent_transclival_approach_septal_flap_tools_vo.getToolTouchScore());
-		map.put("ent_transclival_approach_septalflap_Tools_ToolViewScore", ent_transclival_approach_septal_flap_tools_vo.getToolViewScore());
-		map.put("ent_transclival_approach_septalflap_Tools_MaxScore", ent_transclival_approach_septal_flap_tools_vo.getMaxScore());
-		
-		map.put("ent_transclival_approach_septalflap_points", ent_transclival_approach_septal_flap_points); // jsp 에서 list 로 받아야함
-		map.put("ent_transclival_approach_septalflap_target_points", ent_transclival_approach_septal_flap_targetpoints);
-		
-		map.put("ent_transclival_approach_superior_turbinate_MaxScore", ent_transclival_approach_superior_turbinate.getMaxScore());
-		map.put("ent_transclival_approach_superior_turbinate_Score", ent_transclival_approach_superior_turbinate.getScore());
-		map.put("ent_transclival_approach_superior_turbinate_Note", ent_transclival_approach_superior_turbinate.getNote());
-		map.put("ent_transclival_approach_superior_turbinate_InnerTriggerCount", ent_transclival_approach_superior_turbinate.getInnerTriggerCount());
-		map.put("ent_transclival_approach_superior_turbinate_OuterTriggerCount", ent_transclival_approach_superior_turbinate.getOuterTriggerCount());
-		map.put("ent_transclival_approach_superior_turbinate_InnerTriggerTouchCount", ent_transclival_approach_superior_turbinate.getInnerTriggerTouchCount());
-		map.put("ent_transclival_approach_superior_turbinate_OuterTriggerTouchCount", ent_transclival_approach_superior_turbinate.getOuterTriggerTouchCount());
-		
-		map.put("ent_transclival_approach_superior_turbinate_Tools_TouchCount", ent_transclival_approach_superior_turbinate_tools_vo.getTouchCount());
-		map.put("ent_transclival_approach_superior_turbinate_Tools_ToolUseCount", ent_transclival_approach_superior_turbinate_tools_vo.getToolUseCount());
-		map.put("ent_transclival_approach_superior_turbinate_Tools_ToolInnerCount", ent_transclival_approach_superior_turbinate_tools_vo.getToolInnerCount());
-		map.put("ent_transclival_approach_superior_turbinate_Tools_ToolTouchScore", ent_transclival_approach_superior_turbinate_tools_vo.getToolTouchScore());
-		map.put("ent_transclival_approach_superior_turbinate_Tools_ToolViewScore", ent_transclival_approach_superior_turbinate_tools_vo.getToolViewScore());
-		map.put("ent_transclival_approach_superior_turbinate_Tools_MaxScore", ent_transclival_approach_superior_turbinate_tools_vo.getMaxScore());
-		
-		map.put("ent_transclival_approach_sella_duramater_MaxScore", ent_transclival_approach_sella_duramater.getMaxScore());
-		map.put("ent_transclival_approach_sella_duramater_Score", ent_transclival_approach_sella_duramater.getScore());
-		map.put("ent_transclival_approach_sella_duramater_Note", ent_transclival_approach_sella_duramater.getNote());
-		map.put("ent_transclival_approach_sella_duramater_points", ent_transclival_approach_sella_duramater.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("ent_transclival_approach_sella_duramater_Position", ent_transclival_approach_sella_duramater.getPosition());
-		map.put("ent_transclival_approach_sella_duramater_Rotation", ent_transclival_approach_sella_duramater.getRotation());
-		map.put("ent_transclival_approach_sella_duramater_Localcale", ent_transclival_approach_sella_duramater.getLocalcale());
-		map.put("ent_transclival_approach_sella_duramater_PinCount", ent_transclival_approach_sella_duramater.getPinCount());
-		map.put("ent_transclival_approach_sella_duramater_Pins", ent_transclival_approach_sella_duramater.getPins());
-		map.put("ent_transclival_approach_sella_duramater_TargetPins", ent_transclival_approach_sella_duramater.getTargetPins());
-		
-		map.put("ent_transclival_approach_sella_duramater_Tools_TouchCount", ent_transclival_approach_sella_duramater_tools_vo.getTouchCount());
-		map.put("ent_transclival_approach_sella_duramater_Tools_ToolUseCount", ent_transclival_approach_sella_duramater_tools_vo.getToolUseCount());
-		map.put("ent_transclival_approach_sella_duramater_Tools_ToolInnerCount", ent_transclival_approach_sella_duramater_tools_vo.getToolInnerCount());
-		map.put("ent_transclival_approach_sella_duramater_Tools_ToolTouchScore", ent_transclival_approach_sella_duramater_tools_vo.getToolTouchScore());
-		map.put("ent_transclival_approach_sella_duramater_Tools_ToolViewScore", ent_transclival_approach_sella_duramater_tools_vo.getToolViewScore());
-		map.put("ent_transclival_approach_sella_duramater_Tools_MaxScore", ent_transclival_approach_sella_duramater_tools_vo.getMaxScore());
-		
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
-		mav.setViewName("ViewTransclivalApproach");
-		return mav;
+		map.put(head_str + "TouchCount", tools_vo.getTouchCount());
+		map.put(head_str + "ToolUseCount", tools_vo.getToolUseCount());
+		map.put(head_str + "ToolInnerCount", tools_vo.getToolInnerCount());
+		map.put(head_str + "ToolTouchScore", tools_vo.getToolTouchScore());
+		map.put(head_str + "ToolViewScore", tools_vo.getToolViewScore());
+		map.put(head_str + "MaxScore", tools_vo.getMaxScore());
+		return map;
 	}
 	
-	// 3
-	@RequestMapping(value="/ViewAcidosisMaxillarySinus", method=RequestMethod.GET)
-	public ModelAndView ViewAcidosisMaxillarySinus(@RequestParam("id")int no, HttpSession session) throws Exception
+	private HashMap<String, Object> getExpertToolsAsmbly(String head_str, ExpertToolsVO tools_vo, HashMap<String, Object> map)
 	{
-		EntTotalVO ent_total_vo = tsa_eval_service.getEntTotal(no);
-		
-		// 3. ent_acidosis_maxillary_sinus
-		// ENTCommon / Tools / OuterBreak / Uncinectomy / Superior_Turbinate
-		String ent_acidosis_maxillary_sinus_id = tsa_eval_service.getEntAcidosisMaxillarySinus(ent_total_vo.getID());
-		EntCommonVO ent_acidosis_maxillary_sinus_common = tsa_eval_service.getEntCommon(ent_acidosis_maxillary_sinus_id);
-		ToolsVO ent_acidosis_maxillary_sinus_tools_vo = tsa_eval_service.getTools(ent_acidosis_maxillary_sinus_id);
-		
-		PathTriggerVOStr ent_acidosis_maxillary_sinus_outerbreak = tsa_eval_service.getOuterBreak(ent_acidosis_maxillary_sinus_id); 
-		String ent_acidosis_maxillary_sinus_outerbreak_id = ent_acidosis_maxillary_sinus_outerbreak.getID();
-		ToolsVO ent_acidosis_maxillary_sinus_outerbreak_tools_vo = tsa_eval_service.getTools(ent_acidosis_maxillary_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_maxillary_sinus_outerbreak_points = tsa_eval_service.getPoints(ent_acidosis_maxillary_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_maxillary_sinus_outerbreak_targetpoints = tsa_eval_service.getTargetPoints(ent_acidosis_maxillary_sinus_outerbreak_id);
-		
-		VolumeTriggerVOStr ent_acidosis_maxillary_sinus_uncinectomy = tsa_eval_service.getUncinectomy(ent_acidosis_maxillary_sinus_id);
-		String ent_acidosis_maxillary_sinus_uncinectomy_id = ent_acidosis_maxillary_sinus_uncinectomy.getID();
-		ToolsVO ent_acidosis_maxillary_sinus_uncinectomy_tools_vo = tsa_eval_service.getTools(ent_acidosis_maxillary_sinus_uncinectomy_id);
-		List<PointTriggerVO> ent_acidosis_maxillary_sinus_uncinectomy_points = tsa_eval_service.getPointTriggers(ent_acidosis_maxillary_sinus_uncinectomy_id);
-		
-		BoxTriggerVO ent_acidosis_maxillary_sinus_superior_turbinate = tsa_eval_service.getSuperiorTurbinate(ent_acidosis_maxillary_sinus_id);
-		String ent_acidosis_maxillary_sinus_superior_turbinate_id = ent_acidosis_maxillary_sinus_superior_turbinate.getID();
-		ToolsVO ent_acidosis_maxillary_sinus_superior_turbinate_tools_vo = tsa_eval_service.getTools(ent_acidosis_maxillary_sinus_superior_turbinate_id);
-	
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		
-		map.put("ent_acidosis_maxillary_sinus_common_Name", ent_acidosis_maxillary_sinus_common.getName());
-		map.put("ent_acidosis_maxillary_sinus_common_ClassNo", ent_acidosis_maxillary_sinus_common.getClassNo());
-		map.put("ent_acidosis_maxillary_sinus_common_Date", ent_acidosis_maxillary_sinus_common.getDate());
-		map.put("ent_acidosis_maxillary_sinus_common_ActionCount", ent_acidosis_maxillary_sinus_common.getActionCount());
-		map.put("ent_acidosis_maxillary_sinus_common_TotalScore", ent_acidosis_maxillary_sinus_common.getTotalScore());
-		
-		map.put("ent_acidosis_maxillary_sinus_tools_TouchCount", ent_acidosis_maxillary_sinus_tools_vo.getTouchCount());
-		map.put("ent_acidosis_maxillary_sinus_tools_ToolUseCount", ent_acidosis_maxillary_sinus_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_maxillary_sinus_tools_ToolInnerCount", ent_acidosis_maxillary_sinus_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_maxillary_sinus_tools_ToolTouchScore", ent_acidosis_maxillary_sinus_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_maxillary_sinus_tools_ToolViewScore", ent_acidosis_maxillary_sinus_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_maxillary_sinus_tools_MaxScore", ent_acidosis_maxillary_sinus_tools_vo.getMaxScore());
-		
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_MaxScore", ent_acidosis_maxillary_sinus_outerbreak.getMaxScore());
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Score", ent_acidosis_maxillary_sinus_outerbreak.getScore());
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Note", ent_acidosis_maxillary_sinus_outerbreak.getNote());
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Position", ent_acidosis_maxillary_sinus_outerbreak.getPosition());
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Rotation", ent_acidosis_maxillary_sinus_outerbreak.getRotation());
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Scale", ent_acidosis_maxillary_sinus_outerbreak.getScale());
-		
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Tools_TouchCount", ent_acidosis_maxillary_sinus_outerbreak_tools_vo.getTouchCount());
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Tools_ToolUseCount", ent_acidosis_maxillary_sinus_outerbreak_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Tools_ToolInnerCount", ent_acidosis_maxillary_sinus_outerbreak_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Tools_ToolTouchScore", ent_acidosis_maxillary_sinus_outerbreak_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Tools_ToolViewScore", ent_acidosis_maxillary_sinus_outerbreak_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_Tools_MaxScore", ent_acidosis_maxillary_sinus_outerbreak_tools_vo.getMaxScore());
-		
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_points", ent_acidosis_maxillary_sinus_outerbreak_points); // jsp 에서 list 로 받아야함
-		map.put("ent_acidosis_maxillary_sinus_outerbreak_target_points", ent_acidosis_maxillary_sinus_outerbreak_targetpoints);
-		
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_MaxScore", ent_acidosis_maxillary_sinus_uncinectomy.getMaxScore());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Score", ent_acidosis_maxillary_sinus_uncinectomy.getScore());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Note", ent_acidosis_maxillary_sinus_uncinectomy.getNote());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_points", ent_acidosis_maxillary_sinus_uncinectomy.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Position", ent_acidosis_maxillary_sinus_uncinectomy.getPosition());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Rotation", ent_acidosis_maxillary_sinus_uncinectomy.getRotation());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Localcale", ent_acidosis_maxillary_sinus_uncinectomy.getLocalcale());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_PinCount", ent_acidosis_maxillary_sinus_uncinectomy.getPinCount());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Pins", ent_acidosis_maxillary_sinus_uncinectomy.getPins());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_TargetPins", ent_acidosis_maxillary_sinus_uncinectomy.getTargetPins());
-		
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Tools_TouchCount", ent_acidosis_maxillary_sinus_uncinectomy_tools_vo.getTouchCount());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Tools_ToolUseCount", ent_acidosis_maxillary_sinus_uncinectomy_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Tools_ToolInnerCount", ent_acidosis_maxillary_sinus_uncinectomy_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Tools_ToolTouchScore", ent_acidosis_maxillary_sinus_uncinectomy_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Tools_ToolViewScore", ent_acidosis_maxillary_sinus_uncinectomy_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_maxillary_sinus_uncinectomy_Tools_MaxScore", ent_acidosis_maxillary_sinus_uncinectomy_tools_vo.getMaxScore());
-		
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_MaxScore", ent_acidosis_maxillary_sinus_superior_turbinate.getMaxScore());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_Score", ent_acidosis_maxillary_sinus_superior_turbinate.getScore());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_Note", ent_acidosis_maxillary_sinus_superior_turbinate.getNote());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_InnerTriggerCount", ent_acidosis_maxillary_sinus_superior_turbinate.getInnerTriggerCount());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_OuterTriggerCount", ent_acidosis_maxillary_sinus_superior_turbinate.getOuterTriggerCount());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_InnerTriggerTouchCount", ent_acidosis_maxillary_sinus_superior_turbinate.getInnerTriggerTouchCount());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_OuterTriggerTouchCount", ent_acidosis_maxillary_sinus_superior_turbinate.getOuterTriggerTouchCount());
-		
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_Tools_TouchCount", ent_acidosis_maxillary_sinus_superior_turbinate_tools_vo.getTouchCount());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_Tools_ToolUseCount", ent_acidosis_maxillary_sinus_superior_turbinate_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_Tools_ToolInnerCount", ent_acidosis_maxillary_sinus_superior_turbinate_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_Tools_ToolTouchScore", ent_acidosis_maxillary_sinus_superior_turbinate_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_Tools_ToolViewScore", ent_acidosis_maxillary_sinus_superior_turbinate_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_maxillary_sinus_superior_turbinate_Tools_MaxScore", ent_acidosis_maxillary_sinus_superior_turbinate_tools_vo.getMaxScore());
-		
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
-		mav.setViewName("ViewAcidosisMaxillarySinus");
-		return mav;
+		map.put(head_str + "TouchCount", tools_vo.getTouchCount());
+		map.put(head_str + "ToolUseCount", tools_vo.getToolUseCount());
+		map.put(head_str + "ToolInnerCount", tools_vo.getToolInnerCount());
+		map.put(head_str + "ToolTouchScore", tools_vo.getToolTouchScore());
+		map.put(head_str + "ToolViewScore", tools_vo.getToolViewScore());
+		map.put(head_str + "MaxScore", tools_vo.getMaxScore());
+		return map;
 	}
 	
-	// 4
-	@RequestMapping(value="/ViewAcidosisFrontalSinus", method=RequestMethod.GET)
-	public ModelAndView ViewAcidosisFrontalSinus(@RequestParam("id")int no, HttpSession session) throws Exception
+	private HashMap<String, Object> getVolumeTriggerAsmbly(String head_str, VolumeTriggerVOStr volume_trigger, HashMap<String, Object> map)
 	{
-		EntTotalVO ent_total_vo = tsa_eval_service.getEntTotal(no);
-		
-		// 4. ent_acidosis_frontal_sinus
-		// ENTCommon / Tools / OuterBreak / Uncinectomy / Anterior_ethmoidectomy / Anterior_sinus
-		String ent_acidosis_frontal_sinus_id = tsa_eval_service.getEntAcidosisFrontalSinus(ent_total_vo.getID());
-		EntCommonVO ent_acidosis_frontal_sinus_common = tsa_eval_service.getEntCommon(ent_acidosis_frontal_sinus_id);
-		ToolsVO ent_acidosis_frontal_sinus_tools_vo = tsa_eval_service.getTools(ent_acidosis_frontal_sinus_id);
-		
-		// 4-1. ent_acidosis_frontal_sinus - outerbreak
-		PathTriggerVOStr ent_acidosis_frontal_sinus_outerbreak = tsa_eval_service.getOuterBreak(ent_acidosis_frontal_sinus_id);
-		String ent_acidosis_frontal_sinus_outerbreak_id = ent_acidosis_frontal_sinus_outerbreak.getID();
-		ToolsVO ent_acidosis_frontal_sinus_outerbreak_tools_vo = tsa_eval_service.getTools(ent_acidosis_frontal_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_frontal_sinus_outerbreak_points = tsa_eval_service.getPoints(ent_acidosis_frontal_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_frontal_sinus_outerbreak_targetpoints = tsa_eval_service.getTargetPoints(ent_acidosis_frontal_sinus_outerbreak_id);
-		
-		// 4-2. ent_acidosis_frontal_sinus - uncinectomy
-		VolumeTriggerVOStr ent_acidosis_frontal_sinus_uncinectomy = tsa_eval_service.getUncinectomy(ent_acidosis_frontal_sinus_id);
-		String ent_acidosis_frontal_sinus_uncinectomy_id = ent_acidosis_frontal_sinus_uncinectomy.getID();
-		ToolsVO ent_acidosis_frontal_sinus_uncinectomy_tools_vo = tsa_eval_service.getTools(ent_acidosis_frontal_sinus_uncinectomy_id);
-		List<PointTriggerVO> ent_acidosis_frontal_sinus_uncinectomy_points = tsa_eval_service.getPointTriggers(ent_acidosis_frontal_sinus_uncinectomy_id);
-		
-		// 4-3. ent_acidosis_frontal_sinus - anterior_ethmoidectomy
-		VolumeTriggerVOStr ent_acidosis_frontal_sinus_anterior_ethmoidectomy = tsa_eval_service.getAnteriorEthmoidectomy(ent_acidosis_frontal_sinus_id);
-		String ent_acidosis_frontal_sinus_anterior_ethmoidectomy_id = ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getID();
-		ToolsVO ent_acidosis_frontal_sinus_anterior_ethmoidectomy_tools_vo = tsa_eval_service.getTools(ent_acidosis_frontal_sinus_anterior_ethmoidectomy_id);
-		List<PointTriggerVO> ent_acidosis_frontal_sinus_anterior_ethmoidectomy_points = tsa_eval_service.getPointTriggers(ent_acidosis_frontal_sinus_anterior_ethmoidectomy_id);
-		
-		// 4-4. ent_acidosis_frontal_sinus - anterior_sinus
-		VolumeTriggerVOStr ent_acidosis_frontal_sinus_anterior_sinus = tsa_eval_service.getAnteriorSinus(ent_acidosis_frontal_sinus_id);
-		String ent_acidosis_frontal_sinus_anterior_sinus_id = ent_acidosis_frontal_sinus_anterior_sinus.getID();
-		ToolsVO ent_acidosis_frontal_sinus_anterior_sinus_tools_vo = tsa_eval_service.getTools(ent_acidosis_frontal_sinus_anterior_sinus_id);
-		List<PointTriggerVO> ent_acidosis_frontal_sinus_anterior_sinus_points = tsa_eval_service.getPointTriggers(ent_acidosis_frontal_sinus_anterior_sinus_id);
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		
-		map.put("ent_acidosis_frontal_sinus_common_Name", ent_acidosis_frontal_sinus_common.getName());
-		map.put("ent_acidosis_frontal_sinus_common_ClassNo", ent_acidosis_frontal_sinus_common.getClassNo());
-		map.put("ent_acidosis_frontal_sinus_common_Date", ent_acidosis_frontal_sinus_common.getDate());
-		map.put("ent_acidosis_frontal_sinus_common_ActionCount", ent_acidosis_frontal_sinus_common.getActionCount());
-		map.put("ent_acidosis_frontal_sinus_common_TotalScore", ent_acidosis_frontal_sinus_common.getTotalScore());
-		
-		map.put("ent_acidosis_frontal_sinus_tools_TouchCount", ent_acidosis_frontal_sinus_tools_vo.getTouchCount());
-		map.put("ent_acidosis_frontal_sinus_tools_ToolUseCount", ent_acidosis_frontal_sinus_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_frontal_sinus_tools_ToolInnerCount", ent_acidosis_frontal_sinus_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_frontal_sinus_tools_ToolTouchScore", ent_acidosis_frontal_sinus_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_frontal_sinus_tools_ToolViewScore", ent_acidosis_frontal_sinus_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_frontal_sinus_tools_MaxScore", ent_acidosis_frontal_sinus_tools_vo.getMaxScore());
-		
-		map.put("ent_acidosis_frontal_sinus_outerbreak_MaxScore", ent_acidosis_frontal_sinus_outerbreak.getMaxScore());
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Score", ent_acidosis_frontal_sinus_outerbreak.getScore());
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Note", ent_acidosis_frontal_sinus_outerbreak.getNote());
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Position", ent_acidosis_frontal_sinus_outerbreak.getPosition());
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Rotation", ent_acidosis_frontal_sinus_outerbreak.getRotation());
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Scale", ent_acidosis_frontal_sinus_outerbreak.getScale());
-		
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Tools_TouchCount", ent_acidosis_frontal_sinus_outerbreak_tools_vo.getTouchCount());
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Tools_ToolUseCount", ent_acidosis_frontal_sinus_outerbreak_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Tools_ToolInnerCount", ent_acidosis_frontal_sinus_outerbreak_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Tools_ToolTouchScore", ent_acidosis_frontal_sinus_outerbreak_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Tools_ToolViewScore", ent_acidosis_frontal_sinus_outerbreak_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_frontal_sinus_outerbreak_Tools_MaxScore", ent_acidosis_frontal_sinus_outerbreak_tools_vo.getMaxScore());
-		
-		map.put("ent_acidosis_frontal_sinus_outerbreak_points", ent_acidosis_frontal_sinus_outerbreak_points); // jsp 에서 list 로 받아야함
-		map.put("ent_acidosis_frontal_sinus_outerbreak_target_points", ent_acidosis_frontal_sinus_outerbreak_targetpoints);
-		
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_MaxScore", ent_acidosis_frontal_sinus_uncinectomy.getMaxScore());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Score", ent_acidosis_frontal_sinus_uncinectomy.getScore());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Note", ent_acidosis_frontal_sinus_uncinectomy.getNote());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_points", ent_acidosis_frontal_sinus_uncinectomy.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Position", ent_acidosis_frontal_sinus_uncinectomy.getPosition());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Rotation", ent_acidosis_frontal_sinus_uncinectomy.getRotation());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Localcale", ent_acidosis_frontal_sinus_uncinectomy.getLocalcale());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_PinCount", ent_acidosis_frontal_sinus_uncinectomy.getPinCount());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Pins", ent_acidosis_frontal_sinus_uncinectomy.getPins());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_TargetPins", ent_acidosis_frontal_sinus_uncinectomy.getTargetPins());
-		
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Tools_TouchCount", ent_acidosis_frontal_sinus_uncinectomy_tools_vo.getTouchCount());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Tools_ToolUseCount", ent_acidosis_frontal_sinus_uncinectomy_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Tools_ToolInnerCount", ent_acidosis_frontal_sinus_uncinectomy_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Tools_ToolTouchScore", ent_acidosis_frontal_sinus_uncinectomy_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Tools_ToolViewScore", ent_acidosis_frontal_sinus_uncinectomy_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_frontal_sinus_uncinectomy_Tools_MaxScore", ent_acidosis_frontal_sinus_uncinectomy_tools_vo.getMaxScore());
-		
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_MaxScore", ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getMaxScore());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Score", ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getScore());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Note", ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getNote());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_points", ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Position", ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getPosition());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Rotation", ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getRotation());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Localcale", ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getLocalcale());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_PinCount", ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getPinCount());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Pins", ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getPins());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_TargetPins", ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getTargetPins());
-		
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Tools_TouchCount", ent_acidosis_frontal_sinus_anterior_ethmoidectomy_tools_vo.getTouchCount());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Tools_ToolUseCount", ent_acidosis_frontal_sinus_anterior_ethmoidectomy_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Tools_ToolInnerCount", ent_acidosis_frontal_sinus_anterior_ethmoidectomy_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Tools_ToolTouchScore", ent_acidosis_frontal_sinus_anterior_ethmoidectomy_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Tools_ToolViewScore", ent_acidosis_frontal_sinus_anterior_ethmoidectomy_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_frontal_sinus_anterior_ethmoidectomy_Tools_MaxScore", ent_acidosis_frontal_sinus_anterior_ethmoidectomy_tools_vo.getMaxScore());
-		
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_MaxScore", ent_acidosis_frontal_sinus_anterior_sinus.getMaxScore());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Score", ent_acidosis_frontal_sinus_anterior_sinus.getScore());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Note", ent_acidosis_frontal_sinus_anterior_sinus.getNote());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_points", ent_acidosis_frontal_sinus_anterior_sinus.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Position", ent_acidosis_frontal_sinus_anterior_sinus.getPosition());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Rotation", ent_acidosis_frontal_sinus_anterior_sinus.getRotation());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Localcale", ent_acidosis_frontal_sinus_anterior_sinus.getLocalcale());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_PinCount", ent_acidosis_frontal_sinus_anterior_sinus.getPinCount());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Pins", ent_acidosis_frontal_sinus_anterior_sinus.getPins());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_TargetPins", ent_acidosis_frontal_sinus_anterior_sinus.getTargetPins());
-		
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Tools_TouchCount", ent_acidosis_frontal_sinus_anterior_sinus_tools_vo.getTouchCount());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Tools_ToolUseCount", ent_acidosis_frontal_sinus_anterior_sinus_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Tools_ToolInnerCount", ent_acidosis_frontal_sinus_anterior_sinus_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Tools_ToolTouchScore", ent_acidosis_frontal_sinus_anterior_sinus_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Tools_ToolViewScore", ent_acidosis_frontal_sinus_anterior_sinus_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_frontal_sinus_anterior_sinus_Tools_MaxScore", ent_acidosis_frontal_sinus_anterior_sinus_tools_vo.getMaxScore());
-		
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
-		mav.setViewName("ViewAcidosisFrontalSinus");
-		return mav;
+		map.put(head_str + "MaxScore", volume_trigger.getMaxScore());
+		map.put(head_str + "Score", volume_trigger.getScore());
+		map.put(head_str + "Note", volume_trigger.getNote());
+		map.put(head_str + "points", volume_trigger.getPoints()); 
+		map.put(head_str + "Position", volume_trigger.getPosition());
+		map.put(head_str + "Rotation", volume_trigger.getRotation());
+		map.put(head_str + "Localcale", volume_trigger.getLocalcale());
+		map.put(head_str + "PinCount", volume_trigger.getPinCount());
+		map.put(head_str + "Pins", volume_trigger.getPins());
+		map.put(head_str + "TargetPins", volume_trigger.getTargetPins());
+		return map;
 	}
 	
-	// 5
-	@RequestMapping(value="/ViewAcidosisEthmoidalSinus", method=RequestMethod.GET)
-	public ModelAndView ViewAcidosisEthmoidalSinus(@RequestParam("id")int no, HttpSession session) throws Exception
+	private HashMap<String, Object> getPathTriggerAsmbly(String head_str, PathTriggerVOStr path_trigger, HashMap<String, Object> map)
 	{
-		EntTotalVO ent_total_vo = tsa_eval_service.getEntTotal(no);
-		
-		// 5. ent_acidosis_ethmoidal_sinus
-		// ENTCommon / Tools / OuterBreak / Uncinectomy / Anterior_ethmoidal_air_cell_removal / Posterior_air_cell_removal
-		String ent_acidosis_ethmoidal_sinus_id = tsa_eval_service.getEntAcidosisEthmoidalSinus(ent_total_vo.getID());
-		EntCommonVO ent_acidosis_ethmoidal_sinus_common = tsa_eval_service.getEntCommon(ent_acidosis_ethmoidal_sinus_id);
-		ToolsVO ent_acidosis_ethmoidal_sinus_tools_vo = tsa_eval_service.getTools(ent_acidosis_ethmoidal_sinus_id);
-		
-		// 5-1. ent_acidosis_ethmoidal_sinus - outerbreak
-		PathTriggerVOStr ent_acidosis_ethmoidal_sinus_outerbreak = tsa_eval_service.getOuterBreak(ent_acidosis_ethmoidal_sinus_id);
-		String ent_acidosis_ethmoidal_sinus_outerbreak_id = ent_acidosis_ethmoidal_sinus_outerbreak.getID();
-		ToolsVO ent_acidosis_ethmoidal_sinus_outerbreak_tools_vo = tsa_eval_service.getTools(ent_acidosis_ethmoidal_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_ethmoidal_sinus_outerbreak_points = tsa_eval_service.getPoints(ent_acidosis_ethmoidal_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_ethmoidal_sinus_outerbreak_targetpoints = tsa_eval_service.getTargetPoints(ent_acidosis_ethmoidal_sinus_outerbreak_id);
-		
-		// 5-2. ent_acidosis_ethmoidal_sinus - uncinectomy
-		VolumeTriggerVOStr ent_acidosis_ethmoidal_sinus_uncinectomy = tsa_eval_service.getUncinectomy(ent_acidosis_ethmoidal_sinus_id);
-		String ent_acidosis_ethmoidal_sinus_uncinectomy_id = ent_acidosis_ethmoidal_sinus_uncinectomy.getID();
-		ToolsVO ent_acidosis_ethmoidal_sinus_uncinectomy_tools_vo = tsa_eval_service.getTools(ent_acidosis_ethmoidal_sinus_uncinectomy_id);
-		List<PointTriggerVO> ent_acidosis_ethmoidal_sinus_uncinectomy_points = tsa_eval_service.getPointTriggers(ent_acidosis_ethmoidal_sinus_uncinectomy_id);
-		
-		// 5-3. ent_acidosis_ethmoidal_sinus - anterior_ethmoidal_air_cell_removal
-		VolumeTriggerVO ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal = tsa_eval_service.getAnteriorEthmoidalAirCellRemoval(ent_acidosis_ethmoidal_sinus_id);
-		String ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_id = ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getID();
-		ToolsVO ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_tools_vo = tsa_eval_service.getTools(ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_id);
-		List<PointTriggerVO> ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_points = tsa_eval_service.getPointTriggers(ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_id);
-		
-		// 5-4. ent_acidosis_ethmoidal_sinus - posterior_air_cell_removal
-		VolumeTriggerVO ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal = tsa_eval_service.getPosteriorAirCellRemoval(ent_acidosis_ethmoidal_sinus_id);
-		String ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_id = ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getID();
-		ToolsVO ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_tools_vo = tsa_eval_service.getTools(ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_id);
-		List<PointTriggerVO> ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_points = tsa_eval_service.getPointTriggers(ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_id);
-	
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("no", no);
-		
-		map.put("ent_acidosis_ethmoidal_sinus_common_Name", ent_acidosis_ethmoidal_sinus_common.getName());
-		map.put("ent_acidosis_ethmoidal_sinus_common_ClassNo", ent_acidosis_ethmoidal_sinus_common.getClassNo());
-		map.put("ent_acidosis_ethmoidal_sinus_common_Date", ent_acidosis_ethmoidal_sinus_common.getDate());
-		map.put("ent_acidosis_ethmoidal_sinus_common_ActionCount", ent_acidosis_ethmoidal_sinus_common.getActionCount());
-		map.put("ent_acidosis_ethmoidal_sinus_common_TotalScore", ent_acidosis_ethmoidal_sinus_common.getTotalScore());
-		
-		map.put("ent_acidosis_ethmoidal_sinus_tools_TouchCount", ent_acidosis_ethmoidal_sinus_tools_vo.getTouchCount());
-		map.put("ent_acidosis_ethmoidal_sinus_tools_ToolUseCount", ent_acidosis_ethmoidal_sinus_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_ethmoidal_sinus_tools_ToolInnerCount", ent_acidosis_ethmoidal_sinus_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_ethmoidal_sinus_tools_ToolTouchScore", ent_acidosis_ethmoidal_sinus_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_ethmoidal_sinus_tools_ToolViewScore", ent_acidosis_ethmoidal_sinus_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_ethmoidal_sinus_tools_MaxScore", ent_acidosis_ethmoidal_sinus_tools_vo.getMaxScore());
-		
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_MaxScore", ent_acidosis_ethmoidal_sinus_outerbreak.getMaxScore());
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Score", ent_acidosis_ethmoidal_sinus_outerbreak.getScore());
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Note", ent_acidosis_ethmoidal_sinus_outerbreak.getNote());
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Position", ent_acidosis_ethmoidal_sinus_outerbreak.getPosition());
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Rotation", ent_acidosis_ethmoidal_sinus_outerbreak.getRotation());
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Scale", ent_acidosis_ethmoidal_sinus_outerbreak.getScale());
-		
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Tools_TouchCount", ent_acidosis_ethmoidal_sinus_outerbreak_tools_vo.getTouchCount());
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Tools_ToolUseCount", ent_acidosis_ethmoidal_sinus_outerbreak_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Tools_ToolInnerCount", ent_acidosis_ethmoidal_sinus_outerbreak_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Tools_ToolTouchScore", ent_acidosis_ethmoidal_sinus_outerbreak_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Tools_ToolViewScore", ent_acidosis_ethmoidal_sinus_outerbreak_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_Tools_MaxScore", ent_acidosis_ethmoidal_sinus_outerbreak_tools_vo.getMaxScore());
-		
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_points", ent_acidosis_ethmoidal_sinus_outerbreak_points); // jsp 에서 list 로 받아야함
-		map.put("ent_acidosis_ethmoidal_sinus_outerbreak_target_points", ent_acidosis_ethmoidal_sinus_outerbreak_targetpoints);
-		
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_MaxScore", ent_acidosis_ethmoidal_sinus_uncinectomy.getMaxScore());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Score", ent_acidosis_ethmoidal_sinus_uncinectomy.getScore());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Note", ent_acidosis_ethmoidal_sinus_uncinectomy.getNote());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_points", ent_acidosis_ethmoidal_sinus_uncinectomy.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Position", ent_acidosis_ethmoidal_sinus_uncinectomy.getPosition());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Rotation", ent_acidosis_ethmoidal_sinus_uncinectomy.getRotation());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Localcale", ent_acidosis_ethmoidal_sinus_uncinectomy.getLocalcale());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_PinCount", ent_acidosis_ethmoidal_sinus_uncinectomy.getPinCount());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Pins", ent_acidosis_ethmoidal_sinus_uncinectomy.getPins());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_TargetPins", ent_acidosis_ethmoidal_sinus_uncinectomy.getTargetPins());
-		
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Tools_TouchCount", ent_acidosis_ethmoidal_sinus_uncinectomy_tools_vo.getTouchCount());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Tools_ToolUseCount", ent_acidosis_ethmoidal_sinus_uncinectomy_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Tools_ToolInnerCount", ent_acidosis_ethmoidal_sinus_uncinectomy_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Tools_ToolTouchScore", ent_acidosis_ethmoidal_sinus_uncinectomy_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Tools_ToolViewScore", ent_acidosis_ethmoidal_sinus_uncinectomy_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_ethmoidal_sinus_uncinectomy_Tools_MaxScore", ent_acidosis_ethmoidal_sinus_uncinectomy_tools_vo.getMaxScore());
-		
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_MaxScore", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getMaxScore());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Score", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getScore());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Note", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getNote());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_points", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Position", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getPosition());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Rotation", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getRotation());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Localcale", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getLocalcale());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_PinCount", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getPinCount());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Pins", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getPins());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_TargetPins", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getTargetPins());
-		
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Tools_TouchCount", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_tools_vo.getTouchCount());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Tools_ToolUseCount", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Tools_ToolInnerCount", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Tools_ToolTouchScore", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Tools_ToolViewScore", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_Tools_MaxScore", ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_tools_vo.getMaxScore());
-	
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_MaxScore", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getMaxScore());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Score", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getScore());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Note", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getNote());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_points", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getPoints()); // jsp 에서 list 로 받아야함, 어떻게 써야할지 미결
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Position", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getPosition());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Rotation", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getRotation());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Localcale", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getLocalcale());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_PinCount", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getPinCount());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Pins", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getPins());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_TargetPins", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getTargetPins());
-		
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Tools_TouchCount", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_tools_vo.getTouchCount());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Tools_ToolUseCount", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_tools_vo.getToolUseCount());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Tools_ToolInnerCount", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_tools_vo.getToolInnerCount());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Tools_ToolTouchScore", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_tools_vo.getToolTouchScore());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Tools_ToolViewScore", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_tools_vo.getToolViewScore());
-		map.put("ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_Tools_MaxScore", ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_tools_vo.getMaxScore());
-		
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
-		mav.setViewName("ViewAcidosisEthmoidalSinus");
-		return mav;
+		map.put(head_str + "MaxScore", path_trigger.getMaxScore());
+		map.put(head_str + "Score", path_trigger.getScore());
+		map.put(head_str + "Note", path_trigger.getNote());
+		map.put(head_str + "Position", path_trigger.getPosition());
+		map.put(head_str + "Rotation", path_trigger.getRotation());
+		map.put(head_str + "Scale", path_trigger.getScale());
+		return map;
 	}
 	
-	@RequestMapping(value="/ResultEvaluationTSAView", method=RequestMethod.GET)
-	public ModelAndView ResultEvaluationTSAView(@RequestParam("id")int no, HttpSession session) throws Exception
+	private HashMap<String, Object> getBoxTriggerAsmbly(String head_str, BoxTriggerVO box_trigger, HashMap<String, Object> map)
 	{
-		EntTotalVO ent_total_vo = tsa_eval_service.getEntTotal(no);
-		
-		// 1. ent_tsa
-		// ENTCommon / Tools / OuterBreak / Septal_Flap / Superior_Turbinate / Sella_Duramater / Tumor_Removal
-		String ent_tsa_id = tsa_eval_service.getEntTsa(ent_total_vo.getID());
-		EntCommonVO tsa_ent_common = tsa_eval_service.getEntCommon(ent_tsa_id);
-		ToolsVO ent_tsa_tools_vo = tsa_eval_service.getTools(ent_tsa_id); // ent_tsa 의 툴 id
-		
-		PathTriggerVOStr ent_tsa_outerbreak = tsa_eval_service.getOuterBreak(ent_tsa_id); // 부모의 id로 자신의 id를 찾아냄
-		String outer_break_id = ent_tsa_outerbreak.getID();
-		ToolsVO ent_tsa_outerbreak_tools_vo = tsa_eval_service.getTools(outer_break_id);
-		List<PointDataVOStr> ent_tsa_outerbreak_points = tsa_eval_service.getPoints(outer_break_id);
-		
-		List<PointDataVOStr> ent_tsa_outerbreak_targetpoints = tsa_eval_service.getTargetPoints(outer_break_id);
-		
-		PathTriggerVOStr ent_tsa_septal_flap = tsa_eval_service.getSeptalFlap(ent_tsa_id);
-		String septal_flap_id = ent_tsa_septal_flap.getID();
-		ToolsVO ent_tsa_septal_flap_tools_vo = tsa_eval_service.getTools(septal_flap_id);
-		List<PointDataVOStr> ent_tsa_septal_flap_points = tsa_eval_service.getPoints(septal_flap_id);
-		List<PointDataVOStr> ent_tsa_septal_flap_targetpoints = tsa_eval_service.getTargetPoints(septal_flap_id);
-		
-		BoxTriggerVO ent_tsa_superior_turbinate = tsa_eval_service.getSuperiorTurbinate(ent_tsa_id);
-		String ent_tsa_superior_turbinate_id = ent_tsa_superior_turbinate.getID();
-		ToolsVO ent_tsa_superior_turbinate_tools_vo = tsa_eval_service.getTools(ent_tsa_superior_turbinate_id);
-		
-		VolumeTriggerVOStr ent_tsa_sella_duramater = tsa_eval_service.getSellaDuramater(ent_tsa_id);
-		String ent_tsa_sella_duramater_id = ent_tsa_sella_duramater.getID();
-		ToolsVO ent_tsa_sella_duramater_tools_vo = tsa_eval_service.getTools(ent_tsa_sella_duramater_id);
-		List<PointTriggerVO> ent_tsa_sella_duramater_points = tsa_eval_service.getPointTriggers(ent_tsa_sella_duramater_id);
-		
-		VolumeTriggerVOStr ent_tsa_tumor_removal = tsa_eval_service.getTumorRemoval(ent_tsa_id);
-		String ent_tsa_tumor_removal_id = ent_tsa_tumor_removal.getID();
-		ToolsVO ent_tsa_tumor_removal_tools_vo = tsa_eval_service.getTools(ent_tsa_tumor_removal_id);
-		List<PointTriggerVO> ent_tsa_tumor_removal_points = tsa_eval_service.getPointTriggers(ent_tsa_tumor_removal_id);
-		
-		// 2. ent_transclival_approach
-		// ENTCommon / Tools / OuterBreak / Septal_Flap / Superior_Turbinate / Sella_Duramater
-		String ent_transclival_approach_id = tsa_eval_service.getEntTansclivalApproach(ent_total_vo.getID());
-		EntCommonVO ent_transclival_approach_common = tsa_eval_service.getEntCommon(ent_transclival_approach_id);
-		ToolsVO ent_transclival_approach_tools_vo = tsa_eval_service.getTools(ent_transclival_approach_id); 
-		
-		PathTriggerVOStr ent_transclival_approach_outerbreak = tsa_eval_service.getOuterBreak(ent_transclival_approach_id); 
-		String ent_transclival_approach_outerbreak_id = ent_transclival_approach_outerbreak.getID();
-		ToolsVO ent_transclival_approach_outerbreak_tools_vo = tsa_eval_service.getTools(ent_transclival_approach_outerbreak_id);
-		List<PointDataVOStr> ent_transclival_approach_outerbreak_points = tsa_eval_service.getPoints(ent_transclival_approach_outerbreak_id);
-		List<PointDataVOStr> ent_transclival_approach_outerbreak_targetpoints = tsa_eval_service.getTargetPoints(ent_transclival_approach_outerbreak_id);
-		
-		PathTriggerVOStr ent_transclival_approach_septal_flap = tsa_eval_service.getSeptalFlap(ent_transclival_approach_id);
-		String ent_transclival_approach_septal_flap_id = ent_transclival_approach_septal_flap.getID();
-		ToolsVO ent_transclival_approach_septal_flap_tools_vo = tsa_eval_service.getTools(ent_transclival_approach_septal_flap_id);
-		List<PointDataVOStr> ent_transclival_approach_septal_flap_points = tsa_eval_service.getPoints(ent_transclival_approach_septal_flap_id);
-		List<PointDataVOStr> ent_transclival_approach_septal_flap_targetpoints = tsa_eval_service.getTargetPoints(ent_transclival_approach_septal_flap_id);
-		
-		BoxTriggerVO ent_transclival_approach_superior_turbinate = tsa_eval_service.getSuperiorTurbinate(ent_transclival_approach_id);
-		String ent_transclival_approach_superior_turbinate_id = ent_transclival_approach_superior_turbinate.getID();
-		ToolsVO ent_transclival_approach_superior_turbinate_tools_vo = tsa_eval_service.getTools(ent_transclival_approach_superior_turbinate_id);
-		
-		VolumeTriggerVOStr ent_transclival_approach_sella_duramater = tsa_eval_service.getSellaDuramater(ent_transclival_approach_id);
-		String ent_transclival_approach_sella_duramater_id = ent_transclival_approach_sella_duramater.getID();
-		ToolsVO ent_transclival_approach_sella_duramater_tools_vo = tsa_eval_service.getTools(ent_transclival_approach_sella_duramater_id);
-		List<PointTriggerVO> ent_transclival_approach_sella_duramater_points = tsa_eval_service.getPointTriggers(ent_transclival_approach_sella_duramater_id);
-		
-		// 3. ent_acidosis_maxillary_sinus
-		// ENTCommon / Tools / OuterBreak / Uncinectomy / Superior_Turbinate
-		String ent_acidosis_maxillary_sinus_id = tsa_eval_service.getEntAcidosisMaxillarySinus(ent_total_vo.getID());
-		EntCommonVO ent_acidosis_maxillary_sinus_common = tsa_eval_service.getEntCommon(ent_acidosis_maxillary_sinus_id);
-		ToolsVO ent_acidosis_maxillary_sinus_tools_vo = tsa_eval_service.getTools(ent_acidosis_maxillary_sinus_id);
-		
-		PathTriggerVOStr ent_acidosis_maxillary_sinus_outerbreak = tsa_eval_service.getOuterBreak(ent_acidosis_maxillary_sinus_id); 
-		String ent_acidosis_maxillary_sinus_outerbreak_id = ent_acidosis_maxillary_sinus_outerbreak.getID();
-		ToolsVO ent_acidosis_maxillary_sinus_outerbreak_tools_vo = tsa_eval_service.getTools(ent_acidosis_maxillary_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_maxillary_sinus_outerbreak_points = tsa_eval_service.getPoints(ent_acidosis_maxillary_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_maxillary_sinus_outerbreak_targetpoints = tsa_eval_service.getTargetPoints(ent_acidosis_maxillary_sinus_outerbreak_id);
-		
-		VolumeTriggerVOStr ent_acidosis_maxillary_sinus_uncinectomy = tsa_eval_service.getUncinectomy(ent_acidosis_maxillary_sinus_id);
-		String ent_acidosis_maxillary_sinus_uncinectomy_id = ent_acidosis_maxillary_sinus_uncinectomy.getID();
-		ToolsVO ent_acidosis_maxillary_sinus_uncinectomy_tools_vo = tsa_eval_service.getTools(ent_acidosis_maxillary_sinus_uncinectomy_id);
-		List<PointTriggerVO> ent_acidosis_maxillary_sinus_uncinectomy_points = tsa_eval_service.getPointTriggers(ent_acidosis_maxillary_sinus_uncinectomy_id);
-		
-		BoxTriggerVO ent_acidosis_maxillary_sinus_superior_turbinate = tsa_eval_service.getSuperiorTurbinate(ent_acidosis_maxillary_sinus_id);
-		String ent_acidosis_maxillary_sinus_superior_turbinate_id = ent_acidosis_maxillary_sinus_superior_turbinate.getID();
-		ToolsVO ent_acidosis_maxillary_sinus_superior_turbinate_tools_vo = tsa_eval_service.getTools(ent_acidosis_maxillary_sinus_superior_turbinate_id);
-		
-		// 4. ent_acidosis_frontal_sinus
-		// ENTCommon / Tools / OuterBreak / Uncinectomy / Anterior_ethmoidectomy / Anterior_sinus
-		String ent_acidosis_frontal_sinus_id = tsa_eval_service.getEntAcidosisFrontalSinus(ent_total_vo.getID());
-		EntCommonVO ent_acidosis_frontal_sinus_common = tsa_eval_service.getEntCommon(ent_acidosis_frontal_sinus_id);
-		ToolsVO ent_acidosis_frontal_sinus_tools_vo = tsa_eval_service.getTools(ent_acidosis_frontal_sinus_id);
-		
-		// 4-1. ent_acidosis_frontal_sinus - outerbreak
-		PathTriggerVOStr ent_acidosis_frontal_sinus_outerbreak = tsa_eval_service.getOuterBreak(ent_acidosis_frontal_sinus_id);
-		String ent_acidosis_frontal_sinus_outerbreak_id = ent_acidosis_frontal_sinus_outerbreak.getID();
-		ToolsVO ent_acidosis_frontal_sinus_outerbreak_tools_vo = tsa_eval_service.getTools(ent_acidosis_frontal_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_frontal_sinus_outerbreak_points = tsa_eval_service.getPoints(ent_acidosis_frontal_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_frontal_sinus_outerbreak_targetpoints = tsa_eval_service.getTargetPoints(ent_acidosis_frontal_sinus_outerbreak_id);
-		
-		// 4-2. ent_acidosis_frontal_sinus - uncinectomy
-		VolumeTriggerVOStr ent_acidosis_frontal_sinus_uncinectomy = tsa_eval_service.getUncinectomy(ent_acidosis_frontal_sinus_id);
-		String ent_acidosis_frontal_sinus_uncinectomy_id = ent_acidosis_frontal_sinus_uncinectomy.getID();
-		ToolsVO ent_acidosis_frontal_sinus_uncinectomy_tools_vo = tsa_eval_service.getTools(ent_acidosis_frontal_sinus_uncinectomy_id);
-		List<PointTriggerVO> ent_acidosis_frontal_sinus_uncinectomy_points = tsa_eval_service.getPointTriggers(ent_acidosis_frontal_sinus_uncinectomy_id);
-		
-		// 4-3. ent_acidosis_frontal_sinus - anterior_ethmoidectomy
-		VolumeTriggerVOStr ent_acidosis_frontal_sinus_anterior_ethmoidectomy = tsa_eval_service.getAnteriorEthmoidectomy(ent_acidosis_frontal_sinus_id);
-		String ent_acidosis_frontal_sinus_anterior_ethmoidectomy_id = ent_acidosis_frontal_sinus_anterior_ethmoidectomy.getID();
-		ToolsVO ent_acidosis_frontal_sinus_anterior_ethmoidectomy_tools_vo = tsa_eval_service.getTools(ent_acidosis_frontal_sinus_anterior_ethmoidectomy_id);
-		List<PointTriggerVO> ent_acidosis_frontal_sinus_anterior_ethmoidectomy_points = tsa_eval_service.getPointTriggers(ent_acidosis_frontal_sinus_anterior_ethmoidectomy_id);
-		
-		// 4-4. ent_acidosis_frontal_sinus - anterior_sinus
-		VolumeTriggerVOStr ent_acidosis_frontal_sinus_anterior_sinus = tsa_eval_service.getAnteriorSinus(ent_acidosis_frontal_sinus_id);
-		String ent_acidosis_frontal_sinus_anterior_sinus_id = ent_acidosis_frontal_sinus_anterior_sinus.getID();
-		ToolsVO ent_acidosis_frontal_sinus_anterior_sinus_tools_vo = tsa_eval_service.getTools(ent_acidosis_frontal_sinus_anterior_sinus_id);
-		List<PointTriggerVO> ent_acidosis_frontal_sinus_anterior_sinus_points = tsa_eval_service.getPointTriggers(ent_acidosis_frontal_sinus_anterior_sinus_id);
-		
-		
-		// 5. ent_acidosis_ethmoidal_sinus
-		// ENTCommon / Tools / OuterBreak / Uncinectomy / Anterior_ethmoidal_air_cell_removal / Posterior_air_cell_removal
-		String ent_acidosis_ethmoidal_sinus_id = tsa_eval_service.getEntAcidosisEthmoidalSinus(ent_total_vo.getID());
-		EntCommonVO ent_acidosis_ethmoidal_sinus_common = tsa_eval_service.getEntCommon(ent_acidosis_ethmoidal_sinus_id);
-		ToolsVO ent_acidosis_ethmoidal_sinus_tools_vo = tsa_eval_service.getTools(ent_acidosis_ethmoidal_sinus_id);
-		
-		// 5-1. ent_acidosis_ethmoidal_sinus - outerbreak
-		PathTriggerVOStr ent_acidosis_ethmoidal_sinus_outerbreak = tsa_eval_service.getOuterBreak(ent_acidosis_ethmoidal_sinus_id);
-		String ent_acidosis_ethmoidal_sinus_outerbreak_id = ent_acidosis_ethmoidal_sinus_outerbreak.getID();
-		ToolsVO ent_acidosis_ethmoidal_sinus_outerbreak_tools_vo = tsa_eval_service.getTools(ent_acidosis_ethmoidal_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_ethmoidal_sinus_outerbreak_points = tsa_eval_service.getPoints(ent_acidosis_ethmoidal_sinus_outerbreak_id);
-		List<PointDataVOStr> ent_acidosis_ethmoidal_sinus_outerbreak_targetpoints = tsa_eval_service.getTargetPoints(ent_acidosis_ethmoidal_sinus_outerbreak_id);
-		
-		// 5-2. ent_acidosis_ethmoidal_sinus - uncinectomy
-		VolumeTriggerVOStr ent_acidosis_ethmoidal_sinus_uncinectomy = tsa_eval_service.getUncinectomy(ent_acidosis_ethmoidal_sinus_id);
-		String ent_acidosis_ethmoidal_sinus_uncinectomy_id = ent_acidosis_ethmoidal_sinus_uncinectomy.getID();
-		ToolsVO ent_acidosis_ethmoidal_sinus_uncinectomy_tools_vo = tsa_eval_service.getTools(ent_acidosis_ethmoidal_sinus_uncinectomy_id);
-		List<PointTriggerVO> ent_acidosis_ethmoidal_sinus_uncinectomy_points = tsa_eval_service.getPointTriggers(ent_acidosis_ethmoidal_sinus_uncinectomy_id);
-		
-		// 5-3. ent_acidosis_ethmoidal_sinus - anterior_ethmoidal_air_cell_removal
-		VolumeTriggerVO ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal = tsa_eval_service.getAnteriorEthmoidalAirCellRemoval(ent_acidosis_ethmoidal_sinus_id);
-		String ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_id = ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal.getID();
-		ToolsVO ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_tools_vo = tsa_eval_service.getTools(ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_id);
-		List<PointTriggerVO> ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_points = tsa_eval_service.getPointTriggers(ent_acidosis_ethmoidal_sinus_anterior_ethmoidal_air_cell_removal_id);
-		
-		// 5-4. ent_acidosis_ethmoidal_sinus - posterior_air_cell_removal
-		VolumeTriggerVO ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal = tsa_eval_service.getPosteriorAirCellRemoval(ent_acidosis_ethmoidal_sinus_id);
-		String ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_id = ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal.getID();
-		ToolsVO ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_tools_vo = tsa_eval_service.getTools(ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_id);
-		List<PointTriggerVO> ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_points = tsa_eval_service.getPointTriggers(ent_acidosis_ethmoidal_sinus_posterior_air_cell_removal_id);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("map", map);
-		mav.setViewName("ResultEvaluationTSAView");
-		return mav;
+		map.put(head_str + "MaxScore", box_trigger.getMaxScore());
+		map.put(head_str + "Score", box_trigger.getScore());
+		map.put(head_str + "Note", box_trigger.getNote());
+		map.put(head_str + "InnerTriggerCount", box_trigger.getInnerTriggerCount());
+		map.put(head_str + "OuterTriggerCount", box_trigger.getOuterTriggerCount());
+		map.put(head_str + "InnerTriggerTouchCount", box_trigger.getInnerTriggerTouchCount());
+		map.put(head_str + "OuterTriggerTouchCount", box_trigger.getOuterTriggerTouchCount());
+		return map;
 	}
-	*/
+	
+	private HashMap<String, Object> getAverTools(String head_str, String oper_id, TsaEvalService srv_obj, HashMap<String, Object> map) throws Exception
+	{
+		map.put(head_str + "TouchCount", srv_obj.getAverTouchCount(oper_id));
+		map.put(head_str + "ToolUseCount", srv_obj.getAverToolUseCount(oper_id));
+		map.put(head_str + "ToolInnerCount", srv_obj.getAverToolInnerCount(oper_id));
+		map.put(head_str + "ToolTouchScore", srv_obj.getAverToolTouchScore(oper_id));
+		map.put(head_str + "ToolViewScore", srv_obj.getAverToolViewScore(oper_id));
+		map.put(head_str + "ToolMaxScore", srv_obj.getAverMaxScore(oper_id));
+		return map;
+	}
+	
+	private HashMap<String, Object> getScoreRange(String head_str, RangeScoreVO rsvo, HashMap<String, Object> map)
+	{
+		map.put(head_str + "0_to_50", rsvo.getRn0_to_50());
+		map.put(head_str + "51_to_60", rsvo.getRn51_to_60());
+		map.put(head_str + "61_to_70", rsvo.getRn61_to_70());
+		map.put(head_str + "71_to_80", rsvo.getRn71_to_80());
+		map.put(head_str + "81_to_90", rsvo.getRn81_to_90());
+		map.put(head_str + "91_to_100", rsvo.getRn91_to_100());
+		return map;
+	}
 	
 	// os 목록
 	@RequestMapping("/EvalOS")
@@ -3232,6 +1777,7 @@ public class ResultEvaluationController {
 		int start = boardPager.getPageBegin();
 		int end = boardPager.getPageEnd();
 		
+		/*
 		List<HipCommonVO> list = os_eval_service.list(start, end, searchOption, keyword, user_id);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -3241,6 +1787,24 @@ public class ResultEvaluationController {
 		map.put("keyword", keyword);
 		map.put("boardPager", boardPager);
 		map.put("operType", "OS");
+		*/
+		
+		UserBean user_vo = userService.user(user_id);
+		List<HipCommonVO> list;
+		if(user_vo.getUSERTYPE().equals("TEACHER")) {
+			list = os_eval_service.list_every(start, end, searchOption, keyword, user_id);
+		}
+		else {
+			list = os_eval_service.list(start, end, searchOption, keyword, user_id);
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("count", count);
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		map.put("boardPager", boardPager);
+		map.put("operType", "OS");
+
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);
@@ -3251,6 +1815,13 @@ public class ResultEvaluationController {
 	@RequestMapping(value="/EvalOSView", method=RequestMethod.GET)
 	public ModelAndView EvalOSView(@RequestParam String id, HttpSession session) throws Exception
 	{
+		int hip01_max_score = 20;
+		int hip02_max_score = 25;
+		int hip03_max_score = 10;
+		int hip04_max_score = 15;
+		int hip05_max_score = 20;
+		int hip06_max_score = 10;
+		
 		HipCommonVO hipcommonvo = os_eval_service.view_common(id);
 		Hip01DataVOStr hip01 = os_eval_service.view(id);
 		Hip02DataVOStr hip02 = os_eval_service.view2(id);
@@ -3277,11 +1848,18 @@ public class ResultEvaluationController {
 		map.put("hip01_localcaleA", hip01.getLocalcaleA());
 		//map.put("hip01_pinCountA", hip01.getPinCountA());
 		String str_hip01_pinCountA = hip01.getPinCountA();
-		String[] str_hip01_pinCnts = str_hip01_pinCountA.split(",");
-		str_hip01_pinCnts[0] = str_hip01_pinCnts[0].replace("[", "");
-		str_hip01_pinCnts[1] = str_hip01_pinCnts[1].replace("]", "");
-		map.put("hip01_pinCountAx", str_hip01_pinCnts[0]);
-		map.put("hip01_pinCountAz", str_hip01_pinCnts[1]);
+		
+		if(str_hip01_pinCountA != null && str_hip01_pinCountA != "") {
+			String[] str_hip01_pinCnts = str_hip01_pinCountA.split(",");
+			str_hip01_pinCnts[0] = str_hip01_pinCnts[0].replace("[", "");
+			str_hip01_pinCnts[1] = str_hip01_pinCnts[1].replace("]", "");
+			map.put("hip01_pinCountAx", str_hip01_pinCnts[0]);
+			map.put("hip01_pinCountAz", str_hip01_pinCnts[1]);
+		}
+		else {
+			map.put("hip01_pinCountAx", "");
+			map.put("hip01_pinCountAz", "");
+		}
 		map.put("hip01_pinsA", hip01.getPinsA());
 		map.put("hip01_AxResult", hip01.getAxResult());
 		map.put("hip01_AzResult", hip01.getAzResult());
@@ -3296,28 +1874,45 @@ public class ResultEvaluationController {
 		// 각도와 각도 점수값은 3개의 값이 들어가있는데 파싱해서 각각 전달해주어야한다
 		//map.put("hip01_degree", hip01.getDegree());
 		String str_degree = hip01.getDegree();
-		String[] str_degrees = str_degree.split(",");
-		str_degrees[0] = str_degrees[0].replace("[", "");
-		str_degrees[2] = str_degrees[2].replace("]", "");
-		map.put("hip01_degree1", str_degrees[0]);
-		map.put("hip01_degree2", str_degrees[1]);
-		map.put("hip01_degree3", str_degrees[2]);
+		if(str_degree != null && str_degree != "") {
+			String[] str_degrees = str_degree.split(",");
+			str_degrees[0] = str_degrees[0].replace("[", "");
+			str_degrees[2] = str_degrees[2].replace("]", "");
+			map.put("hip01_degree1", str_degrees[0]);
+			map.put("hip01_degree2", str_degrees[1]);
+			map.put("hip01_degree3", str_degrees[2]);
+		}
+		else {
+			map.put("hip01_degree1", "");
+			map.put("hip01_degree2", "");
+			map.put("hip01_degree3", "");
+		}
 		//map.put("hip01_degreeScore", hip01.getDegreeScore());
 		String str_degreeScore = hip01.getDegreeScore();
-		String[] str_degreeScores = str_degreeScore.split(",");
-		str_degreeScores[0] = str_degreeScores[0].replace("[", "");
-		str_degreeScores[2] = str_degreeScores[2].replace("]", "");
-		map.put("hip01_degreeScore1", str_degreeScores[0]);
-		map.put("hip01_degreeScore2", str_degreeScores[1]);
-		map.put("hip01_degreeScore3", str_degreeScores[2]);
-		
+		if(str_degreeScore != null && str_degreeScore != "") {
+			String[] str_degreeScores = str_degreeScore.split(",");
+			str_degreeScores[0] = str_degreeScores[0].replace("[", "");
+			str_degreeScores[2] = str_degreeScores[2].replace("]", "");
+			map.put("hip01_degreeScore1", str_degreeScores[0]);
+			map.put("hip01_degreeScore2", str_degreeScores[1]);
+			map.put("hip01_degreeScore3", str_degreeScores[2]);
+		}
+		else {
+			map.put("hip01_degreeScore1", "");
+			map.put("hip01_degreeScore2", "");
+			map.put("hip01_degreeScore3", "");
+		}
 		map.put("hip01_distance", hip01.getDistance());
 		map.put("hip01_distanceScore", hip01.getDistanceScore());
-		map.put("hip01Score", hip01.getHip01Score());
+		map.put("hip01_ResScore", hip01.getHip01Score());
 		map.put("hip01_graphAx", hip01.getGraphAx());
 		map.put("hip01_graphAz", hip01.getGraphAz());
 		map.put("hip01_graphBx", hip01.getGraphBx());
 		map.put("hip01_graphBz", hip01.getGraphBz());
+		// 백분위 점수
+		double hip01_100div_score = (hip01.getHip01Score() / hip01_max_score) * 100;
+		map.put("hip01_100div_score", hip01_100div_score);
+		map.put("hip01_max_score", hip01_max_score);
 		
 		map.put("hip02_positionA", hip02.getPositionA());
 		map.put("hip02_rotationA", hip02.getRotationA());
@@ -3331,15 +1926,42 @@ public class ResultEvaluationController {
 		map.put("hip02_pointsgapAvg", hip02.getPointsgapAvg());
 		map.put("hip02_pointsgapMax", hip02.getPointsgapMax());
 		map.put("hip02_cupDiatance", hip02.getCupDiatance());
+		
+		String hip02_result = hip02.getResult();
+		if(hip02_result != null && hip02_result != "") {
+			String[] hip02_results = hip02_result.split(",");
+			hip02_results[0] = hip02_results[0].replace("[", "");
+			hip02_results[2] = hip02_results[2].replace("]", "");
+			map.put("hip02_result1", hip02_results[0]);
+			map.put("hip02_result2", hip02_results[1]);
+			map.put("hip02_result3", hip02_results[2]);
+		}
+		else {
+			map.put("hip02_result1", "");
+			map.put("hip02_result2", "");
+			map.put("hip02_result3", "");
+		}
+		
 		//map.put("hip02_Score", hip02.getScore()); // 거리, 각도1, 각도2 점수로 파싱해야함
 		String str_score = hip02.getScore();
-		String[] str_scores = str_score.split(",");
-		str_scores[0] = str_scores[0].replace("[", "");
-		str_scores[2] = str_scores[2].replace("]", "");
-		map.put("hip02_distance_score", str_scores[0]);
-		map.put("hip02_degree_score1", str_scores[1]);
-		map.put("hip02_degree_score2", str_scores[2]);
+		if(str_score != null && str_score != "") {
+			String[] str_scores = str_score.split(",");
+			str_scores[0] = str_scores[0].replace("[", "");
+			str_scores[2] = str_scores[2].replace("]", "");
+			map.put("hip02_distance_score", str_scores[0]);
+			map.put("hip02_degree_score1", str_scores[1]);
+			map.put("hip02_degree_score2", str_scores[2]);
+		}
+		else {
+			map.put("hip02_distance_score", "");
+			map.put("hip02_degree_score1", "");
+			map.put("hip02_degree_score2", "");
+		}
 		map.put("hip02_ResScore", hip02.getHip02Score());
+		// 백분위 점수
+		double hip02_100div_score = (hip02.getHip02Score() / hip02_max_score) * 100;
+		map.put("hip02_100div_score", hip02_100div_score);
+		map.put("hip02_max_score", hip02_max_score);
 		
 		map.put("hip03_positionA", hip03.getPositionA());
 		map.put("hip03_rotationA", hip03.getRotationA());
@@ -3347,14 +1969,43 @@ public class ResultEvaluationController {
 		map.put("hip03_cupRotation", hip03.getCupRotation());
 		map.put("hip03_cupPosition", hip03.getCupPosition());
 		map.put("hip03_cupDiatance", hip03.getCupDiatance());
+		
+		String hip03_result = hip03.getResult();
+		if(hip03_result != null && hip03_result != "") {
+			String[] hip03_results = hip03_result.split(",");
+			hip03_results[0] = hip03_results[0].replace("[", "");
+			hip03_results[2] = hip03_results[2].replace("]", "");
+			map.put("hip03_result1", hip03_results[0]);
+			map.put("hip03_result2", hip03_results[1]);
+			map.put("hip03_result3", hip03_results[2]);
+		}
+		else {
+			map.put("hip03_result1", "");
+			map.put("hip03_result2", "");
+			map.put("hip03_result3", "");
+		}
+		
 		//map.put("hip03_Score", hip03.getScore());
 		String str_hip03_score = hip03.getScore();
-		String[] str_hip03_scores = str_hip03_score.split(",");
-		str_hip03_scores[1] = str_hip03_scores[1];
-		str_hip03_scores[2] = str_hip03_scores[2].replace("]", "");
-		map.put("hip03_score1", str_hip03_scores[1]);
-		map.put("hip03_score2", str_hip03_scores[2]);
+		if(str_hip03_score != null && str_hip03_score != "") {
+			String[] str_hip03_scores = str_hip03_score.split(",");
+			str_hip03_scores[0] = str_hip03_scores[0].replace("[", "");
+			str_hip03_scores[2] = str_hip03_scores[2].replace("]", "");
+			map.put("hip03_score1", str_hip03_scores[0]);
+			map.put("hip03_score2", str_hip03_scores[1]);
+			map.put("hip03_score3", str_hip03_scores[2]);
+		}
+		else {
+			map.put("hip03_score1", "");
+			map.put("hip03_score2", "");
+			map.put("hip03_score3", "");
+		}
+		
 		map.put("hip03_ResScore", hip03.getHip03Score());
+		// 백분위 점수
+		double hip03_100div_score = (hip03.getHip03Score() / hip03_max_score) * 100;
+		map.put("hip03_100div_score", hip03_100div_score);
+		map.put("hip03_max_score", hip03_max_score);
 		
 		map.put("hip04_positionA", hip04.getPositionA());
 		map.put("hip04_rotationA", hip04.getRotationA());
@@ -3366,15 +2017,43 @@ public class ResultEvaluationController {
 		map.put("hip04_pathWay", hip04.getPathWay());
 		map.put("hip04_pathWayLinearX", hip04.getPathWayLinearX());
 		map.put("hip04_pathWayLinearZ", hip04.getPathWayLinearZ());
+		
+		String hip04_result = hip04.getResult();
+		if(hip04_result != null && hip04_result != "") {
+			String[] hip04_results = hip04_result.split(",");
+			hip04_results[0] = hip04_results[0].replace("[", "");
+			hip04_results[2] = hip04_results[2].replace("]", "");
+			map.put("hip04_result1", hip04_results[0]);
+			map.put("hip04_result2", hip04_results[1]);
+			map.put("hip04_result3", hip04_results[2]);
+		}
+		else {
+			map.put("hip04_result1", "");
+			map.put("hip04_result2", "");
+			map.put("hip04_result3", "");
+		}
+		
 		//map.put("hip04_Score", hip04.getScore());
 		String str_hip04_score = hip04.getScore();
-		String[] str_hip04_scores = str_hip04_score.split(",");
-		str_hip04_scores[0] = str_hip04_scores[0].replace("[", "");
-		str_hip04_scores[2] = str_hip04_scores[2].replace("]", "");
-		map.put("hip04_score1", str_hip04_scores[0]);
-		map.put("hip04_score2", str_hip04_scores[1]);
-		map.put("hip04_score3", str_hip04_scores[2]);
+		if(str_hip04_score != null && str_hip04_score != "") {
+			String[] str_hip04_scores = str_hip04_score.split(",");
+			str_hip04_scores[0] = str_hip04_scores[0].replace("[", "");
+			str_hip04_scores[2] = str_hip04_scores[2].replace("]", "");
+			map.put("hip04_score1", str_hip04_scores[0]);
+			map.put("hip04_score2", str_hip04_scores[1]);
+			map.put("hip04_score3", str_hip04_scores[2]);
+		}
+		else {
+			map.put("hip04_score1", "");
+			map.put("hip04_score2", "");
+			map.put("hip04_score3", "");
+		}
+		
 		map.put("hip04_ResScore", hip04.getHip04Score());
+		// 백분위 점수
+		double hip04_100div_score = (hip04.getHip04Score() / hip04_max_score) * 100;
+		map.put("hip04_100div_score", hip04_100div_score);
+		map.put("hip04_max_score", hip04_max_score);
 		
 		map.put("hip05_positionA", hip05.getPositionA());
 		map.put("hip05_rotationA", hip05.getRotationA());
@@ -3386,8 +2065,43 @@ public class ResultEvaluationController {
 		map.put("hip05_pathWay", hip05.getPathWay());
 		map.put("hip05_pathWayLinearX", hip05.getPathWayLinearX());
 		map.put("hip05_pathWayLinearZ", hip05.getPathWayLinearZ());
-		map.put("hip05_Score", hip05.getScore());
 		map.put("hip05_ResScore", hip05.getHip05Score());
+		
+		String hip05_result = hip05.getResult();
+		if(hip05_result != null && hip05_result != "") {
+			String[] hip05_results = hip05_result.split(",");
+			hip05_results[0] = hip05_results[0].replace("[", "");
+			hip05_results[2] = hip05_results[2].replace("]", "");
+			map.put("hip05_result1", hip05_results[0]);
+			map.put("hip05_result2", hip05_results[1]);
+			map.put("hip05_result3", hip05_results[2]);
+		}
+		else {
+			map.put("hip05_result1", "");
+			map.put("hip05_result2", "");
+			map.put("hip05_result3", "");
+		}
+		
+		// 백분위 점수
+		double hip05_100div_score = (hip05.getHip05Score() / hip05_max_score) * 100;
+		map.put("hip05_100div_score", hip05_100div_score);
+		map.put("hip05_max_score", hip05_max_score);
+		
+		String str_hip05_score = hip05.getScore();
+		if(str_hip05_score != null && str_hip05_score != "") {
+			String[] str_hip05_scores = str_hip05_score.split(",");
+			str_hip05_scores[0] = str_hip05_scores[0].replace("[", "");
+			str_hip05_scores[2] = str_hip05_scores[2].replace("]", "");
+			map.put("hip05_score1", str_hip05_scores[0]);
+			map.put("hip05_score2", str_hip05_scores[1]);
+			map.put("hip05_score3", str_hip05_scores[2]);
+		}
+		else {
+			map.put("hip05_score1", "");
+			map.put("hip05_score2", "");
+			map.put("hip05_score3", "");
+		}
+		
 		
 		map.put("hip06_positionA", hip06.getPositionA());
 		map.put("hip06_rotationA", hip06.getRotationA());
@@ -3401,6 +2115,44 @@ public class ResultEvaluationController {
 		map.put("hip06_pathWayLinearZ", hip06.getPathWayLinearZ());
 		map.put("hip06_Score", hip06.getScore());
 		map.put("hip06_ResScore", hip06.getHip06Score());
+		
+		String hip06_result = hip06.getResult();
+		if(hip06_result != null && hip06_result != "") {
+			String[] hip06_results = hip06_result.split(",");
+			hip06_results[0] = hip06_results[0].replace("[", "");
+			hip06_results[2] = hip06_results[2].replace("]", "");
+			map.put("hip06_result1", hip06_results[0]);
+			map.put("hip06_result2", hip06_results[1]);
+			map.put("hip06_result3", hip06_results[2]);
+		}
+		else {
+			map.put("hip06_result1", "");
+			map.put("hip06_result2", "");
+			map.put("hip06_result3", "");
+		}
+		
+		// 백분위 점수
+		double hip06_100div_score = (hip06.getHip06Score() / hip06_max_score) * 100;
+		map.put("hip06_100div_score", hip06_100div_score);
+		map.put("hip06_max_score", hip06_max_score);
+		
+		String str_hip06_score = hip06.getScore();
+		if(str_hip06_score != null && str_hip06_score != "") {
+			String[] str_hip06_scores = str_hip06_score.split(",");
+			str_hip06_scores[0] = str_hip06_scores[0].replace("[", "");
+			str_hip06_scores[2] = str_hip06_scores[2].replace("]", "");
+			map.put("hip06_score1", str_hip06_scores[0]);
+			map.put("hip06_score2", str_hip06_scores[1]);
+			map.put("hip06_score3", str_hip06_scores[2]);
+		}
+		else {
+			map.put("hip06_score1", "");
+			map.put("hip06_score2", "");
+			map.put("hip06_score3", "");
+		}
+		
+		int total_score = hipcommonvo.getTotalScore();//(int)(hip01.getHip01Score() + hip02.getHip02Score() + hip03.getHip03Score() + hip04.getHip04Score() + hip05.getHip05Score() + hip06.getHip06Score());
+		map.put("total_score", total_score);
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);
@@ -3447,7 +2199,6 @@ public class ResultEvaluationController {
 	{
 		List<HipCommonVO>hipcommon_10_list = os_eval_service.recent10_os_common(user_id);
 		Map<String, Object> map = new HashMap<String, Object>();
-		
 		
 		map.put("hipcommon_10_list", hipcommon_10_list);
 		int[] score_list = new int[hipcommon_10_list.size()];

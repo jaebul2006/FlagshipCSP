@@ -111,6 +111,18 @@ public class OsEvalDAOImpl implements OsEvalDAO{
 	}
 	
 	@Override
+	public List<HipCommonVO> list_every(int start, int end, String searchOption, String keyword, String user_id) throws Exception
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		map.put("start", start);
+		map.put("end", end);
+		map.put("user_id", user_id);
+		return sqlSession.selectList(namespace + ".list_every", map);
+	}
+	
+	@Override
 	public Hip01DataVOStr view(String id) throws Exception
 	{
 		return sqlSession.selectOne(namespace + ".view", id);

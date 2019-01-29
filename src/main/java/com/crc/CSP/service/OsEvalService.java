@@ -31,6 +31,8 @@ public interface OsEvalService {
 	// controller
 	public int count(String searchOption, String keyword, String user_id) throws Exception;
 	public List<HipCommonVO> list(int start, int end, String searchOption, String keyword, String user_id) throws Exception;
+	public List<HipCommonVO> list_every(int start, int end, String searchOption, String keyword, String user_id) throws Exception;
+	
 	public Hip01DataVOStr view(String id) throws Exception;
 	public Hip02DataVOStr view2(String id) throws Exception;
 	public Hip03DataVOStr view3(String id) throws Exception;

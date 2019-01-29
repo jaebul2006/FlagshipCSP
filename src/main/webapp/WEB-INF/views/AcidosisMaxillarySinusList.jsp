@@ -75,6 +75,8 @@
 		                <img class="card-img-top" src="./KVRF/final/images/thum04.jpg" alt="Card image cap">
 		                <div class="card-body">
 		                    <h5>${row.date}</h5>
+		                    <br/>
+		                    <h6>${row.user_id}</h6>
 		                  <p class="card-text"></p>
 		                  <div class="d-flex justify-content-between align-items-center">
 		                    <div class="btn-group">

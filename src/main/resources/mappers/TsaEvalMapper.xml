@@ -220,6 +220,15 @@
 			user_id = #{user_id}
 		AND
 			oper_name = #{oper_name}
+		ORDER BY date desc
+	</select>
+	
+	<select id="list_every" resultType="com.crc.CSP.bean.EntTotalVO">
+		SELECT * FROM 
+			ent_total
+		WHERE
+			oper_name = #{oper_name}
+		ORDER BY date desc
 	</select>
 	
 	<select id="getPoints" resultType="com.crc.CSP.bean.PointDataVOStr">
@@ -868,6 +877,62 @@
 		SELECT AVG(score)
 		FROM
 			transclival_drilling
+		]]>
+	</select>
+	
+	<select id="getAverScoreUncinectomy" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			uncinectomy
+		]]>
+	</select>
+	
+	<select id="getAverScorePosteriorAirCellRemoval" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			posterior_aircell_removal
+		]]>
+	</select>
+	
+	<select id="getAverAnteriorEthmoidectomy" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			anterior_ethmoidectomy
+		]]>
+	</select>
+	
+	<select id="getAverScoreAnteriorSinus" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			anterior_sinus
+		]]>
+	</select>
+	
+	<select id="getAverSuperiorTurbinate" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			superior_turbinate
+		]]>
+	</select>
+	
+	<select id="getAverUncinectomy" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			uncinectomy
+		]]>
+	</select>
+	
+	<select id="getAverScoreAnteriorEthmoidalAirCellRemoval" resultType="int">
+		<![CDATA[
+		SELECT AVG(score)
+		FROM
+			anterior_ethmoidal_aircell_removal
 		]]>
 	</select>
 	

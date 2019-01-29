@@ -6,32 +6,32 @@
 <mapper namespace="com.crc.CSP.OsEvalMapper">
 
 	<insert id="insertHipCommon">
-		INSERT INTO hip_common (user_id, date, ID, UID, ActionCount, totalScore, file_name)
-		VALUES (#{user_id}, #{date}, #{ID}, #{UID}, #{ActionCount}, #{totalScore}, #{file_name})
+		INSERT INTO hip_common (user_id, date, ID, UID, name, classNo, ActionCount, totalScore, file_name)
+		VALUES (#{user_id}, #{date}, #{ID}, #{UID}, #{name}, #{classNo}, #{ActionCount}, #{totalScore}, #{file_name})
 	</insert>
 
 	<insert id="insertHip01">
-		INSERT INTO hip01 (user_id, id, positionA, rotationA, localcaleA, pinCountA, pinsA, AxResult, AzResult, positionB, rotationB, localcaleB, pinCountB, pinsB, BxResult, BzResult, degree, degreeScore, distance, distanceScore, hip01Score, graphAx, graphAz, graphBx, graphBz)
-		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{localcaleA}, #{pinCountA}, #{pinsA}, #{AxResult}, #{AzResult}, #{positionB}, #{rotationB}, #{localcaleB}, #{pinCountB}, #{pinsB}, #{BxResult}, #{BzResult}, #{degree}, #{degreeScore}, #{distance}, #{distanceScore}, #{hip01Score}, #{graphAx}, #{graphAz}, #{graphBx}, #{graphBz})
+		INSERT INTO hip01 (id, positionA, rotationA, localcaleA, pinCountA, pinsA, AxResult, AzResult, positionB, rotationB, localcaleB, pinCountB, pinsB, BxResult, BzResult, degree, degreeScore, distance, distanceScore, hip01Score, dropPoint, maxPoint, isDroped, graphAx, graphAz, graphBx, graphBz)
+		VALUES (#{id}, #{positionA}, #{rotationA}, #{localcaleA}, #{pinCountA}, #{pinsA}, #{AxResult}, #{AzResult}, #{positionB}, #{rotationB}, #{localcaleB}, #{pinCountB}, #{pinsB}, #{BxResult}, #{BzResult}, #{degree}, #{degreeScore}, #{distance}, #{distanceScore}, #{hip01Score}, #{dropPoint}, #{maxPoint}, #{isDroped}, #{graphAx}, #{graphAz}, #{graphBx}, #{graphBz})
 	</insert>
 
 	<insert id="insertHip02">
-		INSERT INTO hip02 (user_id, id, positionA, rotationA, scaleA, pointsX, pointsY, pointsZ, pointsGapX, pointsGapY, pointsGapZ, pointsgapAvg, pointsgapMax, cupDiatance, Score, hip02Score)
-		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{scaleA}, #{pointsX}, #{pointsY}, #{pointsZ}, #{pointsGapX}, #{pointsGapY}, #{pointsGapZ}, 
-			#{pointsgapAvg}, #{pointsgapMax}, #{cupDiatance}, #{Score}, #{hip02Score})
+		INSERT INTO hip02 (id, positionA, rotationA, scaleA, pointsX, pointsY, pointsZ, pointsGapX, pointsGapY, pointsGapZ, pointsgapAvg, pointsgapMax, cupDiatance, result, Score, hip02Score, dropPoint, maxPoint, isDroped)
+		VALUES (#{id}, #{positionA}, #{rotationA}, #{scaleA}, #{pointsX}, #{pointsY}, #{pointsZ}, #{pointsGapX}, #{pointsGapY}, #{pointsGapZ}, 
+			#{pointsgapAvg}, #{pointsgapMax}, #{cupDiatance}, #{result}, #{Score}, #{hip02Score}, #{dropPoint}, #{maxPoint}, #{isDroped})
 	</insert>
 
 	<insert id="insertHip03">
-		INSERT INTO hip03 (user_id, id, positionA, rotationA, scaleA, cupRotation, cupPosition, cupDiatance, Score, hip03Score)
-		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{scaleA}, #{cupRotation}, #{cupPosition},  
-			#{cupDiatance}, #{Score}, #{hip03Score})
+		INSERT INTO hip03 (id, positionA, rotationA, scaleA, cupRotation, cupPosition, cupDiatance, result, Score, hip03Score, dropPoint, maxPoint, isDroped)
+		VALUES (#{id}, #{positionA}, #{rotationA}, #{scaleA}, #{cupRotation}, #{cupPosition},  
+			#{cupDiatance}, #{result}, #{Score}, #{hip03Score}, #{dropPoint}, #{maxPoint}, #{isDroped})
 	</insert>
 
 	<insert id="insertHip04">
-		INSERT INTO hip04 (user_id, id, positionA, rotationA, scaleA, entryPointDiatance, degree15, pathWay, 
-		pathWayLinearX, pathWayLinearZ, Score, hip04Score)
-		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{scaleA}, #{entryPointDiatance}, #{degree15}, #{pathWay},  
-			#{pathWayLinearX}, #{pathWayLinearZ}, #{Score}, #{hip04Score})
+		INSERT INTO hip04 (id, positionA, rotationA, scaleA, entryPointDiatance, degree15, pathWay, 
+		pathWayLinearX, pathWayLinearZ, result, Score, hip04Score, dropPoint, maxPoint, isDroped)
+		VALUES (#{id}, #{positionA}, #{rotationA}, #{scaleA}, #{entryPointDiatance}, #{degree15}, #{pathWay},  
+			#{pathWayLinearX}, #{pathWayLinearZ}, #{result}, #{Score}, #{hip04Score}, #{dropPoint}, #{maxPoint}, #{isDroped})
 	</insert>
 
 	<insert id="insertHip04Points">
@@ -40,10 +40,10 @@
 	</insert>
 
 	<insert id="insertHip05">
-		INSERT INTO hip05 (user_id, id, positionA, rotationA, scaleA, entryPointDiatance, degree15, pathWay, 
-		pathWayLinearX, pathWayLinearZ, Score, hip05Score)
-		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{scaleA}, #{entryPointDiatance}, #{degree15}, #{pathWay},  
-			#{pathWayLinearX}, #{pathWayLinearZ}, #{Score}, #{hip05Score})
+		INSERT INTO hip05 (id, positionA, rotationA, scaleA, entryPointDiatance, degree15, pathWay, 
+		pathWayLinearX, pathWayLinearZ, result, Score, hip05Score, dropPoint, maxPoint, isDroped)
+		VALUES (#{id}, #{positionA}, #{rotationA}, #{scaleA}, #{entryPointDiatance}, #{degree15}, #{pathWay},  
+			#{pathWayLinearX}, #{pathWayLinearZ}, #{result}, #{Score}, #{hip05Score}, #{dropPoint}, #{maxPoint}, #{isDroped})
 	</insert>
 
 	<insert id="insertHip05Points">
@@ -52,10 +52,10 @@
 	</insert>
 
 	<insert id="insertHip06">
-		INSERT INTO hip06 (user_id, id, positionA, rotationA, scaleA, entryPointDiatance, degree15, pathWay, 
-		pathWayLinearX, pathWayLinearZ, Score, hip06Score)
-		VALUES (#{user_id}, #{id}, #{positionA}, #{rotationA}, #{scaleA}, #{entryPointDiatance}, #{degree15}, #{pathWay},  
-			#{pathWayLinearX}, #{pathWayLinearZ}, #{Score}, #{hip06Score})
+		INSERT INTO hip06 (id, positionA, rotationA, scaleA, entryPointDiatance, degree15, pathWay, 
+		pathWayLinearX, pathWayLinearZ, result, Score, hip06Score, dropPoint, maxPoint, isDroped)
+		VALUES (#{id}, #{positionA}, #{rotationA}, #{scaleA}, #{entryPointDiatance}, #{degree15}, #{pathWay},  
+			#{pathWayLinearX}, #{pathWayLinearZ}, #{result}, #{Score}, #{hip06Score}, #{dropPoint}, #{maxPoint}, #{isDroped})
 	</insert>
 
 	<insert id="insertHip06Points">
@@ -72,9 +72,7 @@
 	</select>
 
 	<select id="list" resultType="com.crc.CSP.bean.HipCommonVO">
-		SELECT * FROM 
-		(
-			SELECT @ROWNUM:= @ROWNUM + 1 as rn, A.* FROM
+		SELECT @ROWNUM:= @ROWNUM + 1 as rn, A.* FROM
 			(
 				SELECT b.user_id, b.date, b.ID, b.UID, b.ActionCount, b.totalScore, b.file_name
 				FROM 
@@ -82,9 +80,20 @@
 					(SELECT @ROWNUM:=0)R
 				WHERE 
 					b.user_id = #{user_id} 
+				ORDER BY b.date desc
 			)A
-		)B WHERE rn BETWEEN #{start} AND #{end}
-	</select>   
+	</select>
+	
+	<select id="list_every" resultType="com.crc.CSP.bean.HipCommonVO">
+		SELECT @ROWNUM:= @ROWNUM + 1 as rn, A.* FROM
+		(
+			SELECT b.user_id, b.date, b.ID, b.UID, b.ActionCount, b.totalScore, b.file_name
+			FROM 
+				hip_common b,
+				(SELECT @ROWNUM:=0)R 
+			ORDER BY b.date desc
+		)A
+	</select>
 	
 	<select id="view" resultType="com.crc.CSP.bean.Hip01DataVOStr">
 		SELECT * 
